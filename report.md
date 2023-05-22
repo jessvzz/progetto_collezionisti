@@ -12,14 +12,39 @@
 
 ## Analisi dei requisiti
 
-- E' possibile riportare in questa sezione i **requisiti **copiati dal documento di specifica, oppure semplicemente riassumerne gli aspetti più importanti.
-  Vanno quindi (eventualmente) discusse tutte le scelte progettuali relative al dominio, le ambiguità e il modo in cui sono state risolte.
+Il database "Collectors" memorizza informazioni relative a collezioni di dischi.
+Nel database andranno registrati i dati relativi ai collezionisti (nickname, email, anagrafica) e i dati relativi alle loro collezioni (ogni collezionista può creare più collezioni, ognuna con un nome distinto).
+Ogni collezione è formata da dischi, per i quali abbiamo differenziato la tipologia come CD, vinile, musicassetta, EP e digitale. Abbiamo inoltre indicato titolo, anno di uscita, etichetta, stato di conservazione e barcode (se presente). Ogni disco è caratterizzato inoltre da una o più immagini che possono trovarsi su fronte, retro, facciate interne, libretti ecc.
+Ogni disco è composto da brani (tracce), dove andranno specificati titolo, durata, esecutore/i, compositore/i e genere.
+Il collezionista può inoltre possedere una o più copie di uno stesso disco, magari a seguito di scambi o perchè ne prevede la rivendita.
+I collezionisti possono condividere la propria collezione con specifici utenti o in maniera pubblica; ogni collezione avrà quindi un flag provato/pubblico e la lista di collezionisti con cui è condivisa.
 
-- E' possibile infine inserire qui un glossario che riporta tutti gli oggetti di dominio individuati, con la loro semantica, i loro eventuali sinonimi e le loro proprietà.
+In seguito riportiamo un glossario dei termini:
+
+|Termine|Descrizione|Collegamenti|
+|:-----:|:---------:|:----------:|
+|Collezionista|Utente che può creare collezioni e che può decidere se condividerle con altri utenti. Include anche i collezionisti con cui vengono condivise le collezioni.|Collezioni|
+|Collezione|Insieme di dischi posseduti dal collezionista.|Collezionista, Disco|
+|Disco|Oggetto contenuto in una collezione, che può essere gestito in diverse copie.|Collezione, Etichetta, Brano|
+|Brano|Unità che compone un disco.|Disco, Artista|
+
 
 ## Progettazione concettuale
 
-- Riportate qui il **modello ER iniziale**. Cercate di renderlo *leggibile*, altrimenti correggerlo diventerà impossibile. Se è troppo piccolo, dividetelo in parti e/o allegate anche un'immagine ad alta risoluzione alla relazione.
+Nel file "Allegato1" riportiamo il diagramma E-R realizzato.
+Di seguito riportiamo il dizionario relativo al diagramma E-R:
+
+**Entità**
+|Entità|Descrizione|Attributi|Identificatore|
+|:----:|:---------:|:-------:|:------------:|
+|Collezionista|Utente che crea collezioni|email, nickname, anagrafica(1)|nickname|
+|Collezione|Insieme di dischi posseduti dal collezionista|nome,flag(2)|nome,nickname|
+|Disco|Oggetto contenuto in una collezione|titolo,anno_uscita,tipo(3),barcode,stato_conservazione|VEDERE SE ARTISTA O ETICHETTA|
+|Brano|Traccia che compone il disco|ISRC,durata,titolo,genere(4)|ISRC|
+|Artista|Colui che compone e/o esegue il brano|anagrafica(5)|VEDERE COME SOPRA|
+|Etichetta|Azienda che produce un disco|nome,sede,p_iva|nome|
+|Immagine|Figura presente sul disco|sorgente, collocazione, par_tecnici(6)|sorgente|
+
 
 - Commentate gli elementi non visibili nella figura (ad esempio il contenuto degli attributi composti) nonché le scelte/assunzioni che vi hanno portato a creare determinate strutture, se lo ritenete opportuno.
 
