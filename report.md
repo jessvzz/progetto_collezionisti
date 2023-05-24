@@ -4,8 +4,8 @@
 
 | Matricola | Nome | Cognome | Contributo al progetto |
 |:---------:|:----:|:-------:|:----------------------:|
-|288804|Francesca|Ciccarelli|                        |
-|           |Federico|Falcone|                        |
+|288804|Francesca|Ciccarelli|                       |
+|246996|Federico|Falcone|                        |
 |           |Gea|Viozzi|    |
 
 **Data di consegna del progetto**: gg/mm/aaaa
