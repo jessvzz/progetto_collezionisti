@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.collectors.controller.LayoutController">
+   <left>
+      <VBox fx:id="menuBar" prefHeight="400.0" prefWidth="135.0" style="-fx-background-color: #b0eee6;" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <Pane prefHeight="250.0" prefWidth="97.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="exitButton" layoutX="21.0" layoutY="14.0" mnemonicParsing="false" onAction="#exit" text="Exit" />
+         </children>
+      </Pane>
+   </right>
+</BorderPane>
