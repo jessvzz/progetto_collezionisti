@@ -1,0 +1,74 @@
+CREATE DATABASE IF NOT EXISTS Collectors;
+USE Collectors;
+
+DROP TABLE IF EXISTS collezionista;
+DROP TABLE IF EXISTS collezione;
+DROP TABLE IF EXISTS artista;
+DROP TABLE IF EXISTS disco;
+DROP TABLE IF EXISTS brano;
+DROP TABLE IF EXISTS copia;
+DROP TABLE IF EXISTS etichetta;
+DROP TABLE IF EXISTS immagine;
+DROP TABLE IF EXISTS condivisa;
+DROP TABLE IF EXISTS e_stata_condivisa;
+DROP TABLE IF EXISTS contiene;
+DROP TABLE IF EXISTS quantizza;
+DROP TABLE IF EXISTS appartiene;
+
+CREATE TABLE collezionista(
+ ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+ nickname VARCHAR(100) NOT NULL UNIQUE,
+ email VARCHAR(100) NOT NULL UNIQUE,
+ nome VARCHAR(100) NOT NULL,
+ cognome VARCHAR(100) NOT NULL,
+ data_di_nascita VARCHAR(100) 
+    );
+    
+CREATE TABLE collezione(
+ ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+ nome VARCHAR(100) NOT NULL UNIQUE,
+ pubblico BOOLEAN,
+CONSTRAINT collezione_collezionista FOREIGN KEY (ID_collezionista)
+        REFERENCES collezionista (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+    );
+
+    
+CREATE TABLE artista(
+ ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+ nome_dArte VARCHAR(100) NOT NULL,
+ nome VARCHAR(100),
+ cognome VARCHAR(100),
+ data_di_nascita DATETIME NOT NULL,
+ gruppo BOOLEAN
+    );
+    
+CREATE TABLE disco(
+ ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+ titolo VARCHAR(100) NOT NULL,
+ CONSTRAINT disco_artista FOREIGN KEY (ID_artista)
+        REFERENCES artista (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+ anno_uscita INTEGER UNSIGNED,
+ barcode VARCHAR(100),
+  CONSTRAINT disco_etichetta FOREIGN KEY (ID_etichetta)
+        REFERENCES etichetta (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+tipo ENUM ('CD', 'Vinile', 'Musicassetta', 'EP', 'Digitale', 'Altro')	
+
+    );
+    
+CREATE TABLE brano( -- vedere per genere
+ ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+ ISRC VARCHAR(100) NOT NULL UNIQUE,
+ durata VARCHAR(100),
+ titolo VARCHAR(100),
+CONSTRAINT brano_disco FOREIGN KEY (ID_disco)
+        REFERENCES disco (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+    );
+
+    
+    
+    
+    
