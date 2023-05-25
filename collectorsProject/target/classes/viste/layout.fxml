@@ -11,7 +11,7 @@
       <VBox fx:id="menuBar" prefHeight="400.0" prefWidth="135.0" style="-fx-background-color: #b0eee6;" BorderPane.alignment="CENTER" />
    </left>
    <right>
-      <Pane prefHeight="250.0" prefWidth="97.0" BorderPane.alignment="CENTER">
+      <Pane prefHeight="250.0" prefWidth="97.0" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER">
          <children>
          	<Button fx:id="exitButton" layoutX="21.0" layoutY="14.0" mnemonicParsing="false" onAction="#exit" text="Exit" styleClass="button-19" />
          </children>
