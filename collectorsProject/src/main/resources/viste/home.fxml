@@ -21,12 +21,12 @@
       <Label prefHeight="17.0" prefWidth="173.0" text="   Cosa vorresti vedere oggi?" />
       <Pane prefHeight="170.0" prefWidth="612.0">
          <children>
-            <ImageView fx:id="collectionsImg" fitHeight="143.0" fitWidth="200.0" layoutX="38.0" layoutY="14.0" onMouseClicked="#goToCollections" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="collectionsImg" fitHeight="143.0" fitWidth="200.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
             	<image>
             		<Image url="@images/welcome1.jpg" />
         	    </image>
         	</ImageView>
-           <ImageView fx:id="firendsImg" fitHeight="150.0" fitWidth="200.0" layoutX="230.0" layoutY="10.0" onMouseClicked="#goToFirends" pickOnBounds="true" preserveRatio="true">
+           <ImageView fx:id="firendsImg" fitHeight="150.0" fitWidth="200.0" layoutX="230.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
            <image>
             <Image url="@images/welcome2.jpg" />
          </image>

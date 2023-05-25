@@ -5,31 +5,38 @@ import java.util.ResourceBundle;
 
 import it.univaq.disim.collectors.view.ViewDispatcher;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 public class HomeController implements Initializable{
 
 	@FXML
 	private Label benvenutoLabel;
+	
+	@FXML
+	private ImageView collectionsImg;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		benvenutoLabel.setText("Benvenuto!");
+		collectionsImg.setPickOnBounds(true);
+
+        collectionsImg.setOnMouseClicked(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+            	ViewDispatcher dispatcher = ViewDispatcher.getInstance();
+        		dispatcher.renderView("collections");
+               
+            }
+        });
 	}
 	
 	
-	@FXML
-	public void goToCollections(ActionEvent event) {
-		ViewDispatcher dispatcher = ViewDispatcher.getInstance();
-		dispatcher.renderView("collections");
-	}
-	@FXML
-	public void goToFirends(ActionEvent event) {
-		ViewDispatcher dispatcher = ViewDispatcher.getInstance();
-		dispatcher.renderView("sharedCollections");
-	}
+	
 	
 
 }
