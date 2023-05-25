@@ -13,7 +13,7 @@
       <Label layoutX="164.0" layoutY="189.0" text="Username:" />
       <Label layoutX="165.0" layoutY="241.0" text="Password:" />
       <TextField fx:id="usernameField" layoutX="236.0" layoutY="184.0" />
-      <TextField fx:id="passwordField" layoutX="236.0" layoutY="237.0" />
+      <PasswordField fx:id="passwordField" layoutX="236.0" layoutY="237.0" />
       <Text layoutX="197.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="App Name" textAlignment="CENTER" wrappingWidth="226.21630859375">
          <font>
             <Font size="36.0" />

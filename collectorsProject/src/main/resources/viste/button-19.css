@@ -1,0 +1,50 @@
+.button-19 {
+  -fx-background-color: #1899D6;
+  -fx-border-color: transparent;
+  -fx-border-radius: 16px;
+  -fx-border-width: 0 0 4px;
+  -fx-color: #FFFFFF;
+  -fx-cursor: hand;
+  -fx-font-family: "din-round", sans-serif;
+  -fx-font-size: 15px;
+  -fx-font-weight: 700;
+  -fx-letter-spacing: 0.8px;
+  -fx-line-height: 20px;
+  -fx-padding: 13px 16px;
+  -fx-text-align: center;
+  -fx-text-transform: uppercase;
+  -fx-touch-action: manipulation;
+  -fx-transform: translateZ(0);
+  -fx-transition: filter 0.2s;
+  -fx-user-select: none;
+  -fx-vertical-align: middle;
+  -fx-white-space: nowrap;
+  -fx-min-width: 0;
+}
+
+.button-19:hover {
+  -fx-filter: brightness(1.1);
+}
+
+.button-19:disabled {
+  -fx-cursor: auto;
+}
+
+.button-19 .text {
+  -fx-fill: #FFFFFF;
+}
+
+.button-19 .background {
+  -fx-background-clip: padding-box;
+  -fx-background-color: #1CB0F6;
+  -fx-border-color: transparent;
+  -fx-border-radius: 16px;
+  -fx-border-width: 0 0 4px;
+  -fx-bottom: -4px;
+  -fx-left: 0;
+  -fx-position: absolute;
+  -fx-right: 0;
+  -fx-top: 0;
+  -fx-z-index: -1;
+}
+  
