@@ -56,7 +56,9 @@ CREATE TABLE disco(
   CONSTRAINT disco_etichetta FOREIGN KEY (ID_etichetta)
         REFERENCES etichetta (ID)
         ON DELETE RESTRICT ON UPDATE CASCADE,
-tipo ENUM ('CD', 'Vinile', 'Musicassetta', 'EP', 'Digitale', 'Altro')	
+CONSTRAINT disco_collezione FOREIGN KEY (ID_collezione)
+        REFERENCES collezione (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE
 
     );
     
@@ -65,16 +67,32 @@ CREATE TABLE brano( -- vedere per genere
  ISRC VARCHAR(100) NOT NULL UNIQUE,
  durata VARCHAR(100),
  titolo VARCHAR(100),
+ CONSTRAINT brano_genere FOREIGN KEY (ID_genere)
+        REFERENCES genere (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
 CONSTRAINT brano_disco FOREIGN KEY (ID_disco)
         REFERENCES disco (ID)
         ON DELETE RESTRICT ON UPDATE CASCADE
     );
     
+CREATE TABLE genere(
+	ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50)
+);
+    
 CREATE TABLE copia(
 	ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     ID_disco INTEGER UNSIGNED,
-    stato_di_conservazione VARCHAR(100) -- ENUM??
+    stato_di_conservazione VARCHAR(100), -- ENUM??
+    CONSTRAINT copia_tipo FOREIGN KEY (ID_tipo)
+        REFERENCES tipo (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE
     );
+    
+CREATE TABLE tipo(
+	ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(50)
+	);
 
 CREATE TABLE etichetta(
  ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
