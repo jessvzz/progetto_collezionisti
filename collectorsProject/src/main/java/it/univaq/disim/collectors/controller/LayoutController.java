@@ -49,7 +49,7 @@ public class LayoutController implements Initializable {
 	}
 	
 	@FXML
-	public void exit(MouseEvent event) {
+	public void exit(ActionEvent event) {
 		ViewDispatcher dispatcher = ViewDispatcher.getInstance();
 		dispatcher.logout();
 	}
