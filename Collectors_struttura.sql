@@ -12,10 +12,12 @@ DROP TABLE IF EXISTS copia;
 DROP TABLE IF EXISTS etichetta;
 DROP TABLE IF EXISTS immagine;
 DROP TABLE IF EXISTS condivisa;
-DROP TABLE IF EXISTS e_stata_condivisa;
+DROP TABLE IF EXISTS eStataCondivisa;
 DROP TABLE IF EXISTS contiene;
 DROP TABLE IF EXISTS quantizza;
 DROP TABLE IF EXISTS appartiene;
+DROP TABLE IF EXISTS genere;
+DROP TABLE IF EXISTS tipo;
 
 CREATE TABLE collezionista(
  ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -62,7 +64,7 @@ CONSTRAINT disco_collezione FOREIGN KEY (ID_collezione)
 
     );
     
-CREATE TABLE brano( -- vedere per genere
+CREATE TABLE brano( 
  ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
  ISRC VARCHAR(100) NOT NULL UNIQUE,
  durata VARCHAR(100),
@@ -79,65 +81,88 @@ CREATE TABLE genere(
 	ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(50)
 );
-    
-CREATE TABLE copia(
-	ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    ID_disco INTEGER UNSIGNED,
-    stato_di_conservazione VARCHAR(100), -- ENUM??
-    CONSTRAINT copia_tipo FOREIGN KEY (ID_tipo)
-        REFERENCES tipo (ID)
-        ON DELETE RESTRICT ON UPDATE CASCADE
-    );
-    
+
 CREATE TABLE tipo(
 	ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(50)
 	);
+    
+CREATE TABLE copia(
+	ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    stato_di_conservazione ENUM ('OTTIMO','BUONO','USURATO'),
+    CONSTRAINT copia_disco FOREIGN KEY (ID_disco)
+		REFERENCES disco (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT copia_tipo FOREIGN KEY (ID_tipo)
+        REFERENCES tipo (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+    );
 
 CREATE TABLE etichetta(
  ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
- p_iva INTEGER UNSIGNED NOT NULL,
- nome VARCHAR(100),
- sede VARCHAR(100)
+ p_iva VARCHAR(100) UNIQUE,
+ nome VARCHAR(100) UNIQUE NOT NULL
  	);
  	
-CREATE TABLE immagini(
+CREATE TABLE immagine(
  ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
- -- sorgente
  nome VARCHAR(100), 
  dimensione VARCHAR(100),
  formato VARCHAR(100),
+ url_sorgente VARCHAR(255),
  collocazione VARCHAR(100),
- ID_disco INTEGER UNSIGNED
+ CONSTRAINT immagine_disco FOREIGN KEY (ID_disco)
+		REFERENCES disco (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE
 	);
 
 CREATE TABLE condivisa(
- ID_collezionista INTEGER UNSIGNED,
- ID_collezione INTEGER UNSIGNED,
- data_inizio DATE
-	);
-
-CREATE TABLE e_stata_condivisa(
- ID_collezionista INTEGER UNSIGNED,
- ID_collezione	INTEGER UNSIGNED,
- data_inizio DATETIME,
- data_fine DATETIME
+    ID_collezionista INTEGER UNSIGNED NOT NULL,
+    ID_collezione INTEGER UNSIGNED NOT NULL,
+    PRIMARY KEY (ID_collezionista , ID_collezione),
+	CONSTRAINT condivisa_collezione FOREIGN KEY (ID_collezione)
+		REFERENCES collezione (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+	CONSTRAINT condivisa_collezionista FOREIGN KEY (ID_collezionista)
+		REFERENCES collezionista (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE
 	);
     
 CREATE TABLE contiene(
- ID_collezione INTEGER UNSIGNED,
- ID_disco INTEGER UNSIGNED
+ ID_collezione INTEGER UNSIGNED NOT NULL,
+ ID_disco INTEGER UNSIGNED NOT NULL,
+ PRIMARY KEY (ID_disco , ID_collezione),
+	CONSTRAINT contiene_collezione FOREIGN KEY (ID_collezione)
+		REFERENCES collezione (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+	CONSTRAINT contiene_disco FOREIGN KEY (ID_disco)
+		REFERENCES disco (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE
 	);
     
 CREATE TABLE quantizza(
- quantita SMALLINT UNSIGNED DEFAULT 1, -- or 0??
- ID_disco INTEGER UNSIGNED,
- ID_copia INTEGER UNSIGNED
+ quantita SMALLINT UNSIGNED DEFAULT 1,
+ ID_disco INTEGER UNSIGNED  NOT NULL,
+ ID_copia INTEGER UNSIGNED NOT NULL,
+ PRIMARY KEY (ID_disco, ID_copia),
+	CONSTRAINT quantizza_disco FOREIGN KEY (ID_disco)
+		REFERENCES disco (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+	CONSTRAINT quantizza_copia FOREIGN KEY (ID_copia)
+		REFERENCES copia (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE
 	);
  
  CREATE TABLE appartiene(
-  ID_artista INTEGER UNSIGNED,
-  ID_brano INTEGER UNSIGNED,
+  ID_artista INTEGER UNSIGNED NOT NULL,
+  ID_brano INTEGER UNSIGNED NOT NULL,
+  PRIMARY KEY (ID_artista , ID_brano),
+	CONSTRAINT appartiene_artista FOREIGN KEY (ID_artista)
+		REFERENCES artista (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+	CONSTRAINT appartiene_brano FOREIGN KEY (ID_brano)
+		REFERENCES brano (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
   esegue_o_compone SMALLINT DEFAULT 1 -- potremmo dire 1 esegue -1 compone??
 	);
  
