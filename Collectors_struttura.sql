@@ -12,7 +12,6 @@ DROP TABLE IF EXISTS copia;
 DROP TABLE IF EXISTS etichetta;
 DROP TABLE IF EXISTS immagine;
 DROP TABLE IF EXISTS condivisa;
-DROP TABLE IF EXISTS eStataCondivisa;
 DROP TABLE IF EXISTS contiene;
 DROP TABLE IF EXISTS quantizza;
 DROP TABLE IF EXISTS appartiene;
@@ -26,7 +25,7 @@ CREATE TABLE collezionista(
  nome VARCHAR(100) NOT NULL,
  cognome VARCHAR(100) NOT NULL,
  data_di_nascita VARCHAR(100) 
-    );
+	);
     
 CREATE TABLE collezione(
  ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -35,7 +34,7 @@ CREATE TABLE collezione(
 CONSTRAINT collezione_collezionista FOREIGN KEY (ID_collezionista)
         REFERENCES collezionista (ID)
         ON DELETE RESTRICT ON UPDATE CASCADE
-    );
+	);
 
     
 CREATE TABLE artista(
@@ -61,8 +60,7 @@ CREATE TABLE disco(
 CONSTRAINT disco_collezione FOREIGN KEY (ID_collezione)
         REFERENCES collezione (ID)
         ON DELETE RESTRICT ON UPDATE CASCADE
-
-    );
+	);
     
 CREATE TABLE brano( 
  ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -75,12 +73,12 @@ CREATE TABLE brano(
 CONSTRAINT brano_disco FOREIGN KEY (ID_disco)
         REFERENCES disco (ID)
         ON DELETE RESTRICT ON UPDATE CASCADE
-    );
+	);
     
 CREATE TABLE genere(
 	ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(50)
-);
+	);
 
 CREATE TABLE tipo(
 	ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -96,7 +94,7 @@ CREATE TABLE copia(
     CONSTRAINT copia_tipo FOREIGN KEY (ID_tipo)
         REFERENCES tipo (ID)
         ON DELETE RESTRICT ON UPDATE CASCADE
-    );
+	);
 
 CREATE TABLE etichetta(
  ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
