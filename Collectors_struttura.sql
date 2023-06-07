@@ -18,6 +18,11 @@ DROP TABLE IF EXISTS appartiene;
 DROP TABLE IF EXISTS genere;
 DROP TABLE IF EXISTS tipo;
 
+-- (opzionale) (ri)creiamo anche l'utente che accederà ai dati
+DROP USER IF EXISTS 'collectorsUser'@'localhost';
+CREATE USER 'collectorsUser'@'localhost' IDENTIFIED BY 'collectorsPwd';
+GRANT select,insert,update,delete,execute ON Collectors.* TO 'collectorsUser'@'localhost';
+
 CREATE TABLE collezionista(
  ID_collezionista INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
  nickname VARCHAR(100) NOT NULL UNIQUE,
