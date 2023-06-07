@@ -59,14 +59,13 @@ CREATE TABLE disco(
         REFERENCES artista (ID_artista)
         ON DELETE RESTRICT ON UPDATE CASCADE,
  anno_uscita INTEGER UNSIGNED,
- barcode VARCHAR(100),
  ID_etichetta INTEGER UNSIGNED,
   CONSTRAINT disco_etichetta FOREIGN KEY (ID_etichetta)
         REFERENCES etichetta (ID_etichetta)
         ON DELETE RESTRICT ON UPDATE CASCADE,
 ID_collezione INTEGER UNSIGNED NOT NULL, 
-CONSTRAINT disco_collezione FOREIGN KEY (ID_collezione)
-        REFERENCES collezione (ID_collezione)
+CONSTRAINT disco_collezione FOREIGN KEY (ID_collezionista)
+        REFERENCES collezione (ID_collezionista)
         ON DELETE RESTRICT ON UPDATE CASCADE
 	);
     
@@ -98,6 +97,7 @@ CREATE TABLE tipo(
     
 CREATE TABLE copia(
 	ID_copia INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    barcode VARCHAR(100),
     stato_di_conservazione ENUM ('OTTIMO','BUONO','USURATO'),
     ID_disco INTEGER UNSIGNED NOT NULL,
     CONSTRAINT copia_disco FOREIGN KEY (ID_disco)
@@ -147,18 +147,6 @@ CREATE TABLE contiene(
         ON DELETE RESTRICT ON UPDATE CASCADE
 	);
     
-CREATE TABLE quantizza(
- quantita SMALLINT UNSIGNED DEFAULT 1,
- ID_disco INTEGER UNSIGNED  NOT NULL,
- ID_copia INTEGER UNSIGNED NOT NULL,
- PRIMARY KEY (ID_disco, ID_copia),
-	CONSTRAINT quantizza_disco FOREIGN KEY (ID_disco)
-		REFERENCES disco (ID_disco)
-        ON DELETE RESTRICT ON UPDATE CASCADE,
-	CONSTRAINT quantizza_copia FOREIGN KEY (ID_copia)
-		REFERENCES copia (ID_copia)
-        ON DELETE RESTRICT ON UPDATE CASCADE
-	);
  
  CREATE TABLE appartiene(
   ID_artista INTEGER UNSIGNED NOT NULL,
