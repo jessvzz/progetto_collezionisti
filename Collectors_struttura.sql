@@ -19,98 +19,107 @@ DROP TABLE IF EXISTS genere;
 DROP TABLE IF EXISTS tipo;
 
 CREATE TABLE collezionista(
- ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+ ID_collezionista INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
  nickname VARCHAR(100) NOT NULL UNIQUE,
  email VARCHAR(100) NOT NULL UNIQUE,
  nome VARCHAR(100) NOT NULL,
- cognome VARCHAR(100) NOT NULL,
- data_di_nascita VARCHAR(100) 
+ cognome VARCHAR(100) NOT NULL
 	);
     
 CREATE TABLE collezione(
- ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+ ID_collezione INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
  nome VARCHAR(100) NOT NULL UNIQUE,
- pubblico BOOLEAN,
+ pubblico enum('pubblico','privato') default 'privato',
+ ID_collezionista INTEGER UNSIGNED,
 CONSTRAINT collezione_collezionista FOREIGN KEY (ID_collezionista)
-        REFERENCES collezionista (ID)
+        REFERENCES collezionista (ID_collezionista)
         ON DELETE RESTRICT ON UPDATE CASCADE
 	);
 
     
 CREATE TABLE artista(
- ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+ ID_artista INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
  nome_dArte VARCHAR(100) NOT NULL,
  nome VARCHAR(100),
  cognome VARCHAR(100),
- data_di_nascita DATETIME NOT NULL,
  gruppo BOOLEAN
     );
     
+CREATE TABLE etichetta(
+ ID_etichetta INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+ p_iva VARCHAR(100) UNIQUE,
+ nome VARCHAR(100) UNIQUE NOT NULL
+ 	);
+    
 CREATE TABLE disco(
- ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+ ID_disco INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
  titolo VARCHAR(100) NOT NULL,
+ ID_artista INTEGER UNSIGNED NOT NULL,
  CONSTRAINT disco_artista FOREIGN KEY (ID_artista)
-        REFERENCES artista (ID)
+        REFERENCES artista (ID_artista)
         ON DELETE RESTRICT ON UPDATE CASCADE,
  anno_uscita INTEGER UNSIGNED,
  barcode VARCHAR(100),
+ ID_etichetta INTEGER UNSIGNED,
   CONSTRAINT disco_etichetta FOREIGN KEY (ID_etichetta)
-        REFERENCES etichetta (ID)
+        REFERENCES etichetta (ID_etichetta)
         ON DELETE RESTRICT ON UPDATE CASCADE,
+ID_collezione INTEGER UNSIGNED NOT NULL, 
 CONSTRAINT disco_collezione FOREIGN KEY (ID_collezione)
-        REFERENCES collezione (ID)
-        ON DELETE RESTRICT ON UPDATE CASCADE
-	);
-    
-CREATE TABLE brano( 
- ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
- ISRC VARCHAR(100) NOT NULL UNIQUE,
- durata VARCHAR(100),
- titolo VARCHAR(100),
- CONSTRAINT brano_genere FOREIGN KEY (ID_genere)
-        REFERENCES genere (ID)
-        ON DELETE RESTRICT ON UPDATE CASCADE,
-CONSTRAINT brano_disco FOREIGN KEY (ID_disco)
-        REFERENCES disco (ID)
+        REFERENCES collezione (ID_collezione)
         ON DELETE RESTRICT ON UPDATE CASCADE
 	);
     
 CREATE TABLE genere(
-	ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	ID_genere INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(50)
 	);
+    
+CREATE TABLE brano( 
+ ID_brano INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+ ISRC VARCHAR(100) NOT NULL UNIQUE,
+ durata VARCHAR(100),
+ titolo VARCHAR(100),
+ ID_genere INTEGER UNSIGNED NOT NULL,
+ CONSTRAINT brano_genere FOREIGN KEY (ID_genere)
+        REFERENCES genere (ID_genere)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+ID_disco INTEGER UNSIGNED NOT NULL,
+CONSTRAINT brano_disco FOREIGN KEY (ID_disco)
+        REFERENCES disco (ID_disco)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+	);
+    
 
 CREATE TABLE tipo(
-	ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	ID_tipo INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(50)
 	);
     
 CREATE TABLE copia(
-	ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	ID_copia INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     stato_di_conservazione ENUM ('OTTIMO','BUONO','USURATO'),
+    ID_disco INTEGER UNSIGNED NOT NULL,
     CONSTRAINT copia_disco FOREIGN KEY (ID_disco)
-		REFERENCES disco (ID)
+		REFERENCES disco (ID_disco)
         ON DELETE RESTRICT ON UPDATE CASCADE,
+	ID_tipo INTEGER UNSIGNED NOT NULL,
     CONSTRAINT copia_tipo FOREIGN KEY (ID_tipo)
-        REFERENCES tipo (ID)
+        REFERENCES tipo (ID_tipo)
         ON DELETE RESTRICT ON UPDATE CASCADE
 	);
 
-CREATE TABLE etichetta(
- ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
- p_iva VARCHAR(100) UNIQUE,
- nome VARCHAR(100) UNIQUE NOT NULL
- 	);
  	
 CREATE TABLE immagine(
- ID INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+ ID_immagine INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
  nome VARCHAR(100), 
  dimensione VARCHAR(100),
  formato VARCHAR(100),
  url_sorgente VARCHAR(255),
  collocazione VARCHAR(100),
+ ID_disco INTEGER UNSIGNED NOT NULL,
  CONSTRAINT immagine_disco FOREIGN KEY (ID_disco)
-		REFERENCES disco (ID)
+		REFERENCES disco (ID_disco)
         ON DELETE RESTRICT ON UPDATE CASCADE
 	);
 
@@ -119,10 +128,10 @@ CREATE TABLE condivisa(
     ID_collezione INTEGER UNSIGNED NOT NULL,
     PRIMARY KEY (ID_collezionista , ID_collezione),
 	CONSTRAINT condivisa_collezione FOREIGN KEY (ID_collezione)
-		REFERENCES collezione (ID)
+		REFERENCES collezione (ID_collezione)
         ON DELETE RESTRICT ON UPDATE CASCADE,
 	CONSTRAINT condivisa_collezionista FOREIGN KEY (ID_collezionista)
-		REFERENCES collezionista (ID)
+		REFERENCES collezionista (ID_collezionista)
         ON DELETE RESTRICT ON UPDATE CASCADE
 	);
     
@@ -131,10 +140,10 @@ CREATE TABLE contiene(
  ID_disco INTEGER UNSIGNED NOT NULL,
  PRIMARY KEY (ID_disco , ID_collezione),
 	CONSTRAINT contiene_collezione FOREIGN KEY (ID_collezione)
-		REFERENCES collezione (ID)
+		REFERENCES collezione (ID_collezione)
         ON DELETE RESTRICT ON UPDATE CASCADE,
 	CONSTRAINT contiene_disco FOREIGN KEY (ID_disco)
-		REFERENCES disco (ID)
+		REFERENCES disco (ID_disco)
         ON DELETE RESTRICT ON UPDATE CASCADE
 	);
     
@@ -144,10 +153,10 @@ CREATE TABLE quantizza(
  ID_copia INTEGER UNSIGNED NOT NULL,
  PRIMARY KEY (ID_disco, ID_copia),
 	CONSTRAINT quantizza_disco FOREIGN KEY (ID_disco)
-		REFERENCES disco (ID)
+		REFERENCES disco (ID_disco)
         ON DELETE RESTRICT ON UPDATE CASCADE,
 	CONSTRAINT quantizza_copia FOREIGN KEY (ID_copia)
-		REFERENCES copia (ID)
+		REFERENCES copia (ID_copia)
         ON DELETE RESTRICT ON UPDATE CASCADE
 	);
  
@@ -156,10 +165,10 @@ CREATE TABLE quantizza(
   ID_brano INTEGER UNSIGNED NOT NULL,
   PRIMARY KEY (ID_artista , ID_brano),
 	CONSTRAINT appartiene_artista FOREIGN KEY (ID_artista)
-		REFERENCES artista (ID)
+		REFERENCES artista (ID_artista)
         ON DELETE RESTRICT ON UPDATE CASCADE,
 	CONSTRAINT appartiene_brano FOREIGN KEY (ID_brano)
-		REFERENCES brano (ID)
+		REFERENCES brano (ID_brano)
         ON DELETE RESTRICT ON UPDATE CASCADE,
   esegue_o_compone SMALLINT DEFAULT 1 -- potremmo dire 1 esegue -1 compone??
 	);
