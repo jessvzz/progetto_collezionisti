@@ -45,8 +45,12 @@ Di seguito riportiamo il dizionario relativo al diagramma E-R:
 |Etichetta|Azienda che produce un disco|nome,sede,p_iva|nome|
 |Immagine|Figura presente sul disco|sorgente, collocazione, par_tecnici(6)|sorgente|
 
-
-- Commentate gli elementi non visibili nella figura (ad esempio il contenuto degli attributi composti) nonché le scelte/assunzioni che vi hanno portato a creare determinate strutture, se lo ritenete opportuno.
+(1): nome, cognome
+(2): privato, pubblico
+(3): CD, vinile, musicassetta, digitale
+(4): %genere
+(5): nome, cognome
+(6): %par_tecnici
 
 ### Formalizzazione dei vincoli non esprimibili nel modello ER
 
