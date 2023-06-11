@@ -1,6 +1,5 @@
 USE Collectors;
 
-DELETE FROM collezionista;
 DELETE FROM collezione;
 DELETE FROM artista;
 DELETE FROM disco;
@@ -99,6 +98,9 @@ VALUES(5, "Disco4", 2, 2, 1, 1990);
 INSERT INTO `disco`
 VALUES(6, "Disco5", 1, 1, 1, 1976);
 
+INSERT INTO `disco`
+VALUES(7, "Disco7", 1, 3, 4, 1995);
+
 -- genere(ID, nome)
 INSERT INTO `genere`
 VALUES(1, "pop");
@@ -161,6 +163,12 @@ VALUES(2, 1);
 -- contiene(ID_collezione, ID_disco)
 INSERT INTO `contiene`
 VALUES(1, 1);
+
+INSERT INTO `contiene`
+VALUES(7, 6);
+
+INSERT INTO `contiene`
+VALUES(5, 7);
 
 -- appartiene(ID_artista, ID_brano, flag)
 INSERT INTO `appartiene`
