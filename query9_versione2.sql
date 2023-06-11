@@ -3,6 +3,7 @@ DROP PROCEDURE IF EXISTS check_visibilita1;
 DELIMITER $$
 	CREATE PROCEDURE check_visibilita1(ID1 INTEGER, ID2 INTEGER)
     BEGIN
+    DECLARE p BOOL;
     SET p = false;
     SELECT 1 INTO p
     FROM collezione c
@@ -18,3 +19,5 @@ DELIMITER $$
     
     END $$
 DELIMITER ;
+
+call check_visibilita1(1,7);
