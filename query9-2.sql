@@ -17,5 +17,8 @@ DELIMITER $$
     WHERE ID_collezionista = ID1;
 
     SELECT * FROM tmp_visibilita;
+    -- DROP TEMPORARY TABLE tmp_visibilita;
     END $$
 DELIMITER ;
+
+call check_visibilita1(1,1);
