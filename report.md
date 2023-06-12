@@ -95,21 +95,21 @@ Le ristrutturazioni che sono state effettuate sono le seguenti:
 **Eliminazione degli attributi multivalore**
 - L'attributo *anagrafica* dell'entità *Collezionista* è stato esploso in due nuovi attributi: *nome*, *cognome*;
 - L'attributo *anagrafica* dell'entità *Artista* è stato esploso in due nuovi attributi: *nome*, *cognome*;
-- L'attributo *par_tecnici* dell'entità *Immagine* è stato esploso nei seguenti nuovi attributi: *nonme_file*, *dimensione_file*, *formato_file*.
+- L'attributo *par_tecnici* dell'entità *Immagine* è stato esploso nei seguenti nuovi attributi: *nome_file*, *dimensione_file*, *formato_file*.
 
 **Eliminazione delle gerarchie**
 - La generalizzazione totale con classe padre *Artista* e classi figlie *Solista* e *Gruppo* è stata eliminata aggiungendo un attributo booleano "gruppo" ad *Artista*: esso sarà True se l'artista considerato è un gruppo, False se è un solista.
 
 **Fusione/Decomposizione di entità e relazioni**
-- È possibile possedere più copie di uno stesso disco, ed ogni copia può avere uno stato di conservazione diverso; per questo motivo è stata creata una nuova entità chiamata *Copia*, legata all'entità *Disco* tramite la relazione *quantizza*, che ha gli attributi *stato_di_conservazione* e *barcode*. La relazione *quantizza* in particolare comprende anche l'attributo *quantità* per tenere traccia del numero di copie possedute;
+- È possibile possedere più copie di uno stesso disco, ed ogni copia può avere uno stato di conservazione diverso; per questo motivo è stata creata una nuova entità chiamata *Copia*, legata all'entità *Disco* tramite la relazione *quantizza*, che ha gli attributi *stato_di_conservazione* e *barcode*;
 - L'attributo *tipo* legato all'entità *Disco* è specifico per ogni copia dei dischi che possiede il collezionista, poichè è possibile possedere lo stesso disco in fomati/tipi diversi (ad esempio un CD ed un vinile); per questo motivo è stata creata una nuova entità *Tipo* con l'attributo *nome*, legata a *Copia* tramite la relazione *descrive*;
-- Le relazioni *esegue* e *compone* che legano gli attributi *Artista* e *Brano* rappresentano le stesse informazioni, distinguendo solo se l'artista considerato è il compositore e/o essecutore del brano. È stato ristrutturato considerando una singola relazione *appartiene* che ha come attributo un flag enum(esecutore/compositore) ***ATTENZIONEEEEEEEEE!!!! SE È SIA ESECUTORE SIA COMPOSITORE?***
+- Le relazioni *esegue* e *compone* che legano gli attributi *Artista* e *Brano* rappresentano le stesse informazioni, distinguendo solo se l'artista considerato è il compositore e/o essecutore del brano. È stato ristrutturato considerando una singola relazione *appartiene* che ha come attributo un flag enum(esecutore/compositore/entrambi)
 - L'attributo *genere* relativo all'entità *Brano* può contenere un'ampia lista di generi musicali in continuo aggiornamento. Per gestire la nascita di nuovi generi musicali, è stata creata un'entità *Genere*, legata a *Brano* tramite la relazione *caratterizza*, che ha come attributo *nome*.
 
 **Altre ristrutturazioni**
 - L'entità debole *Disco* fa riferimento all'entità forte *Etichetta* ma, poichè un disco è solitamente associato all'artista e non alla casa discografica che lo produce, si preferisce rendere *Disco* debole con l'entità *Artista* tramite la relazione *pubblica* (che ha cardinalità sempre (1,1));
--***COLLEZIONISTA POSSIEDE DISCO PERCHÈ LO ABBIAMO MESSO? NON MI RICORDO***
-
+- Per facilitare la modifica dell'entità *Disco* da parte dei *Collezionisti* abbiamo creato la relazione *possiede* che associa ad un disco uno ed un solo collezionista.
+- 
 ### Traduzione del modello ER nel modello relazionale
 
 Riportiamo qui di seguito il modello relazionale relativo allo scherma E-R ristrutturato.
@@ -118,24 +118,23 @@ Riportiamo qui di seguito il modello relazionale relativo allo scherma E-R ristr
 |Entità|Attributi|Chiave primaria|Chiavi esterne|
 |:----:|:-------:|:-------------:|:------------:|
 |Collezionista|<ins>ID</ins>, nickname, nome, cognome|ID||
-|Collezione|<ins>ID, ID_collezionista </ins>, nome, flag|ID|ID_collezionista|
-|Artista|<ins>ID<\ins>, nome_dArte, nome, cognome, gruppo|ID||
-|Disco|<ins>ID, ID_artista <\ins>, titolo, anno_uscita, barcode, ID_etichetta, ID_collezione|ID|ID_artista|
-|Tipo|<ins>ID<\ins>,nome|ID||
-Copia|<ins>ID, ID_disco<\ins>, stato_di conservazione, ID_tipo|ID|ID_disco|
-Genere|<ins>ID<\ins>, nome|ID||
-|Brano|<ins>ID<\ins>, ISRC, durata, titolo, ID_genere, ID_disco|ID||
-|Etichetta|<ins>ID<\ins>, p_iva, nome|ID||
-|Immagine|<ins>ID<\ins>, sorgente, nome, dimensione, formato, collocazione, ID_disco|ID||
+|Collezione|<ins>ID</ins>, <ins>ID_collezionista </ins>, nome, flag|ID|ID_collezionista|
+|Artista|<ins>ID</ins>, nome_dArte, nome, cognome, gruppo|ID||
+|Disco|<ins>ID</ins>,<ins> ID_artista </ins>, titolo, anno_uscita, barcode, ID_etichetta, ID_collezione|ID|ID_artista|
+|Tipo|<ins>ID</ins>,nome|ID||
+Copia|<ins>ID</ins>,<ins> ID_disco</ins>, stato_di conservazione, ID_tipo|ID|ID_disco|
+Genere|<ins>ID</ins>, nome|ID||
+|Brano|<ins>ID</ins>, ISRC, durata, titolo, ID_genere, ID_disco|ID||
+|Etichetta|<ins>ID</ins>, p_iva, nome|ID||
+|Immagine|<ins>ID</ins>, sorgente, nome, dimensione, formato, collocazione, ID_disco|ID||
 
 **Relazioni**
 
 |Relazioni|Attributi|Chiave primaria|
 |:-------:|:-------:|:-------------:|
-|condivisa|<ins>ID_collezionista, ID_collezione<\ins>, data_inizio|ID_collezionista, ID_collezione|
-|contiene|<ins>ID_collezione, ID_disco<\ins>|ID_collezione, ID_disco|
-|quantizza|***NON L'AVEVAMO TOLTO???||
-|appartiene|<ins>ID_artista, ID_brano<\ins>, flag|ID_artista, ID_brano|
+|condivisa|<ins>ID_collezionista, ID_collezione</ins>, data_inizio|ID_collezionista, ID_collezione|
+|contiene|<ins>ID_collezione</ins>, <ins>ID_disco</ins>|ID_collezione, ID_disco|
+|appartiene|<ins>ID_artista</ins>, <ins>ID_brano</ins>, flag|ID_artista, ID_brano|
 
 
 ## Progettazione fisica
