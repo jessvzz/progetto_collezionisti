@@ -1,5 +1,6 @@
 USE Collectors;
 
+DELETE FROM collezionista;
 DELETE FROM collezione;
 DELETE FROM artista;
 DELETE FROM disco;
@@ -28,7 +29,7 @@ VALUES(4, "leomasci", "leonardo@icloud.com", "Leonardo", "Masci");
 INSERT INTO `collezionista`
 VALUES(5, "fabdam", "fabio@icloud.com", "Fabio", "D'Andreamatteo");
 
--- collezione(ID, nome, flag, ID_collezionista
+-- collezione(ID, nome, flag, ID_collezionista)
 INSERT INTO `collezione`
 VALUES(1, "cantautori italiani", "privato", 1);
 
@@ -79,27 +80,30 @@ VALUES(2, "10199720152", "Warner Bros");
 INSERT INTO `etichetta`
 VALUES(3, "10199720153", "Sony");
 
--- disco(ID, nome, ID_artista, ID_etichetta, ID_collezionista, anno_uscita)
+-- disco(ID, nome, ID_artista, ID_etichetta, ID_collezionista, ID_collezione, anno_uscita)
 INSERT INTO `disco`
-VALUES(1, "D'amore di morte e di altre sciocchezze", 1, 1, 1, 1996);
+VALUES(1, "D'amore di morte e di altre sciocchezze", 1, 1, 1, 1, 1996);
 
 INSERT INTO `disco`
-VALUES(2, "Disco1", 5, 3, 4, 1995);
+VALUES(2, "Disco1", 5, 3, 4, 5, 1995);
 
 INSERT INTO `disco`
-VALUES(3, "Disco2", 1, 2, 3, 2000);
+VALUES(3, "Disco2", 1, 2, 3, 3, 2000);
 
 INSERT INTO `disco`
-VALUES(4, "Disco3", 6, 1, 2, 1970);
+VALUES(4, "Disco3", 6, 1, 2, 2, 1970);
 
 INSERT INTO `disco`
-VALUES(5, "Disco4", 2, 2, 1, 1990);
+VALUES(5, "Disco4", 2, 2, 1, 1, 1990);
 
 INSERT INTO `disco`
-VALUES(6, "Disco5", 1, 1, 1, 1976);
+VALUES(6, "Disco5", 1, 1, 1, 1, 1976);
 
 INSERT INTO `disco`
-VALUES(7, "Disco7", 1, 3, 4, 1995);
+VALUES(7, "Disco6", 1, 3, 4, 5, 1995);
+
+INSERT INTO `disco`
+VALUES(8, "Disco7", 1, 1, 5, 4, 2000);
 
 -- genere(ID, nome)
 INSERT INTO `genere`
@@ -116,22 +120,25 @@ VALUES(4, "rock");
 
 -- brano(ID, ISRC, durata, titolo, ID_genere, ID_disco)
 INSERT INTO `brano`
-VALUES(1, "IT-D00-07-00111", "5:21", "Vorrei", 1, 1);
+VALUES(1, "IT-D00-07-00111", "00:05:21", "Vorrei", 1, 1);
 
 INSERT INTO `brano`
-VALUES(2, "IT-D00-07-00112", "4:30", "Brano1", 2, 2);
+VALUES(2, "IT-D00-07-00112", "00:04:30", "Brano1", 2, 2);
 
 INSERT INTO `brano`
-VALUES(3, "IT-D00-07-00113", "3:43", "Brano2", 3, 1);
+VALUES(3, "IT-D00-07-00113", "00:03:43", "Brano2", 3, 1);
 
 INSERT INTO `brano`
-VALUES(4, "IT-D00-07-00114", "2:23", "Brano3", 1, 6);
+VALUES(4, "IT-D00-07-00114", "00:02:23", "Brano3", 1, 6);
 
 INSERT INTO `brano`
-VALUES(5, "IT-D00-07-00115", "5:03", "Brano4", 2, 6);
+VALUES(5, "IT-D00-07-00115", "00:05:03", "Brano4", 2, 6);
 
 INSERT INTO `brano`
-VALUES(6, "IT-D00-07-00116", "4:31", "Brano5", 1, 6);
+VALUES(6, "IT-D00-07-00116", "00:04:31", "Brano5", 1, 6);
+
+INSERT INTO `brano`
+VALUES(7, "IT-D00-07-00117", "00:02:31", "Brano6", 1, 7);
 
 -- tipo(ID, nome)
 INSERT INTO `tipo`
@@ -165,13 +172,48 @@ INSERT INTO `contiene`
 VALUES(1, 1);
 
 INSERT INTO `contiene`
+VALUES(4, 8);
+
+INSERT INTO `contiene`
+VALUES(4, 7);
+
+INSERT INTO `contiene`
 VALUES(7, 6);
 
 INSERT INTO `contiene`
-VALUES(5, 7);
+VALUES(2, 1);
+
+INSERT INTO `contiene`
+VALUES(2, 2);
+
+INSERT INTO `contiene`
+VALUES(3, 6);
+
+INSERT INTO `contiene`
+VALUES(2, 7);
 
 -- appartiene(ID_artista, ID_brano, flag)
 INSERT INTO `appartiene`
-VALUES(1, 1, "esecutore");
+VALUES(1, 1, "ESECUTORE");
+
+INSERT INTO `appartiene`
+VALUES(1, 2, "ENTRAMBI");
+
+INSERT INTO `appartiene`
+VALUES(1, 3, "ESECUTORE");
+
+INSERT INTO `appartiene`
+VALUES(2, 4, "COMPOSITORE");
+
+INSERT INTO `appartiene`
+VALUES(3, 5, "ESECUTORE");
+
+INSERT INTO `appartiene`
+VALUES(4, 6, "ESECUTORE");
+
+INSERT INTO `appartiene`
+VALUES(4, 7, "COMPOSITORE");
+
+
 
 

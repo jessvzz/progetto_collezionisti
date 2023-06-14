@@ -61,6 +61,7 @@ CREATE TABLE disco(
  ID_artista INTEGER UNSIGNED NOT NULL,
  ID_etichetta INTEGER UNSIGNED NOT NULL,
  ID_collezionista INTEGER UNSIGNED NOT NULL,
+ ID_collezione 	INTEGER UNSIGNED NOT NULL,
  anno_uscita INTEGER UNSIGNED,
  CONSTRAINT disco_artista FOREIGN KEY (ID_artista)
         REFERENCES artista (ID)
@@ -70,6 +71,9 @@ CREATE TABLE disco(
         ON DELETE RESTRICT ON UPDATE CASCADE,
 CONSTRAINT disco_collezionista FOREIGN KEY (ID_collezionista)
         REFERENCES collezionista (ID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+CONSTRAINT disco_collezione FOREIGN KEY (ID_collezione)
+        REFERENCES collezione (ID)
         ON DELETE RESTRICT ON UPDATE CASCADE
 	);
     
@@ -81,7 +85,7 @@ CREATE TABLE genere(
 CREATE TABLE brano( 
  ID INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
  ISRC VARCHAR(100) NOT NULL UNIQUE,
- durata VARCHAR(100),
+ durata TIME,
  titolo VARCHAR(100),
  ID_genere INTEGER UNSIGNED NOT NULL,
  ID_disco INTEGER UNSIGNED NOT NULL,
@@ -152,7 +156,7 @@ CREATE TABLE contiene(
  CREATE TABLE appartiene(
   ID_artista INTEGER UNSIGNED NOT NULL,
   ID_brano INTEGER UNSIGNED NOT NULL,
-  flag ENUM("esecutore","compositore"),
+  flag ENUM("ESECUTORE","COMPOSITORE","ENTRAMBI"),
   PRIMARY KEY (ID_artista , ID_brano),
 	CONSTRAINT appartiene_artista FOREIGN KEY (ID_artista)
 		REFERENCES artista (ID)
