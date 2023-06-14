@@ -1,13 +1,11 @@
-DROP PROCEDURE IF EXISTS conta_collezioniXcollezionista;
+DROP PROCEDURE IF EXISTS conta_collezioni_per_collezionista;
 DELIMITER $$
-CREATE PROCEDURE conta_collezioniXcollezionista(ID_coll INTEGER)
-
+CREATE PROCEDURE conta_collezioni_per_collezionista()
 BEGIN
-    DECLARE collezioni_count INT;
-    SELECT COUNT(c.ID) INTO collezioni_count FROM collezione c
-    WHERE c.ID_collezionista = ID_coll;
-    SELECT collezioni_count;
+    SELECT c.ID_collezionista, COUNT(*) AS numero_collezioni
+    FROM collezione c
+    GROUP BY ID_collezionista;
 END $$
 DELIMITER ;
 
-CALL conta_collezioniXcollezionista(1);
+CALL conta_collezioni_per_collezionista();
