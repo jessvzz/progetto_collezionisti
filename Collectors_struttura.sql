@@ -12,7 +12,6 @@ DROP TABLE IF EXISTS copia;
 DROP TABLE IF EXISTS etichetta;
 DROP TABLE IF EXISTS immagine;
 DROP TABLE IF EXISTS condivisa;
-DROP TABLE IF EXISTS contiene;
 DROP TABLE IF EXISTS quantizza;
 DROP TABLE IF EXISTS appartiene;
 DROP TABLE IF EXISTS genere;
@@ -140,19 +139,7 @@ CREATE TABLE condivisa(
 		REFERENCES collezionista (ID)
         ON DELETE RESTRICT ON UPDATE CASCADE
 	);
-    
-CREATE TABLE contiene(
- ID_collezione INTEGER UNSIGNED NOT NULL,
- ID_disco INTEGER UNSIGNED NOT NULL,
- PRIMARY KEY (ID_disco , ID_collezione),
-	CONSTRAINT contiene_collezione FOREIGN KEY (ID_collezione)
-		REFERENCES collezione (ID)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT contiene_disco FOREIGN KEY (ID_disco)
-		REFERENCES disco (ID)
-        ON DELETE RESTRICT ON UPDATE CASCADE
-	);
- 
+     
  CREATE TABLE appartiene(
   ID_artista INTEGER UNSIGNED NOT NULL,
   ID_brano INTEGER UNSIGNED NOT NULL,

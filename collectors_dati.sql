@@ -9,8 +9,6 @@ DELETE FROM copia;
 DELETE FROM etichetta;
 DELETE FROM immagine;
 DELETE FROM condivisa;
-DELETE FROM condivisa;
-DELETE FROM contiene;
 DELETE FROM appartiene;
 
 -- collezionista(ID, nickname, email, nome, cognome)
@@ -85,7 +83,7 @@ INSERT INTO `disco`
 VALUES(1, "D'amore di morte e di altre sciocchezze", 1, 1, 1, 1, 1996);
 
 INSERT INTO `disco`
-VALUES(2, "Disco1", 5, 3, 4, 5, 1995);
+VALUES(2, "Disco1", 5, 3, 4, 4, 1995);
 
 INSERT INTO `disco`
 VALUES(3, "Disco2", 1, 2, 3, 3, 2000);
@@ -166,31 +164,6 @@ VALUES(2, "BUONO" , 2, 2, "987654321");
 -- condivisa(ID_collezionista, ID_collezione)
 INSERT INTO `condivisa`
 VALUES(2, 1);
-
--- contiene(ID_collezione, ID_disco)
-INSERT INTO `contiene`
-VALUES(1, 1);
-
-INSERT INTO `contiene`
-VALUES(4, 8);
-
-INSERT INTO `contiene`
-VALUES(4, 7);
-
-INSERT INTO `contiene`
-VALUES(7, 6);
-
-INSERT INTO `contiene`
-VALUES(2, 1);
-
-INSERT INTO `contiene`
-VALUES(2, 2);
-
-INSERT INTO `contiene`
-VALUES(3, 6);
-
-INSERT INTO `contiene`
-VALUES(2, 7);
 
 -- appartiene(ID_artista, ID_brano, flag)
 INSERT INTO `appartiene`

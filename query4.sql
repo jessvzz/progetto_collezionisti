@@ -1,8 +1,10 @@
 -- rimozione disco da una collezione
 DROP PROCEDURE IF EXISTS rimozione_disco;
 DELIMITER $$
-	CREATE PROCEDURE rimozione_disco(ID1 INTEGER, ID2 INTEGER)
+	CREATE PROCEDURE rimozione_disco(ID1 INTEGER)
     BEGIN
-    DELETE FROM contiene WHERE ID_collezione = ID1 AND ID_disco = ID2;
+    DELETE FROM disco WHERE ID = ID1;
     END $$
 DELIMITER ;
+
+CALL rimozione_disco(9);
