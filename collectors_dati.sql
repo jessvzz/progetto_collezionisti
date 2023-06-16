@@ -1,16 +1,5 @@
 USE Collectors;
 
-DELETE FROM collezionista;
-DELETE FROM collezione;
-DELETE FROM artista;
-DELETE FROM disco;
-DELETE FROM brano;
-DELETE FROM copia;
-DELETE FROM etichetta;
-DELETE FROM immagine;
-DELETE FROM condivisa;
-DELETE FROM appartiene;
-
 -- collezionista(ID, nickname, email, nome, cognome)
 INSERT INTO `collezionista`
 VALUES(1, "jess_vzz", "geaviozzi@icloud.com", "Gea", "Viozzi"); 
@@ -29,7 +18,7 @@ VALUES(5, "fabdam", "fabio@icloud.com", "Fabio", "D'Andreamatteo");
 
 -- collezione(ID, nome, flag, ID_collezionista)
 INSERT INTO `collezione`
-VALUES(1, "cantautori italiani", "privato", 1);
+VALUES(1, "cantautori italiani", "pubblico", 1);
 
 INSERT INTO `collezione`
 VALUES(2, "dischi rock", "pubblico", 2);
@@ -38,10 +27,10 @@ INSERT INTO `collezione`
 VALUES(3, "in my feels","privato", 3);
 
 INSERT INTO `collezione`
-VALUES(4, "sunday", "pubblico", 5);
+VALUES(4, "sunday", "privato", 5);
 
 INSERT INTO `collezione`
-VALUES(5, "work", "privato", 4);
+VALUES(5, "work", "pubblico", 4);
 
 INSERT INTO `collezione`
 VALUES(6, "collezione1","privato", 3);
@@ -78,31 +67,6 @@ VALUES(2, "10199720152", "Warner Bros");
 INSERT INTO `etichetta`
 VALUES(3, "10199720153", "Sony");
 
--- disco(ID, nome, ID_artista, ID_etichetta, ID_collezionista, ID_collezione, anno_uscita)
-INSERT INTO `disco`
-VALUES(1, "D'amore di morte e di altre sciocchezze", 1, 1, 1, 1, 1996);
-
-INSERT INTO `disco`
-VALUES(2, "Disco1", 5, 3, 4, 4, 1995);
-
-INSERT INTO `disco`
-VALUES(3, "Disco2", 1, 2, 3, 3, 2000);
-
-INSERT INTO `disco`
-VALUES(4, "Disco3", 6, 1, 2, 2, 1970);
-
-INSERT INTO `disco`
-VALUES(5, "Disco4", 2, 2, 1, 1, 1990);
-
-INSERT INTO `disco`
-VALUES(6, "Disco5", 1, 1, 1, 1, 1976);
-
-INSERT INTO `disco`
-VALUES(7, "Disco6", 1, 3, 4, 5, 1995);
-
-INSERT INTO `disco`
-VALUES(8, "Disco7", 1, 1, 5, 4, 2000);
-
 -- genere(ID, nome)
 INSERT INTO `genere`
 VALUES(1, "pop");
@@ -116,27 +80,53 @@ VALUES(3, "metal");
 INSERT INTO `genere`
 VALUES(4, "rock");
 
--- brano(ID, ISRC, durata, titolo, ID_genere, ID_disco)
+-- disco(ID, nome, ID_artista, ID_etichetta, ID_collezionista, ID_genere, anno_uscita)
+INSERT INTO `disco`
+VALUES(1, "D'amore di morte e di altre sciocchezze", 1, 1, 1, 1, 1996);
+
+INSERT INTO `disco`
+VALUES(2, "Disco1", 5, 3, 4, 2, 1995);
+
+INSERT INTO `disco`
+VALUES(3, "Disco2", 1, 2, 3, 3, 2000);
+
+INSERT INTO `disco`
+VALUES(4, "Disco3", 6, 1, 2, 4, 1970);
+
+INSERT INTO `disco`
+VALUES(5, "Disco4", 2, 2, 1, 1, 1990);
+
+INSERT INTO `disco`
+VALUES(6, "Disco5", 1, 1, 1, 2, 1976);
+
+INSERT INTO `disco`
+VALUES(7, "Disco6", 1, 3, 4, 3, 1995);
+
+INSERT INTO `disco`
+VALUES(8, "Disco7", 1, 1, 5, 1, 2000);
+
+
+-- brano(ID, ISRC, durata, titolo, ID_disco)
 INSERT INTO `brano`
-VALUES(1, "IT-D00-07-00111", "00:05:21", "Vorrei", 1, 1);
+VALUES(1, "IT-D00-07-00111", "00:05:21", "Vorrei", 1);
 
 INSERT INTO `brano`
-VALUES(2, "IT-D00-07-00112", "00:04:30", "Brano1", 2, 2);
+VALUES(2, "IT-D00-07-00112", "00:04:30", "Brano1", 2);
 
 INSERT INTO `brano`
-VALUES(3, "IT-D00-07-00113", "00:03:43", "Brano2", 3, 1);
+VALUES(3, "IT-D00-07-00113", "00:03:43", "Brano2", 1);
 
 INSERT INTO `brano`
-VALUES(4, "IT-D00-07-00114", "00:02:23", "Brano3", 1, 6);
+VALUES(4, "IT-D00-07-00114", "00:02:23", "Brano3", 6);
 
 INSERT INTO `brano`
-VALUES(5, "IT-D00-07-00115", "00:05:03", "Brano4", 2, 6);
+VALUES(5, "IT-D00-07-00115", "00:05:03", "Brano4", 6);
 
 INSERT INTO `brano`
-VALUES(6, "IT-D00-07-00116", "00:04:31", "Brano5", 1, 6);
+VALUES(6, "IT-D00-07-00116", "00:04:31", "Brano5", 6);
 
 INSERT INTO `brano`
-VALUES(7, "IT-D00-07-00117", "00:02:31", "Brano6", 1, 7);
+VALUES(7, "IT-D00-07-00117", "00:02:31", "Brano6", 7);
 
 -- tipo(ID, nome)
 INSERT INTO `tipo`
@@ -154,16 +144,38 @@ VALUES (4, "VINILE");
 INSERT INTO `tipo`
 VALUES (5, "DIGITALE");
 
--- copia(ID, stato_di_conservazione, ID_disco, ID_tipo, barcode)
+-- copia(ID, stato_di_conservazione, ID_disco, ID_tipo, ID_collezione, barcode)
 INSERT INTO `copia`
-VALUES(1, "OTTIMO" , 1, 1, "123456789");
+VALUES(1, "OTTIMO" , 1, 1, 1, "123456789");
 
 INSERT INTO `copia`
-VALUES(2, "BUONO" , 2, 2, "987654321");
+VALUES(2, "BUONO" , 2, 3, 4, "123456787");
+
+INSERT INTO `copia`
+VALUES(3, "OTTIMO" , 3, 1, 3, "123456786");
+
+INSERT INTO `copia`
+VALUES(4, "USURATO" , 4, 5, 2, "123456784");
+
+INSERT INTO `copia`
+VALUES(5, "BUONO" , 5, 4, 1, "123456785");
+
+INSERT INTO `copia`
+VALUES(6, "BUONO" , 6, 2, 1, "987654321");
+
+INSERT INTO `copia`
+VALUES(7, "OTTIMO" , 7, 1, 5, "123456783");
+
+INSERT INTO `copia`
+VALUES(8, "OTTIMO" , 8, 3, 4, "123456788");
+
+INSERT INTO `copia`
+VALUES(9, "BUONO" , 8, 1, 4, "223456788");
+
 
 -- condivisa(ID_collezionista, ID_collezione)
 INSERT INTO `condivisa`
-VALUES(2, 1);
+VALUES(2, 4);
 
 -- appartiene(ID_artista, ID_brano, flag)
 INSERT INTO `appartiene`

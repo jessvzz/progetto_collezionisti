@@ -3,7 +3,7 @@ DROP PROCEDURE IF EXISTS rimozione_disco;
 DELIMITER $$
 	CREATE PROCEDURE rimozione_disco(ID1 INTEGER)
     BEGIN
-    DELETE FROM disco WHERE ID = ID1;
+    DELETE FROM copia WHERE ID = ID1;
     END $$
 DELIMITER ;
 

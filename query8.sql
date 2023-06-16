@@ -16,8 +16,9 @@ BEGIN
     SELECT d.ID, d.titolo AS disco_titolo, a.nome_dArte AS artista_nome
     FROM disco d
     JOIN artista a ON d.ID_artista = a.ID
-    WHERE (d.titolo = stringa OR a.nome_dArte = stringa) AND (d.ID_collezione IN(
-		SELECT ID_collezione FROM condivisa WHERE d.ID_collezionista = ID_coll))
+    JOIN copia c ON c.ID_disco = d.ID
+    WHERE (d.titolo = stringa OR a.nome_dArte = stringa) AND (c.ID_collezione IN(
+		SELECT ID_collezione FROM condivisa con WHERE con.ID_collezionista = ID_coll))
     
     
     
@@ -27,7 +28,8 @@ BEGIN
 	SELECT d.ID, d.titolo AS disco_titolo, a.nome_dArte AS artista_nome
     FROM disco d
     JOIN artista a ON d.ID_artista = a.ID
-    WHERE (d.titolo = stringa OR a.nome_dArte = stringa) AND (d.ID_collezione IN(
+    JOIN copia c ON c.ID_disco = d.ID
+    WHERE (d.titolo = stringa OR a.nome_dArte = stringa) AND (c.ID_collezione IN(
                 SELECT ID
                 FROM collezione
                 WHERE stato = 'pubblico'
@@ -39,6 +41,7 @@ BEGIN
 	SELECT d.ID, d.titolo AS disco_titolo, a.nome_dArte AS artista_nome
     FROM disco d
     JOIN artista a ON d.ID_artista = a.ID
+    JOIN copia c ON c.ID_disco = d.ID
     WHERE d.ID IN (
         SELECT ID_disco
         FROM brano b
@@ -51,10 +54,10 @@ BEGIN
     )
     AND (
         d.ID_collezionista = ID_coll
-        OR d.ID_collezione IN(
-		SELECT ID_collezione FROM condivisa WHERE d.ID_collezionista = ID_coll)
+        OR c.ID_collezione IN(
+		SELECT ID_collezione FROM condivisa con WHERE con.ID_collezionista = ID_coll)
         
-        OR d.ID_collezione IN(
+        OR c.ID_collezione IN(
                 SELECT ID
                 FROM collezione
                 WHERE stato = 'pubblico'
@@ -64,4 +67,4 @@ BEGIN
 END $$
 DELIMITER ;
 
-CALL ricerca_dischi("Francesco Guccini", 1);
+CALL ricerca_dischi("Francesco Guccini", 2);

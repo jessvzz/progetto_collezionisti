@@ -3,8 +3,8 @@ DROP PROCEDURE IF EXISTS lista_dischi;
 DELIMITER $$
 	CREATE PROCEDURE lista_dischi(ID1 INTEGER)
     BEGIN
-    SELECT d.titolo FROM disco d
-    WHERE d.ID_collezione = ID1;
+    SELECT c.titolo FROM copia c
+    WHERE c.ID_collezione = ID1;
     END $$
 DELIMITER ;
 
