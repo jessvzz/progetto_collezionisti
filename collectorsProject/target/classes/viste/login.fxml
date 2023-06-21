@@ -14,10 +14,10 @@
 
 <AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.collectors.controller.LoginController">
    <children>
-      <Label layoutX="171.0" layoutY="174.0" text="Username:" />
-      <Label layoutX="175.0" layoutY="231.0" text="Password:" />
-      <TextField fx:id="usernameField" layoutX="280.0" layoutY="169.0" />
-      <PasswordField fx:id="passwordField" layoutX="280.0" layoutY="226.0" />
+      <Label layoutX="171.0" layoutY="174.0" text="Nickname:" />
+      <Label layoutX="175.0" layoutY="231.0" text="Email:" />
+      <TextField fx:id="nicknameField" layoutX="280.0" layoutY="169.0" />
+      <PasswordField fx:id="emailField" layoutX="280.0" layoutY="226.0" />
       <Text layoutX="199.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Collectors" textAlignment="CENTER" wrappingWidth="226.21630859375">
          <font>
             <Font size="36.0" />

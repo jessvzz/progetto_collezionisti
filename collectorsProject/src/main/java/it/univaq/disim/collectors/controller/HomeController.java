@@ -3,6 +3,7 @@ package it.univaq.disim.collectors.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.univaq.disim.collectors.domain.Collector;
 import it.univaq.disim.collectors.view.ViewDispatcher;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -13,13 +14,15 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
-public class HomeController implements Initializable{
+public class HomeController implements Initializable, DataInitializable<Collector>{
 
 	@FXML
 	private Label benvenutoLabel;
 	
 	@FXML
 	private ImageView collectionsImg;
+	
+	private Collector collector;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -29,12 +32,19 @@ public class HomeController implements Initializable{
             @Override
             public void handle(Event event) {
             	ViewDispatcher dispatcher = ViewDispatcher.getInstance();
-        		dispatcher.renderView("collections");
+        		dispatcher.renderView("collections", collector);
                
             }
         });
 	}
 	
+	public void initializeData(Collector collector) {
+
+		benvenutoLabel.setText("Benvenuto " + collector.getName());
+		this.collector = collector;
+
+	}
+
 	
 	
 	

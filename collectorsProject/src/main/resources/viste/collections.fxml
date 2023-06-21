@@ -15,7 +15,7 @@
       <Button fx:id="addButton" mnemonicParsing="false" onAction="#addAction" prefHeight="31.0" prefWidth="146.0" text="Add Collection" />
       <Pane prefHeight="337.0" prefWidth="643.0">
          <children>
-            <TableView fx:id="dogsTableView" prefHeight="337.0" prefWidth="427.0">
+            <TableView fx:id="collectionsTableView" prefHeight="337.0" prefWidth="427.0">
                <columns>
                   <TableColumn fx:id="nameTableColumn" prefWidth="231.0" text="Name" />
                   <TableColumn fx:id="statusTableColumn" minWidth="0.0" prefWidth="124.0" text="Status" />

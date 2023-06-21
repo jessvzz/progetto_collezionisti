@@ -3,25 +3,67 @@ package it.univaq.disim.collectors.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.univaq.disim.collectors.domain.Collection;
+import it.univaq.disim.collectors.domain.Collection.Flag;
+import it.univaq.disim.collectors.domain.Collector;
+import it.univaq.disim.collectors.domain.Couple;
 import it.univaq.disim.collectors.view.ViewDispatcher;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.cell.PropertyValueFactory;
 
-public class MyCollectionsController implements Initializable{
+public class MyCollectionsController implements Initializable, DataInitializable<Collector>{
+	
+	private Collector collector;
+	
+	private ViewDispatcher dispatcher = ViewDispatcher.getInstance();
+	
+	@FXML
+	private TableView<Collection> collectionsTableView;
+	
+	@FXML
+	private TableColumn<Collection, String> nameTableColumn;
+	
+	@FXML
+	private TableColumn<Collection, Flag> statusTableColumn;
+	
+	@FXML
+	private TableColumn<Collection, Button> actionTableColumn;
+	
+	
+	
 	
 	
 	@FXML
 	public void addAction(ActionEvent event) {
-		ViewDispatcher dispatcher = ViewDispatcher.getInstance();
-		dispatcher.renderView("addCollection");
+		dispatcher.renderView("addCollection", collector);
 		
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		
+		nameTableColumn.setCellValueFactory(new PropertyValueFactory<Collection, String>("name"));
+
+		statusTableColumn.setStyle("-fx-alignment: CENTER;");
+		statusTableColumn.setCellValueFactory(new PropertyValueFactory<Collection, Flag>("flag"));
+
+		actionTableColumn.setStyle("-fx-alignment: CENTER;");
+		actionTableColumn.setCellValueFactory((CellDataFeatures<Collection, Button> param) -> {
+			final Button viewButton = new Button("View");
+			viewButton.setStyle(
+					"-fx-background-color:#bacad7; -fx-background-radius: 15px; -fx-text-fill: #5f6569; -fx-font-weight: bold;");
+			viewButton.setOnAction((ActionEvent event) -> {
+				dispatcher.renderView("collection", new Couple<Collection, Collector>(param.getValue(), collector));
+			});
+			return new SimpleObjectProperty<Button>(viewButton);
+		});
+
 	}
 
 }

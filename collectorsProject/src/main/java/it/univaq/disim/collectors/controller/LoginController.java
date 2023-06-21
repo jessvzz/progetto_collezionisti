@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.ResourceBundle;
 
 import it.univaq.disim.collectors.view.ViewDispatcher;
+import it.univaq.disim.collectors.business.BusinessFactory;
+import it.univaq.disim.collectors.business.db.Query_JDBC;
+import it.univaq.disim.collectors.business.db.DatabaseConnectionException;
+import it.univaq.disim.collectors.domain.Collector;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -26,18 +30,21 @@ import javafx.scene.paint.Color;
 
 public class LoginController implements Initializable {
 	
+	private ViewDispatcher dispatcher = ViewDispatcher.getInstance();
+	
+	private Query_JDBC implementation = BusinessFactory.getImplementation();
+	
 	@FXML
 	private Label errorLabel;
 	
 	@FXML
-	
 	private AnchorPane anchor;
 
 	@FXML
-	private TextField usernameField;
+	private TextField nicknameField;
 
 	@FXML
-	private PasswordField passwordField;
+	private PasswordField emailField;
 
 	@FXML
 	private Button loginButton;
@@ -48,8 +55,8 @@ public class LoginController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loginButton.disableProperty().bind(
-				usernameField.textProperty().isEmpty()
-				.or(passwordField.textProperty().isEmpty()));
+				nicknameField.textProperty().isEmpty()
+				.or(emailField.textProperty().isEmpty()));
 		anchor.setBackground(new Background(
 				Collections.singletonList(new BackgroundFill(Color.WHITE, new CornerRadii(500), new Insets(0))),
 				Collections.singletonList(new BackgroundImage(
@@ -61,21 +68,21 @@ public class LoginController implements Initializable {
 	
 	@FXML
 	public void loginAction(ActionEvent event) {
-		if (!("user".equals(usernameField.getText()) &&
-			"user".equals(passwordField.getText()))) {
-			errorLabel.setText("login e/o password non corretti!");
-		} else {
-			ViewDispatcher dispatcher = ViewDispatcher.getInstance();
-			dispatcher.loggedIn();
+		try {
+			Collector collector = implementation.login(nicknameField.getText(), emailField.getText());
+			if (collector == null)
+				throw new DatabaseConnectionException("Wrong nickname or email!");
+				dispatcher.renderHome(collector);
+		} catch (DatabaseConnectionException e) {
+			System.err.println(e.getMessage());
 		}
-		
 	}
 
 	
 	@FXML
 	public void signUpAction(ActionEvent event) {
 		ViewDispatcher dispatcher = ViewDispatcher.getInstance();
-		dispatcher.renderView("signUp");
+		dispatcher.renderView("signUp", null);
 		
 		
 	}

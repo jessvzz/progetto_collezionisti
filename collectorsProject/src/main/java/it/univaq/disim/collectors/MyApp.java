@@ -15,8 +15,11 @@ public class MyApp extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		ViewDispatcher dispatcher = ViewDispatcher.getInstance();
-		dispatcher.loginView(stage);
-	}
+		try {
+		ViewDispatcher.getInstance().login(stage);
+		} catch(Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 
-}
+}}
