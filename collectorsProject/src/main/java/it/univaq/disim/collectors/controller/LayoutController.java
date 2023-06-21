@@ -16,10 +16,11 @@ import javafx.scene.paint.Paint;
 public class LayoutController implements Initializable {
 	private static final MenuElement MENU_HOME = new MenuElement("Home", "home");
 	private static final MenuElement[] MENU_USERS = {
-			new MenuElement("My Collecions", "collections"),
+			new MenuElement("My Collections", "collections"),
 			new MenuElement("Friends' Collections", "friendsCollections"),
 			new MenuElement("Shared Collections", "shared"),
 			new MenuElement("Settings", "settings"),
+			new MenuElement("Search", "search"),
 		 };
 	
 	@FXML

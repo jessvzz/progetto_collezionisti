@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: WHITE;" spacing="10.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.collectors.controller.MyCollectionsController">
+<VBox prefHeight="400.0" prefWidth="663.0" spacing="10.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.collectors.controller.MyCollectionsController">
    <children>
-      <Button fx:id="addButton" mnemonicParsing="false" onAction="#addAction" prefHeight="30.0" prefWidth="115.0" text="Add Collection" />
-      <TableView fx:id="dogsTableView" prefHeight="299.0" prefWidth="580.0">
-         <columns>
-            <TableColumn fx:id="nameTableColumn" prefWidth="220.0" text="Name" />
-            <TableColumn fx:id="statusTableColumn" prefWidth="131.0" text="Satus" />
-            <TableColumn fx:id="actionTableColumn" prefWidth="131.0" text="Manage" />
-         </columns>
-      </TableView>
+      <Button fx:id="addButton" mnemonicParsing="false" onAction="#addAction" prefHeight="31.0" prefWidth="146.0" text="Add Collection" />
+      <Pane prefHeight="337.0" prefWidth="643.0">
+         <children>
+            <TableView fx:id="dogsTableView" prefHeight="337.0" prefWidth="427.0">
+               <columns>
+                  <TableColumn fx:id="nameTableColumn" prefWidth="231.0" text="Name" />
+                  <TableColumn fx:id="statusTableColumn" minWidth="0.0" prefWidth="124.0" text="Status" />
+                  <TableColumn fx:id="actionTableColumn" prefWidth="71.0" text="Manage" />
+               </columns>
+            </TableView>
+         </children>
+      </Pane>
    </children>
    <opaqueInsets>
       <Insets />
