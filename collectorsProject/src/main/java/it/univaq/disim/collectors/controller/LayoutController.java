@@ -43,9 +43,6 @@ public class LayoutController implements Initializable, DataInitializable<Collec
 		this.collector = coll;
 		menuBar.getChildren().addAll(createButton(MENU_HOME));
 		menuBar.getChildren().add(new Separator());
-		for (MenuElement menu : MENU_USERS) {
-			menuBar.getChildren().add(createButton(menu));
-		}
 			
 
 	}

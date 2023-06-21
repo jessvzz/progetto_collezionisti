@@ -28,7 +28,7 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
-public class LoginController implements Initializable {
+public class LoginController<T> implements Initializable, DataInitializable<T> {
 	
 	private ViewDispatcher dispatcher = ViewDispatcher.getInstance();
 	

@@ -26,19 +26,11 @@ public class ViewDispatcher {
 	}
 	
 	public void login(Stage s) {
-		try {		
-			this.stage = s;
-			this.stage.setTitle("Collectors");
-			this.stage.setResizable(false);
-			Parent parent = loadView("login").getView();
-			this.pane = (BorderPane)parent;
-			this.scene = new Scene(parent);
-			this.stage.setScene(this.scene);
-			this.stage.show();
-		}catch(Exception e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
+		this.stage = s;
+		Parent loginView = loadView("login").getView();
+		Scene scene = new Scene(loginView);
+		stage.setScene(scene);
+		stage.show();
 	}
 	
 	public void logout() {
@@ -58,7 +50,7 @@ public class ViewDispatcher {
 			DataInitializable<T> controller = view.getController();
 			controller.initializeData(dato);
 			Parent	p = view.getView();
-			this.pane.setCenter(p);
+			pane.setCenter(p);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(0);
@@ -67,11 +59,13 @@ public class ViewDispatcher {
 	
 	public<T> void renderHome(T dato){
 		try {
-			View<T> homeView = loadView("home");
+			View<T> homeView = loadView("layout");
 			DataInitializable<T> controller = homeView.getController();
 			controller.initializeData(dato);
-			this.pane = (BorderPane) homeView.getView();
-			Scene scene = new Scene(this.pane);
+			pane = (BorderPane) homeView.getView();
+			renderView("home", dato);
+			Scene scene = new Scene(pane);
+			scene.getStylesheets().add(getClass().getResource(PREFIX + "styles.css").toExternalForm());
 			stage.setScene(scene);
 		} catch (Exception e) {
 			e.printStackTrace();
