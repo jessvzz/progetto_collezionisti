@@ -12,9 +12,15 @@ public class Collector {
 		this.nickname = nickname;
 		this.email = email;
 	}
+	
 	public void setId(int id) {this.id = id;}
 	public void setNick(String nickname) {this.nickname = nickname;}
 	public void setEmail(String email) {this.email = email;}
-	public String getName() {return name;}
+	public void setName(String name) {this.name=name;}
 	
+	public int getId() {return id;}
+	public String getNick() {return nickname;}
+	public String getEmail() {return email;}
+	public String getName() {return name;}
+
 }
