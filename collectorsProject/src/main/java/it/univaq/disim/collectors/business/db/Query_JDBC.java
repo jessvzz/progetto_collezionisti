@@ -4,11 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+import it.univaq.disim.collectors.domain.Collection;
+import it.univaq.disim.collectors.domain.Collection.Flag;
 import it.univaq.disim.collectors.domain.Collector;
+import it.univaq.disim.collectors.business.db.DatabaseConnectionException;
 
 
 
@@ -52,6 +56,28 @@ public class Query_JDBC {
 		} catch (SQLException e) {
 			throw new DatabaseConnectionException(e);
 		}
+	}
+	
+	public List<Collection> collectionsOwned(Collector collector) throws DatabaseConnectionException{
+		List<Collection> collections = new ArrayList<>();
+		
+		try (PreparedStatement s = connection
+				.prepareStatement("select * from collezione where ID_collezionista = ?");) {
+			s.setInt(1, collector.getId());
+			try (ResultSet rs = s.executeQuery()) {
+				while (rs.next()) {
+					
+					String flagValue = rs.getString("stato");
+					Flag flag = Flag.valueOf(flagValue);
+					collections.add(new Collection(rs.getInt("ID"), rs.getString("nome"), flag,
+							rs.getInt("ID_collezionista")));
+				}
+			}
+			return collections;
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Login fallito", e);
+		}
+		
 	}
 
 

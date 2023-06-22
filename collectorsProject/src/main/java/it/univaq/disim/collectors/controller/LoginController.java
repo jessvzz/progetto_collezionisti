@@ -44,7 +44,7 @@ public class LoginController<T> implements Initializable, DataInitializable<T> {
 	private TextField nicknameField;
 
 	@FXML
-	private PasswordField emailField;
+	private TextField emailField;
 
 	@FXML
 	private Button loginButton;

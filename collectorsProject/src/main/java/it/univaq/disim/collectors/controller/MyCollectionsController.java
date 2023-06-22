@@ -1,14 +1,20 @@
 package it.univaq.disim.collectors.controller;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import it.univaq.disim.collectors.business.BusinessFactory;
+import it.univaq.disim.collectors.business.db.Query_JDBC;
 import it.univaq.disim.collectors.domain.Collection;
 import it.univaq.disim.collectors.domain.Collection.Flag;
 import it.univaq.disim.collectors.domain.Collector;
 import it.univaq.disim.collectors.domain.Couple;
 import it.univaq.disim.collectors.view.ViewDispatcher;
+import it.univaq.disim.collectors.business.db.DatabaseConnectionException;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,9 +26,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class MyCollectionsController implements Initializable, DataInitializable<Collector>{
 	
-	private Collector collector;
-	
 	private ViewDispatcher dispatcher = ViewDispatcher.getInstance();
+	private Query_JDBC implementation = BusinessFactory.getImplementation();
+
+	private Collector collector;
+	private ObservableList<Collection> collectionsData;
 	
 	@FXML
 	private TableView<Collection> collectionsTableView;
@@ -65,5 +73,22 @@ public class MyCollectionsController implements Initializable, DataInitializable
 		});
 
 	}
+	
+	
+	public void initializeData(Collector collector) {
+
+		this.collector = collector;
+
+		try {
+
+			List<Collection> collections = implementation.collectionsOwned(collector);
+			collectionsData = FXCollections.observableArrayList(collections);
+			collectionsTableView.setItems((ObservableList<Collection>) collectionsData);
+
+		} catch (DatabaseConnectionException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
 
 }
