@@ -41,8 +41,6 @@ public class LayoutController implements Initializable, DataInitializable<Collec
 	@Override
 	public void initializeData(Collector coll) {
 		this.collector = coll;
-		menuBar.getChildren().addAll(createButton(MENU_HOME));
-		menuBar.getChildren().add(new Separator());
 			
 
 	}
