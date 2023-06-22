@@ -20,5 +20,9 @@ public class DBImplementation {
 	public Query_JDBC getImplementation() {
 		return queryModule;
 		}
+	
+	public ConnectJDBC getConnection() {
+		return connection;
+	}
 
 }

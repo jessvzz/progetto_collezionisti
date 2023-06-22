@@ -1,5 +1,7 @@
 package it.univaq.disim.collectors;
 
+import it.univaq.disim.collectors.business.db.DBImplementation;
+import it.univaq.disim.collectors.business.db.DatabaseConnectionException;
 import it.univaq.disim.collectors.view.ViewDispatcher;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class MyApp extends Application {
+	private static DBImplementation dbImplementation;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -15,11 +18,18 @@ public class MyApp extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		try {
-		ViewDispatcher.getInstance().login(stage);
-		} catch(Exception e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
+		dbImplementation = new DBImplementation();
 
-}}
+        // Avvia l'applicazione
+        ViewDispatcher.getInstance().login(stage);
+
+        // Quando l'applicazione viene chiusa, disconnetti il database
+        stage.setOnCloseRequest(event -> {
+            try {
+                dbImplementation.getConnection().disconnect();
+            } catch (DatabaseConnectionException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+}
