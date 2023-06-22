@@ -34,9 +34,9 @@ BEGIN
                 FROM collezione
                 WHERE stato = 'pubblico'
             )
-        )
+        );
     
-    UNION DISTINCT
+    /*UNION DISTINCT
     
 	SELECT d.ID, d.titolo AS disco_titolo, a.nome_dArte AS artista_nome
     FROM disco d
@@ -63,7 +63,7 @@ BEGIN
                 WHERE stato = 'pubblico'
             )
     );
-		   
+		   */
 END $$
 DELIMITER ;
 
