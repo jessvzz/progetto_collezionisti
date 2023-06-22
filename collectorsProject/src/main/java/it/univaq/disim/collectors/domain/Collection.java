@@ -8,7 +8,7 @@ public class Collection {
 	
 	
 	public enum Flag{
-		PUBBLICO, PRIVATO;
+		pubblico, privato;
 	}
 	
 	public Collection(int id, String name, Flag flag, int collector) {
