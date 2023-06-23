@@ -11,22 +11,20 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="663.0" spacing="10.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.collectors.controller.CollectionController">
+<VBox prefHeight="400.0" prefWidth="663.0" spacing="10.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.collectors.controller.SharedCollectionController">
    <children>
       <Label fx:id="nameLabel" prefHeight="21.0" prefWidth="225.0">
          <font>
             <Font name="Impact" size="24.0" />
          </font>
       </Label>
-      <Button fx:id="addButton" mnemonicParsing="false" onAction="#addAction" prefHeight="31.0" prefWidth="146.0" text="Add Disk" />
       <Pane prefHeight="261.0" prefWidth="643.0">
          <children>
-            <TableView fx:id="disksTableView" layoutY="14.0" prefHeight="279.0" prefWidth="447.0">
+            <TableView fx:id="disksTableView" layoutY="14.0" prefHeight="330.0" prefWidth="447.0">
                <columns>
                   <TableColumn fx:id="nameTableColumn" prefWidth="112.0" text="Name" />
-                  <TableColumn fx:id="authorTableColumn" prefWidth="206.0" text="Author" />
-                  <TableColumn fx:id="editTableColumn" prefWidth="55.0" text="Edit" />
-                  <TableColumn fx:id="actionTableColumn" prefWidth="73.0" text="Manage" />
+                  <TableColumn fx:id="authorTableColumn" prefWidth="262.0" text="Author" />
+                  <TableColumn fx:id="actionTableColumn" prefWidth="71.0" text="Manage" />
                </columns>
             </TableView>
          </children>

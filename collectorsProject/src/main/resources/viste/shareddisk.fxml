@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.collectors.controller.SharedDiskController">
+   <children>
+      <HBox prefHeight="41.0" prefWidth="634.0">
+         <children>
+            <Label fx:id="label" prefHeight="41.0" prefWidth="649.0" textFill="#e8b1e3">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Impact" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox prefHeight="438.0" prefWidth="634.0">
+         <children>
+            <VBox prefHeight="438.0" prefWidth="468.0">
+               <children>
+                  <VBox fx:id="informationsVBox" prefHeight="319.0" prefWidth="466.0">
+                     <children>
+                        <Label fx:id="nameLabel" contentDisplay="CENTER" prefHeight="24.0" prefWidth="482.0" wrapText="true">
+                           <VBox.margin>
+                              <Insets left="4.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox>
+                           <VBox.margin>
+                              <Insets left="4.0" />
+                           </VBox.margin>
+                           <children>
+                              <Label prefHeight="18.0" prefWidth="402.0" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="20.0" prefWidth="42.0">
+                           <VBox.margin>
+                              <Insets left="4.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <Label fx:id="genreLabel" prefHeight="21.0" prefWidth="250.0" text=" Genre:" />
+                        <Label fx:id="yearLabel" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="14.0" layoutY="56.0" prefHeight="20.0" prefWidth="452.0" text="Year:" wrapText="true">
+                           <VBox.margin>
+                              <Insets left="5.0" top="3.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="stateLabel" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="15.0" layoutY="77.0" prefHeight="20.0" prefWidth="452.0" text=" State:" wrapText="true" />
+                        <Label fx:id="formatLabel" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="10.0" layoutY="97.0" prefHeight="20.0" prefWidth="452.0" text=" Format:" wrapText="true" />
+                        <Label fx:id="barcodeLabel" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="10.0" layoutY="117.0" prefHeight="20.0" prefWidth="452.0" text=" Barcode:" wrapText="true" />
+                        <Label fx:id="artistLabel" prefHeight="21.0" prefWidth="241.0" text=" Artist:" />
+                        <Label fx:id="labelLabel" prefHeight="21.0" prefWidth="157.0" text=" Label:" />
+                        <HBox prefHeight="30.0" prefWidth="466.0">
+                           <children>
+                              <HBox prefHeight="30.0" prefWidth="153.0">
+                                 <children>
+                                    <Label fx:id="tracksLabel" prefHeight="30.0" prefWidth="141.0" text=" Tracks:" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <Pane prefHeight="130.0" prefWidth="612.0">
+                           <children>
+                              <TableView layoutX="6.0" layoutY="22.0" prefHeight="195.0" prefWidth="622.0">
+                                <columns>
+                                  <TableColumn fx:id="titleColumn" prefWidth="478.0" text="Title" />
+                                  <TableColumn fx:id="ISRCColumn" prefWidth="81.0" text="ISRC" />
+                                    <TableColumn fx:id="TimeColumn" prefWidth="62.0" text="Time" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <Pane prefHeight="170.0" prefWidth="182.0" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
