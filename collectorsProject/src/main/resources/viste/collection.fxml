@@ -21,10 +21,9 @@
       <Button fx:id="addButton" mnemonicParsing="false" onAction="#addAction" prefHeight="31.0" prefWidth="146.0" text="Add Disk" />
       <Pane prefHeight="261.0" prefWidth="643.0">
          <children>
-            <TableView fx:id="disksTableView" layoutY="14.0" prefHeight="279.0" prefWidth="447.0">
+            <TableView fx:id="disksTableView" layoutY="14.0" prefHeight="279.0" prefWidth="333.0">
                <columns>
-                  <TableColumn fx:id="nameTableColumn" prefWidth="112.0" text="Name" />
-                  <TableColumn fx:id="authorTableColumn" prefWidth="206.0" text="Author" />
+                  <TableColumn fx:id="nameTableColumn" prefWidth="205.0" text="Name" />
                   <TableColumn fx:id="editTableColumn" prefWidth="55.0" text="Edit" />
                   <TableColumn fx:id="actionTableColumn" prefWidth="73.0" text="Manage" />
                </columns>
