@@ -12,9 +12,9 @@ public class Type {
 	}
 	
 	public void setId(int id) {this.id=id;}
-	public void setType(String name) {this.name=name;}
+	public void setName(String name) {this.name=name;}
 	
 	public int getId() {return id;}
-	public String getType() {return name;}
+	public String getName() {return name;}
 
 }

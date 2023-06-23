@@ -13,9 +13,12 @@ import java.util.logging.Logger;
 import it.univaq.disim.collectors.domain.Artist;
 import it.univaq.disim.collectors.domain.Collection;
 import it.univaq.disim.collectors.domain.Collection.Flag;
+import it.univaq.disim.collectors.domain.Track;
 import it.univaq.disim.collectors.domain.Collector;
 import it.univaq.disim.collectors.domain.Disk;
 import it.univaq.disim.collectors.domain.Etichetta;
+import it.univaq.disim.collectors.domain.Genre;
+import it.univaq.disim.collectors.domain.Type;
 import it.univaq.disim.collectors.business.db.DatabaseConnectionException;
 
 
@@ -69,6 +72,7 @@ public class Query_JDBC {
 			s.setInt(1, id);
 			try(ResultSet rs = s.executeQuery()){
 				while(rs.next()) {
+					// System.out.println(id + rs.getString("p_iva"));
 					label = new Etichetta(id,Integer.parseInt(rs.getString("p_iva")), rs.getString("nome"));
 							
 				}
@@ -92,6 +96,38 @@ public class Query_JDBC {
 		} catch (SQLException e1) {
 			throw new DatabaseConnectionException("Etichetta non esistente");
 		} return artist;
+	}
+	
+	public Genre findGenreById(int id) throws DatabaseConnectionException{
+		Genre genre = null;
+		try(PreparedStatement s = connection
+				.prepareStatement("select *"+"from genere"+"where ID=?;");){
+			s.setInt(1, id);
+			try(ResultSet rs = s.executeQuery()){
+				while(rs.next()) {
+					genre = new Genre(id, rs.getString("nome"));
+							
+				}
+			} 
+		} catch (SQLException e1) {
+			throw new DatabaseConnectionException("Etichetta non esistente");
+		} return genre;
+	}
+	
+	public Type findTypeById(int id) throws DatabaseConnectionException{
+		Type type = null;
+		try(PreparedStatement s = connection
+				.prepareStatement("select *"+"from tipo"+"where ID=?;");){
+			s.setInt(1, id);
+			try(ResultSet rs = s.executeQuery()){
+				while(rs.next()) {
+					type = new Type(id, rs.getString("nome"));
+							
+				}
+			} 
+		} catch (SQLException e1) {
+			throw new DatabaseConnectionException("Etichetta non esistente");
+		} return type;
 	}
 	
 	
@@ -141,5 +177,27 @@ public class Query_JDBC {
 			throw new DatabaseConnectionException("Selezione Dei dischi Fallita", e);
 		}
 	}
+	
+	//Query 7
+	public List<Track> getTracksByDisk(Integer id) throws DatabaseConnectionException {
+		List<Track> tracks = new ArrayList<Track>();
+		try (CallableStatement query = connection.prepareCall("{call tracklist(?)}");) {
+			query.setInt(1, id);
+			ResultSet result = query.executeQuery();
+
+			while (result.next()) {
+				Track track = new Track(result.getInt("ID"), result.getString("ISRC"), result.getFloat("durata"),
+						result.getString("titolo"), id);
+				tracks.add(track);
+			}
+
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Inserimento fallito", e);
+	}
+
+	return tracks;
+		
+	}
+	
 
 }

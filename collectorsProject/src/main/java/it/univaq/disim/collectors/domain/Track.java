@@ -7,9 +7,9 @@ public class Track {
 	private String ISRC;
 	private Float time;
 	private String title;
-	private Disk disk;
+	private Integer disk;
 	
-	public Track(int id, String ISRC, Float time, String title, Disk disk) {
+	public Track(int id, String ISRC, Float time, String title, Integer disk) {
 		this.id = id;
 		this.ISRC = ISRC;
 		this.time = time;
@@ -21,12 +21,12 @@ public class Track {
 	public void setISRC(String ISRC) {this.ISRC=ISRC;}
 	public void setTime(Float time) {this.time=time;}
 	public void setTitle(String title) {this.title=title;}
-	public void setDisk(Disk disk) {this.disk = disk;}
+	public void setDisk(Integer disk) {this.disk = disk;}
 	
 	public int getId() {return id;}
 	public String getISRC() {return ISRC;}
 	public Float getTime() {return time;}
 	public String getTitle() {return title;}
-	public Disk getDisk() {return disk;}
+	public Integer getDisk() {return disk;}
 
 }
