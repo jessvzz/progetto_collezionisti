@@ -64,7 +64,7 @@ public class DiskController implements Initializable, DataInitializable<Triple<C
 		this.disk = obj.getThird();
 		try {
 			Etichetta etichetta = implementation.findLabelById(disk.getLabel());
-			label.setText(disk.getTitle());
+			label.setText(disk.getTitolo());
 			labelLabel.setText(etichetta.getName());
 			yearLabel.setText(Integer.toString(disk.getYear()));
 			artistLabel.setText(implementation.findArtistById(disk.getArtist()).getStagename());

@@ -21,7 +21,7 @@
       <Button fx:id="addButton" mnemonicParsing="false" onAction="#addAction" prefHeight="31.0" prefWidth="146.0" text="Add Disk" />
       <Pane prefHeight="261.0" prefWidth="643.0">
          <children>
-            <TableView fx:id="dogsTableView" layoutY="14.0" prefHeight="279.0" prefWidth="643.0">
+            <TableView fx:id="disksTableView" layoutY="14.0" prefHeight="279.0" prefWidth="643.0">
                <columns>
                   <TableColumn fx:id="nameTableColumn" prefWidth="100.0" text="Name" />
                   <TableColumn prefWidth="383.0" text="Author" />

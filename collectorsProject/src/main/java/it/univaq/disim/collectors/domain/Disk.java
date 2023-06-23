@@ -23,7 +23,7 @@ public class Disk {
 	}
 	
 	public void setId(int id) {this.id = id;}
-	public void setTitle(String titolo) {this.titolo = titolo;}
+	public void setTitolo(String titolo) {this.titolo = titolo;}
 	public void setYear(int anno) {this.anno = anno;}
 	public void setArtist(int artist) {this.artist = artist;}
 	public void setLabel(int label) {this.label = label;}
@@ -31,7 +31,7 @@ public class Disk {
 	public void setGenre(int genre) {this.genre = genre;}
 	
 	public int getId() {return id;}
-	public String getTitle() {return titolo;}
+	public String getTitolo() {return titolo;}
 	public int getYear() {return anno;}
 	public int getArtist() {return artist;}
 	public int getLabel() {return label;}

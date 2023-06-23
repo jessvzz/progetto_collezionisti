@@ -49,6 +49,9 @@ public class CollectionController implements Initializable, DataInitializable<Co
 
 	@FXML
 	private TableColumn<Disk, Button> actionTableColumn;
+	
+	@FXML
+	private TableColumn<Disk, Button> editTableColumn;
 
 
 
@@ -65,6 +68,15 @@ public class CollectionController implements Initializable, DataInitializable<Co
 						new Triple<Collector, Collection, Disk>(collector, collection, param.getValue()));
 			});
 			return new SimpleObjectProperty<Button>(viewButton);
+		});
+		editTableColumn.setStyle("-fx-alignment: CENTER;");
+		editTableColumn.setCellValueFactory((CellDataFeatures<Disk, Button> param) -> {
+			final Button editButton = new Button("Edit");
+			editButton.setOnAction((ActionEvent event) -> {
+				dispatcher.renderView("addDisk",
+						new Triple<Collector, Collection, Disk>(collector, collection, param.getValue()));
+			});
+			return new SimpleObjectProperty<Button>(editButton);
 		});
 
 
@@ -88,6 +100,13 @@ public class CollectionController implements Initializable, DataInitializable<Co
 			e.printStackTrace();
 		}
 	}
+	
+	@FXML
+	public void addAction() {
+		dispatcher.renderView("addDisk", collection);
+	}
+	
+	
 
 
 }

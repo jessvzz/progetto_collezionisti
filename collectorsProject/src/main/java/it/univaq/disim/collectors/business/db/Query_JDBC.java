@@ -133,7 +133,7 @@ public class Query_JDBC {
 			while (result.next()) {
 				Disk disk = new Disk(result.getInt("ID"), result.getString("titolo"),
 						result.getInt("anno_uscita"), result.getInt("ID_artista"),
-						result.getInt("ID_etichetta"), result.getInt("ID_collector"), result.getInt("ID_genre"));
+						result.getInt("ID_etichetta"), result.getInt("ID_collezionista"), result.getInt("ID_genere"));
 				disks.add(disk);
 			}
 			return disks;
