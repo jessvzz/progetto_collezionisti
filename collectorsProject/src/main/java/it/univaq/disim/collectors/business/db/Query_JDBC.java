@@ -1,5 +1,6 @@
 package it.univaq.disim.collectors.business.db;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,9 +10,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import it.univaq.disim.collectors.domain.Artist;
 import it.univaq.disim.collectors.domain.Collection;
 import it.univaq.disim.collectors.domain.Collection.Flag;
 import it.univaq.disim.collectors.domain.Collector;
+import it.univaq.disim.collectors.domain.Disk;
+import it.univaq.disim.collectors.domain.Etichetta;
 import it.univaq.disim.collectors.business.db.DatabaseConnectionException;
 
 
@@ -58,6 +62,40 @@ public class Query_JDBC {
 		}
 	}
 	
+	public Etichetta findLabelById(int id) throws DatabaseConnectionException{
+		Etichetta label = null;
+		try(PreparedStatement s = connection
+				.prepareStatement("select *"+"from etichetta"+"where ID=?;");){
+			s.setInt(1, id);
+			try(ResultSet rs = s.executeQuery()){
+				while(rs.next()) {
+					label = new Etichetta(id,Integer.parseInt(rs.getString("p_iva")), rs.getString("nome"));
+							
+				}
+			} 
+		} catch (SQLException e1) {
+			throw new DatabaseConnectionException("Etichetta non esistente");
+		} return label;
+	}
+	
+	public Artist findArtistById(int id) throws DatabaseConnectionException{
+		Artist artist = null;
+		try(PreparedStatement s = connection
+				.prepareStatement("select *"+"from artista"+"where ID=?;");){
+			s.setInt(1, id);
+			try(ResultSet rs = s.executeQuery()){
+				while(rs.next()) {
+					artist = new Artist(id, rs.getString("nome_dArte"));
+							
+				}
+			} 
+		} catch (SQLException e1) {
+			throw new DatabaseConnectionException("Etichetta non esistente");
+		} return artist;
+	}
+	
+	
+	
 	public List<Collection> collectionsOwned(Collector collector) throws DatabaseConnectionException{
 		List<Collection> collections = new ArrayList<>();
 		
@@ -79,6 +117,29 @@ public class Query_JDBC {
 		}
 		
 	}
+/* ----------- *          
+ *   QUERIES   *
+ * ----------- *
+ */
+	
 
+	//Query 6
+	public ArrayList<Disk> getDisksInCollection(Integer idCollection) throws DatabaseConnectionException {
+	
+		try (CallableStatement query = connection.prepareCall("{call lista_dischi(?)}");) {
+			query.setInt(1, idCollection);
+			ResultSet result = query.executeQuery();
+			ArrayList<Disk> disks = new ArrayList<Disk>();
+			while (result.next()) {
+				Disk disk = new Disk(result.getInt("ID"), result.getString("titolo"),
+						result.getInt("anno_uscita"), result.getInt("ID_artista"),
+						result.getInt("ID_etichetta"), result.getInt("ID_collector"), result.getInt("ID_genre"));
+				disks.add(disk);
+			}
+			return disks;
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Selezione Dei dischi Fallita", e);
+		}
+	}
 
 }
