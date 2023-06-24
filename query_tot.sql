@@ -13,10 +13,12 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS inserimento_disco;
 DELIMITER $$
-	CREATE PROCEDURE inserimento_disco(nome VARCHAR(100), ID_artista INTEGER, ID_etichetta INTEGER, ID_collezionista INTEGER, ID_collezione INTEGER, anno_uscita INTEGER)
+	CREATE PROCEDURE inserimento_disco(barcode VARCHAR(100), stato_di_conservazione ENUM("OTTIMO","BUONO","USURATO"), titolo VARCHAR(100), 
+									   ID_artista INTEGER, ID_etichetta INTEGER, ID_collezionista INTEGER, ID_collezione INTEGER, 
+                                       ID_genere INTEGER, ID_tipo INTEGER, anno_uscita INTEGER)
     BEGIN
     INSERT INTO disco
-    VALUES(ID, nome, ID_artista, ID_etichetta, ID_collezionista, ID_collezione, anno_uscita);
+    VALUES(ID, barcode, stato_di_conservazione, titolo, ID_artista, ID_etichetta, ID_collezionista, ID_collezione, ID_genere, ID_tipo, anno_uscita);
     END $$
 DELIMITER ;
 
@@ -24,10 +26,10 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS inserimento_traccia;
 DELIMITER $$
-	CREATE PROCEDURE inserimento_traccia(ID_disco INTEGER, ISRC VARCHAR(100), durata VARCHAR(100), titolo VARCHAR(100), ID_genere INTEGER)
+	CREATE PROCEDURE inserimento_traccia(ISRC VARCHAR(100), durata VARCHAR(100), titolo VARCHAR(100), ID_disco INTEGER)
     BEGIN
-    INSERT INTO brano(ID_disco, ISRC, durata, titolo, ID_genere)
-    VALUES(ID_disco, ISRC, durata, titolo, ID_genere);
+    INSERT INTO brano(ISRC, durata, titolo, ID_disco)
+    VALUES(ISRC, durata, titolo, ID_disco);
     END $$
 DELIMITER ;
 
@@ -61,7 +63,7 @@ DROP PROCEDURE IF EXISTS rimozione_disco;
 DELIMITER $$
 	CREATE PROCEDURE rimozione_disco(ID1 INTEGER)
     BEGIN
-    DELETE FROM copia WHERE ID = ID1;
+    DELETE FROM disco WHERE ID = ID1;
     END $$
 DELIMITER ;
 
@@ -81,9 +83,9 @@ DROP PROCEDURE IF EXISTS lista_dischi;
 DELIMITER $$
 	CREATE PROCEDURE lista_dischi(ID1 INTEGER)
     BEGIN
-    SELECT d.ID, d.titolo, d.ID_artista, d.ID_etichetta, d.ID_collezionista, d.ID_genere, d.anno_uscita, c.stato_di_conservazione, c.ID_tipo, c.barcode FROM disco d
-     JOIN copia c ON(c.ID_disco = d.ID)
-    WHERE c.ID_collezione = ID1;
+    SELECT d.ID, d.titolo, d.ID_artista, d.ID_etichetta, d.ID_collezionista, d.ID_genere, 
+		   d.anno_uscita, d.stato_di_conservazione, d.ID_tipo, d.barcode FROM disco d
+    WHERE d.ID_collezione = ID1;
     END $$
 DELIMITER ;
 
@@ -169,8 +171,7 @@ CREATE TEMPORARY TABLE ric2 AS
 		SELECT DISTINCT d.ID, d.titolo AS disco_titolo, a.nome_dArte AS artista_nome 
 		FROM disco d
 		JOIN artista a ON d.ID_artista = a.ID
-		JOIN copia c ON c.ID_disco = d.ID
-		WHERE (d.titolo = stringa OR a.nome_dArte = stringa) AND (c.ID_collezione IN(
+		WHERE (d.titolo = stringa OR a.nome_dArte = stringa) AND (d.ID_collezione IN(
 			SELECT ID_collezione FROM condivisa con WHERE con.ID_collezionista = ID_coll));
 END $$
 DELIMITER ;
@@ -184,8 +185,7 @@ CREATE TEMPORARY TABLE ric3 AS
 		SELECT DISTINCT d.ID, d.titolo AS disco_titolo, a.nome_dArte AS artista_nome
 			FROM disco d
 			JOIN artista a ON d.ID_artista = a.ID
-			JOIN copia c ON c.ID_disco = d.ID
-			WHERE (d.titolo = stringa OR a.nome_dArte = stringa) AND (c.ID_collezione IN(
+			WHERE (d.titolo = stringa OR a.nome_dArte = stringa) AND (d.ID_collezione IN(
 					SELECT ID
 					FROM collezione
 					WHERE stato = 'pubblico'
@@ -228,8 +228,7 @@ BEGIN
     SELECT COUNT(b.ID) INTO brani_count FROM brano b
 		JOIN appartiene a ON (a.ID_brano = b.ID)
         JOIN disco d ON (d.ID = b.ID_disco)
-        JOIN copia cop ON (cop.ID_disco = d.ID)
-        JOIN collezione c ON (c.ID = cop.ID_collezione)
+        JOIN collezione c ON (c.ID = d.ID_collezione)
     WHERE a.ID_artista = autore_id AND c.stato = "pubblico";
     SELECT brani_count;
 END $$
@@ -246,8 +245,7 @@ BEGIN
     SELECT SUM(TIME_TO_SEC(b.durata)) INTO minuti_count FROM brano b
 		JOIN appartiene a ON (a.ID_brano = b.ID)
         JOIN disco d ON (d.ID = b.ID_disco)
-        JOIN copia cop ON (cop.ID_disco = d.ID)
-        JOIN collezione c ON (c.ID = cop.ID_collezione)
+        JOIN collezione c ON (c.ID = d.ID_collezione)
     WHERE a.ID_artista = autore_id AND c.stato = 'pubblico';
     SELECT SEC_TO_TIME(minuti_count) AS minuti_totali;
 END $$
@@ -273,7 +271,6 @@ CREATE PROCEDURE conta_dischi_per_genere()
 BEGIN
     SELECT g.nome, COUNT(*) AS numero_dischi
     FROM disco d
-    JOIN copia c ON (c.ID_disco = d.ID)
     JOIN genere g ON (g.ID = d.ID_genere)
     GROUP BY ID_genere;
 END $$
@@ -290,5 +287,29 @@ BEGIN
     SELECT COUNT(c.ID) INTO collezioni_count FROM collezione c
     WHERE c.ID_collezionista = ID_coll;
     SELECT collezioni_count;
+END $$
+DELIMITER ;
+
+/* Funzione per contare le copie di un disco di un collezionista */
+DROP FUNCTION IF EXISTS conta_copie;
+
+DELIMITER $$
+CREATE FUNCTION conta_copie(ID_disco INTEGER)
+RETURNS INTEGER UNSIGNED DETERMINISTIC
+BEGIN
+    DECLARE numero_copie INTEGER UNSIGNED;
+    DECLARE disco_titolo VARCHAR(255);
+    DECLARE disco_artista INTEGER;
+    DECLARE disco_collezionista INTEGER;
+    
+    SELECT titolo, ID_artista, ID_collezionista INTO disco_titolo, disco_artista, disco_collezionista
+    FROM disco WHERE ID = ID_disco;
+    
+    SET numero_copie = (
+        SELECT COUNT(DISTINCT disc.ID) FROM disco disc  
+        WHERE disc.ID_artista = disco_artista AND disc.titolo = disco_titolo AND disc.ID_collezionista = disco_collezionista
+    );
+    
+    RETURN numero_copie;
 END $$
 DELIMITER ;

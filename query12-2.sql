@@ -4,7 +4,6 @@ CREATE PROCEDURE conta_dischi_per_genere()
 BEGIN
     SELECT g.nome, COUNT(*) AS numero_dischi
     FROM disco d
-    JOIN copia c ON (c.ID_disco = d.ID)
     JOIN genere g ON (g.ID = d.ID_genere)
     GROUP BY ID_genere;
 END $$

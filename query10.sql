@@ -7,8 +7,7 @@ BEGIN
     SELECT COUNT(b.ID) INTO brani_count FROM brano b
 		JOIN appartiene a ON (a.ID_brano = b.ID)
         JOIN disco d ON (d.ID = b.ID_disco)
-        JOIN copia cop ON (cop.ID_disco = d.ID)
-        JOIN collezione c ON (c.ID = cop.ID_collezione)
+        JOIN collezione c ON (c.ID = d.ID_collezione)
     WHERE a.ID_artista = autore_id AND c.stato = "pubblico";
     SELECT brani_count;
 END $$
