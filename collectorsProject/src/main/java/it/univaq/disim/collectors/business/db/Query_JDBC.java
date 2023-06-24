@@ -16,6 +16,7 @@ import it.univaq.disim.collectors.domain.Collection.Flag;
 import it.univaq.disim.collectors.domain.Track;
 import it.univaq.disim.collectors.domain.Collector;
 import it.univaq.disim.collectors.domain.Disk;
+import it.univaq.disim.collectors.domain.Disk.State;
 import it.univaq.disim.collectors.domain.Etichetta;
 import it.univaq.disim.collectors.domain.Genre;
 import it.univaq.disim.collectors.domain.Type;
@@ -68,12 +69,12 @@ public class Query_JDBC {
 	public Etichetta findLabelById(int id) throws DatabaseConnectionException{
 		Etichetta label = null;
 		try(PreparedStatement s = connection
-				.prepareStatement("select *"+"from etichetta"+"where ID=?;");){
+				.prepareStatement("select * "+"from etichetta "+"where ID=?;");){
 			s.setInt(1, id);
 			try(ResultSet rs = s.executeQuery()){
 				while(rs.next()) {
 					// System.out.println(id + rs.getString("p_iva"));
-					label = new Etichetta(id,Integer.parseInt(rs.getString("p_iva")), rs.getString("nome"));
+					label = new Etichetta(id,rs.getString("p_iva"), rs.getString("nome"));
 							
 				}
 			} 
@@ -85,7 +86,7 @@ public class Query_JDBC {
 	public Artist findArtistById(int id) throws DatabaseConnectionException{
 		Artist artist = null;
 		try(PreparedStatement s = connection
-				.prepareStatement("select *"+"from artista"+"where ID=?;");){
+				.prepareStatement("select * from artista where ID=?;");){
 			s.setInt(1, id);
 			try(ResultSet rs = s.executeQuery()){
 				while(rs.next()) {
@@ -101,7 +102,7 @@ public class Query_JDBC {
 	public Genre findGenreById(int id) throws DatabaseConnectionException{
 		Genre genre = null;
 		try(PreparedStatement s = connection
-				.prepareStatement("select *"+"from genere"+"where ID=?;");){
+				.prepareStatement("select * from genere where ID=?;");){
 			s.setInt(1, id);
 			try(ResultSet rs = s.executeQuery()){
 				while(rs.next()) {
@@ -117,7 +118,7 @@ public class Query_JDBC {
 	public Type findTypeById(int id) throws DatabaseConnectionException{
 		Type type = null;
 		try(PreparedStatement s = connection
-				.prepareStatement("select *"+"from tipo"+"where ID=?;");){
+				.prepareStatement("select * from tipo where ID=?;");){
 			s.setInt(1, id);
 			try(ResultSet rs = s.executeQuery()){
 				while(rs.next()) {
@@ -167,9 +168,11 @@ public class Query_JDBC {
 			ResultSet result = query.executeQuery();
 			ArrayList<Disk> disks = new ArrayList<Disk>();
 			while (result.next()) {
+				String stateValue = result.getString("stato_di_conservazione");
+				State state = State.valueOf(stateValue);
 				Disk disk = new Disk(result.getInt("ID"), result.getString("titolo"),
 						result.getInt("anno_uscita"), result.getInt("ID_artista"),
-						result.getInt("ID_etichetta"), result.getInt("ID_collezionista"), result.getInt("ID_genere"));
+						result.getInt("ID_etichetta"), result.getInt("ID_collezionista"), result.getInt("ID_genere"), result.getString("barcode"), state);
 				disks.add(disk);
 			}
 			return disks;
@@ -186,7 +189,7 @@ public class Query_JDBC {
 			ResultSet result = query.executeQuery();
 
 			while (result.next()) {
-				Track track = new Track(result.getInt("ID"), result.getString("ISRC"), result.getFloat("durata"),
+				Track track = new Track(result.getInt("ID"), result.getString("ISRC"), null,
 						result.getString("titolo"), id);
 				tracks.add(track);
 			}

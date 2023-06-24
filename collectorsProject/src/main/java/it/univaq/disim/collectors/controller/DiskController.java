@@ -55,7 +55,7 @@ public class DiskController implements Initializable, DataInitializable<Triple<C
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		titleColumn.setCellValueFactory(new PropertyValueFactory<Track, String>("title"));
-		ISRCColumn.setCellValueFactory(new PropertyValueFactory<Track, String>("isrc"));
+		ISRCColumn.setCellValueFactory(new PropertyValueFactory<Track, String>("ISRC"));
 		TimeColumn.setCellValueFactory(new PropertyValueFactory<Track, Float>("time"));
 		
 	}
@@ -66,16 +66,18 @@ public class DiskController implements Initializable, DataInitializable<Triple<C
 		this.collector = obj.getFirst();
 		this.collection = obj.getSecond();
 		this.disk = obj.getThird();
-		System.out.println(disk.getLabel());
+		
 		
 		try {
 			Etichetta etichetta = implementation.findLabelById(disk.getLabel());
 			label.setText(disk.getTitolo());
-			labelLabel.setText(etichetta.getName());
-			yearLabel.setText(Integer.toString(disk.getYear()));
-			artistLabel.setText(implementation.findArtistById(disk.getArtist()).getStagename());
-			genreLabel.setText(implementation.findGenreById(disk.getGenre()).getName());
-			formatLabel.setText(implementation.findTypeById(disk.getId()).getName());
+			labelLabel.setText("Label: "+ etichetta.getName());
+			yearLabel.setText("Year: " + Integer.toString(disk.getYear()));
+			artistLabel.setText("Artist: "+implementation.findArtistById(disk.getArtist()).getStagename());
+			genreLabel.setText("Genre: "+implementation.findGenreById(disk.getGenre()).getName());
+			formatLabel.setText("Format: "+implementation.findTypeById(disk.getId()).getName());
+			barcodeLabel.setText("Barcode: "+ disk.getBarcode());
+			stateLabel.setText("State: "+disk.getState().toString());
 			List<Track> tracks = implementation.getTracksByDisk(disk.getId());
 			trackTableView.setItems(FXCollections.observableArrayList(tracks));
 		} catch (DatabaseConnectionException e) {
