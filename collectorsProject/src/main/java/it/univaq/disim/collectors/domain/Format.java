@@ -2,11 +2,11 @@ package it.univaq.disim.collectors.domain;
 
 import it.univaq.disim.collectors.domain.Collection.Flag;
 
-public class Type {
+public class Format {
 	private int id;
 	private String name;
 	
-	public Type(int id, String name) {
+	public Format(int id, String name) {
 		this.id = id;
 		this.name = name;
 	}

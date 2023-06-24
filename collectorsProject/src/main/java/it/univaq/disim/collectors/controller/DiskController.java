@@ -66,6 +66,10 @@ public class DiskController implements Initializable, DataInitializable<Triple<C
 		this.collector = obj.getFirst();
 		this.collection = obj.getSecond();
 		this.disk = obj.getThird();
+		if(this.disk.getCollector()!= collector.getId()) {
+			editButton.setVisible(false);
+			addButton.setVisible(false);
+		}
 		
 		
 		try {
@@ -75,7 +79,7 @@ public class DiskController implements Initializable, DataInitializable<Triple<C
 			yearLabel.setText("Year: " + Integer.toString(disk.getYear()));
 			artistLabel.setText("Artist: "+implementation.findArtistById(disk.getArtist()).getStagename());
 			genreLabel.setText("Genre: "+implementation.findGenreById(disk.getGenre()).getName());
-			formatLabel.setText("Format: "+implementation.findTypeById(disk.getId()).getName());
+			formatLabel.setText("Format: "+implementation.findTypeById(disk.getFormat()).getName());
 			barcodeLabel.setText("Barcode: "+ disk.getBarcode());
 			stateLabel.setText("State: "+disk.getState().toString());
 			List<Track> tracks = implementation.getTracksByDisk(disk.getId());

@@ -19,7 +19,7 @@ import it.univaq.disim.collectors.domain.Disk;
 import it.univaq.disim.collectors.domain.Disk.State;
 import it.univaq.disim.collectors.domain.Etichetta;
 import it.univaq.disim.collectors.domain.Genre;
-import it.univaq.disim.collectors.domain.Type;
+import it.univaq.disim.collectors.domain.Format;
 import it.univaq.disim.collectors.business.db.DatabaseConnectionException;
 
 
@@ -115,14 +115,14 @@ public class Query_JDBC {
 		} return genre;
 	}
 	
-	public Type findTypeById(int id) throws DatabaseConnectionException{
-		Type type = null;
+	public Format findTypeById(int id) throws DatabaseConnectionException{
+		Format type = null;
 		try(PreparedStatement s = connection
 				.prepareStatement("select * from tipo where ID=?;");){
 			s.setInt(1, id);
 			try(ResultSet rs = s.executeQuery()){
 				while(rs.next()) {
-					type = new Type(id, rs.getString("nome"));
+					type = new Format(id, rs.getString("nome"));
 							
 				}
 			} 
@@ -159,6 +159,18 @@ public class Query_JDBC {
  * ----------- *
  */
 	
+	//Query 1
+	public void addCollection(Collector collector, String name, Flag state) throws DatabaseConnectionException {
+		try (CallableStatement query = connection.prepareCall("{call insert_collezione(?,?,?)}");) {
+			query.setInt(1, collector.getId());
+			query.setString(2, name);
+			query.setString(3, state.toString());;
+			query.execute();
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Unable to add collection", e);
+		}
+	}
+	
 
 	//Query 6
 	public ArrayList<Disk> getDisksInCollection(Integer idCollection) throws DatabaseConnectionException {
@@ -172,7 +184,7 @@ public class Query_JDBC {
 				State state = State.valueOf(stateValue);
 				Disk disk = new Disk(result.getInt("ID"), result.getString("titolo"),
 						result.getInt("anno_uscita"), result.getInt("ID_artista"),
-						result.getInt("ID_etichetta"), result.getInt("ID_collezionista"), result.getInt("ID_genere"), result.getString("barcode"), state);
+						result.getInt("ID_etichetta"), result.getInt("ID_collezionista"), result.getInt("ID_genere"), result.getString("barcode"), state, result.getInt("ID_tipo"));
 				disks.add(disk);
 			}
 			return disks;
@@ -219,7 +231,7 @@ public class Query_JDBC {
 						State state = State.valueOf(stateValue);
 						Disk disk = new Disk(result.getInt("ID"), result.getString("titolo"),
 								result.getInt("anno_uscita"), result.getInt("ID_artista"),
-								result.getInt("ID_etichetta"), result.getInt("ID_collezionista"), result.getInt("ID_genere"), result.getString("barcode"), state);
+								result.getInt("ID_etichetta"), result.getInt("ID_collezionista"), result.getInt("ID_genere"), result.getString("barcode"), state, result.getInt("ID_tipo"));
 						disks.add(disk);
 				}
 

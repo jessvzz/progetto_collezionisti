@@ -12,8 +12,9 @@ import it.univaq.disim.collectors.domain.Collection;
 import it.univaq.disim.collectors.domain.Collector;
 import it.univaq.disim.collectors.domain.Disk;
 import it.univaq.disim.collectors.domain.Triple;
-import it.univaq.disim.collectors.view.ViewDispatcher;
+import it.univaq.disim.collectors.view.ViewDispatcher;	
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -61,11 +62,20 @@ public class SearchController implements Initializable, DataInitializable<Collec
 
 		titleTableColumn.setCellValueFactory(new PropertyValueFactory<Disk, String>("titolo"));
 		//artistTableColumn.setCellValueFactory(new PropertyValueFactory<Disk, String>("artist"));
+		artistTableColumn.setCellValueFactory((CellDataFeatures<Disk, String> param) -> {
+			try {
+				return new SimpleStringProperty(implementation.findArtistById(param.getValue().getArtist()).getStagename());
+			} catch (DatabaseConnectionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}//param.getValue().getArtist().getUsername().toString());
+			return null;
+		});
 		manageTableColumn.setStyle("-fx-alignment: CENTER;");
 		manageTableColumn.setCellValueFactory((CellDataFeatures<Disk, Button> param) -> {
 			final Button viewButton = new Button("View");
 			viewButton.setOnAction((ActionEvent event) -> {
-				dispatcher.renderView("disk", param.getValue());
+				dispatcher.renderView("disk",new Triple<Collector, Collection, Disk>(collector, null, param.getValue()));
 			});
 			return new SimpleObjectProperty<Button>(viewButton);
 		});

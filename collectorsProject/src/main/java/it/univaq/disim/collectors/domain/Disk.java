@@ -12,11 +12,12 @@ public class Disk {
 	private int genre;
 	private String barcode;
 	private State state;
+	private int format;
 	
 	public enum State{
 		OTTIMO, BUONO, USURATO;
 	}
-	public Disk(int id, String titolo, int anno, int artist, int label, int collector, int genre, String barcode, State state) {
+	public Disk(int id, String titolo, int anno, int artist, int label, int collector, int genre, String barcode, State state, int format) {
 		this.id = id;
 		this.titolo = titolo;
 		this.anno = anno;
@@ -26,6 +27,7 @@ public class Disk {
 		this.genre = genre;
 		this.barcode = barcode;
 		this.state = state;
+		this.format = format;
 	}
 	
 	public void setId(int id) {this.id = id;}
@@ -35,6 +37,7 @@ public class Disk {
 	public void setLabel(int label) {this.label = label;}
 	public void setCollector(int collector) {this.collector = collector;}
 	public void setGenre(int genre) {this.genre = genre;}
+	public void setFormat(int format) {this.format = format;}
 	public void setBarcode(String barcode) {this.barcode = barcode;}
 	public void setState(State state) {this.state = state;}
 	
@@ -46,6 +49,7 @@ public class Disk {
 	public int getLabel() {return label;}
 	public int getCollector() {return collector;}
 	public int getGenre() {return genre;}
+	public int getFormat() {return format;}
 	public String getBarcode() {return barcode;}
 	public State getState() {return state;}
 
