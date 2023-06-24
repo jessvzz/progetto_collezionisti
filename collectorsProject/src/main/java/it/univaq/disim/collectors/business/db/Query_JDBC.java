@@ -202,5 +202,33 @@ public class Query_JDBC {
 		
 	}
 	
+	//Query 8
+		public List<Disk> getDisksByString(String string, Collector collector, boolean mine, boolean shared, boolean pub) throws DatabaseConnectionException {
+			List<Disk> disks = new ArrayList<Disk>();
+			try (CallableStatement query = connection.prepareCall("{call ricerca_dischi(?, ?, ?, ?, ?)}");) {
+				query.setString(1, string);
+				query.setInt(2, collector.getId());
+				query.setBoolean(3, mine);
+				query.setBoolean(4, shared);
+				query.setBoolean(5, pub);
+				
+				ResultSet result = query.executeQuery();
+
+				while (result.next()) {
+						String stateValue = result.getString("stato_di_conservazione");
+						State state = State.valueOf(stateValue);
+						Disk disk = new Disk(result.getInt("ID"), result.getString("titolo"),
+								result.getInt("anno_uscita"), result.getInt("ID_artista"),
+								result.getInt("ID_etichetta"), result.getInt("ID_collezionista"), result.getInt("ID_genere"), result.getString("barcode"), state);
+						disks.add(disk);
+				}
+
+			} catch (SQLException e) {
+				throw new DatabaseConnectionException("Inserimento fallito", e);
+		}
+					
+					return disks;	
+		}
+		
 
 }

@@ -22,7 +22,7 @@
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
             <TextField fx:id="searchBar" prefHeight="26.0" prefWidth="239.0" promptText="search disks by artist or title" />
-            <Button fx:id="searchButton" mnemonicParsing="false" text="Search" />
+            <Button fx:id="searchButton" mnemonicParsing="false" onAction="#search" text="Search" />
             <Pane prefHeight="51.0" prefWidth="244.0">
                <children>
                   <RadioButton fx:id="myCheck" layoutX="40.0" layoutY="5.0" mnemonicParsing="false" text="My Collections" />

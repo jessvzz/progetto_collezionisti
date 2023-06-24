@@ -95,7 +95,7 @@ DROP PROCEDURE IF EXISTS tracklist;
 DELIMITER $$
 	CREATE PROCEDURE tracklist(ID1 INTEGER)
     BEGIN
-    SELECT b.titolo FROM brano b
+    SELECT b.ID, b.ISRC, b.titolo, b.durata FROM brano b
         JOIN disco d ON (b.ID_disco = d.ID)
     WHERE d.ID = ID1;
     END $$
@@ -154,7 +154,8 @@ CREATE PROCEDURE ricerca1(stringa VARCHAR(100), ID_coll INTEGER)
 BEGIN
 DROP TEMPORARY TABLE IF EXISTS ric1;
 CREATE TEMPORARY TABLE ric1 AS
-	SELECT DISTINCT d.ID, d.titolo AS disco_titolo, a.nome_dArte AS artista_nome 
+	SELECT DISTINCT d.ID, d.titolo, d.ID_etichetta, d.ID_collezionista, d.ID_genere, 
+		   d.anno_uscita, d.stato_di_conservazione, d.ID_tipo, d.barcode, d.ID_artista, a.nome_dArte AS artista_nome 
 		FROM disco d
 		JOIN artista a ON d.ID_artista = a.ID
 		WHERE (d.titolo = stringa OR a.nome_dArte = stringa)
@@ -168,7 +169,8 @@ CREATE PROCEDURE ricerca2(stringa VARCHAR(100), ID_coll INTEGER)
 BEGIN
 DROP TEMPORARY TABLE IF EXISTS ric2;
 CREATE TEMPORARY TABLE ric2 AS
-		SELECT DISTINCT d.ID, d.titolo AS disco_titolo, a.nome_dArte AS artista_nome 
+		SELECT DISTINCT d.ID, d.titolo, d.ID_etichetta, d.ID_collezionista, d.ID_genere, 
+		   d.anno_uscita, d.stato_di_conservazione, d.ID_tipo, d.barcode,  d.ID_artista, a.nome_dArte AS artista_nome 
 		FROM disco d
 		JOIN artista a ON d.ID_artista = a.ID
 		WHERE (d.titolo = stringa OR a.nome_dArte = stringa) AND (d.ID_collezione IN(
@@ -182,7 +184,8 @@ CREATE PROCEDURE ricerca3(stringa VARCHAR(100), ID_coll INTEGER)
 BEGIN
 DROP TEMPORARY TABLE IF EXISTS ric3;
 CREATE TEMPORARY TABLE ric3 AS
-		SELECT DISTINCT d.ID, d.titolo AS disco_titolo, a.nome_dArte AS artista_nome
+		SELECT DISTINCT d.ID, d.titolo, d.ID_etichetta, d.ID_collezionista, d.ID_genere, 
+		   d.anno_uscita, d.stato_di_conservazione, d.ID_tipo, d.barcode, d.ID_artista, a.nome_dArte AS artista_nome
 			FROM disco d
 			JOIN artista a ON d.ID_artista = a.ID
 			WHERE (d.titolo = stringa OR a.nome_dArte = stringa) AND (d.ID_collezione IN(
