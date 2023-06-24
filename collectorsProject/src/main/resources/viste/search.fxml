@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.collectors.controller.SearchController">
+   <children>
+      <Label prefHeight="40.0" prefWidth="120.0" text="SEARCH">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <TextField fx:id="searchBar" prefHeight="26.0" prefWidth="239.0" promptText="search disks by artist or title" />
+            <Button fx:id="searchButton" mnemonicParsing="false" text="Search" />
+            <Pane prefHeight="51.0" prefWidth="244.0">
+               <children>
+                  <RadioButton fx:id="myCheck" layoutX="40.0" layoutY="5.0" mnemonicParsing="false" text="My Collections" />
+                  <RadioButton fx:id="sharedCheck" layoutX="40.0" layoutY="28.0" mnemonicParsing="false" text="Shared with me" />
+                  <RadioButton fx:id="publicCheck" layoutX="144.0" layoutY="5.0" mnemonicParsing="false" text="Public Collections" />
+               </children>
+            </Pane>
+         </children>
+      </HBox>
+      <TableView fx:id="disksTableView" prefHeight="341.0" prefWidth="580.0">
+         <columns>
+            <TableColumn fx:id="titleTableColumn" prefWidth="150.0" text="Title" />
+            <TableColumn fx:id="artistTableColumn" prefWidth="159.0" text="Artist" />
+            <TableColumn fx:id="manageTableColumn" prefWidth="123.0" text="Manage" />
+         </columns>
+      </TableView>
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</VBox>
