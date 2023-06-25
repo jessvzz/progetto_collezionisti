@@ -18,7 +18,7 @@ DROP TABLE IF EXISTS tipo;
 
 -- Creiamo l'utente che accederà ai dati
 DROP USER IF EXISTS 'collectorsUser'@'localhost';
-CREATE USER 'collectorsUser'@'localhost' IDENTIFIED BY 'collectorsPwd';
+CREATE USER 'collectorsUser'@'localhost' IDENTIFIED BY 'collectorsPwd€123';
 GRANT select,insert,update,delete,execute ON Collectors.* TO 'collectorsUser'@'localhost';
 
 CREATE TABLE collezionista(
@@ -32,7 +32,7 @@ CREATE TABLE collezionista(
 CREATE TABLE collezione(
 ID INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 nome VARCHAR(100) NOT NULL UNIQUE,
-stato enum('pubblico','privato') default 'privato',
+stato enum('pubblico','privato') DEFAULT 'privato',
 ID_collezionista INTEGER UNSIGNED NOT NULL,
 CONSTRAINT collezione_collezionista FOREIGN KEY (ID_collezionista)
         REFERENCES collezionista (ID)
@@ -134,7 +134,7 @@ CREATE TABLE condivisa(
  CREATE TABLE appartiene(
   ID_artista INTEGER UNSIGNED NOT NULL,
   ID_brano INTEGER UNSIGNED NOT NULL,
-  flag ENUM("ESECUTORE","COMPOSITORE","ENTRAMBI"),
+  flag ENUM("ESECUTORE","COMPOSITORE","ENTRAMBI") DEFAULT "ESECUTORE", 
   PRIMARY KEY (ID_artista , ID_brano),
 	CONSTRAINT appartiene_artista FOREIGN KEY (ID_artista)
 		REFERENCES artista (ID)
