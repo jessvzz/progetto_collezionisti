@@ -14,7 +14,7 @@ BEGIN
     WHERE d.ID_genere = OLD.ID;
 
     IF (genri_disco > 0) THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Un disco resterenbbe senza genere';
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Errore. Un disco resterenbbe senza genere';
     END IF;
     
 
