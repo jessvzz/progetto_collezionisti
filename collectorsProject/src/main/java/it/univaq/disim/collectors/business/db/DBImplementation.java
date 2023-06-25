@@ -2,7 +2,7 @@ package it.univaq.disim.collectors.business.db;
 
 public class DBImplementation {
 	private static final String DB_NAME = "Collectors";
-	private static final String PASSWORD = "collectorsPwd";
+	private static final String PASSWORD = "collectorsPwd€123";
 	private static final String APP_USERNAME = "collectorsUser";
 	
 	private static final String CONNECTION = "jdbc:mysql://localhost:3306/" + DB_NAME+ "?serverTimezone=Europe/Rome";
