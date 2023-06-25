@@ -18,7 +18,7 @@ public class LayoutController implements Initializable, DataInitializable<Collec
 	private static final MenuElement MENU_HOME = new MenuElement("Home", "home");
 	private static final MenuElement[] MENU_USERS = {
 			new MenuElement("My Collection", "collections"),
-			new MenuElement("Friends' Collection", "friendsCollections"),
+			new MenuElement("Friends' Collection", "SharedCollections"),
 			new MenuElement("Shared Collection", "shared"),
 			new MenuElement("Settings", "settings"),
 			new MenuElement("Search", "search"),
