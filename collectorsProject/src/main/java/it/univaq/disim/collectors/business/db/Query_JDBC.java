@@ -381,7 +381,7 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 			ResultSet result = query.executeQuery();
 
 			while (result.next()) {
-				Track track = new Track(result.getInt("ID"), result.getString("ISRC"), null,
+				Track track = new Track(result.getInt("ID"), result.getString("ISRC"), result.getTime("durata"),
 						result.getString("titolo"), id);
 				tracks.add(track);
 			}

@@ -108,6 +108,7 @@ public class AddDiskController implements Initializable, DataInitializable<Coupl
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		dispatcher.renderView("collection", new Couple<Collection, Collector>(collection, collector));
 	}
 	
 	@FXML
