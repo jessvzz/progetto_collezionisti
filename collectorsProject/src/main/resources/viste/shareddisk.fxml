@@ -36,20 +36,7 @@
                <children>
                   <VBox fx:id="informationsVBox" prefHeight="319.0" prefWidth="466.0">
                      <children>
-                        <Label fx:id="nameLabel" contentDisplay="CENTER" prefHeight="24.0" prefWidth="482.0" wrapText="true">
-                           <VBox.margin>
-                              <Insets left="4.0" />
-                           </VBox.margin>
-                        </Label>
                         <HBox>
-                           <VBox.margin>
-                              <Insets left="4.0" />
-                           </VBox.margin>
-                           <children>
-                              <Label prefHeight="18.0" prefWidth="402.0" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="20.0" prefWidth="42.0">
                            <VBox.margin>
                               <Insets left="4.0" />
                            </VBox.margin>

@@ -85,6 +85,10 @@ public class CollectionController implements Initializable, DataInitializable<Co
 	public void initializeData(Couple<Collection, Collector> couple) {
 		this.collection = couple.getFirst();
 		this.collector = couple.getSecond();
+		if(this.collection.getCollector()!= collector.getId()) {
+			addButton.setVisible(false);
+			editTableColumn.setVisible(false);
+		}
 
 		nameLabel.setStyle("-fx-font-style: italic;");
 		nameLabel.setText(collection.getName());

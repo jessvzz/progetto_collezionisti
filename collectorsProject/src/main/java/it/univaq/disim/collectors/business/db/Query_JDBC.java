@@ -58,7 +58,7 @@ public class Query_JDBC {
 			s.setString(2, email);
 			try (ResultSet rs = s.executeQuery()) {
 				if (rs.next())
-					return new Collector(rs.getInt("id"), rs.getString("nickname"), rs.getString("email"));
+					return new Collector(rs.getInt("id"), rs.getString("nickname"), rs.getString("email"), rs.getString("nome"));
 			}
 			return null;
 		} catch (SQLException e) {
@@ -154,6 +154,32 @@ public class Query_JDBC {
 		}
 		
 	}
+	
+	public List<Collection> collectionsShared(Collector collector) throws DatabaseConnectionException{
+		List<Collection> collections = new ArrayList<>();
+		
+		String sql = "SELECT con.ID_collezione, coll.nome, coll.stato, coll.ID_collezionista FROM condivisa con " +
+             "JOIN collezione coll ON (coll.ID = con.ID_collezione) " +
+             "WHERE ? = con.ID_collezionista";
+
+try (PreparedStatement query = connection.prepareStatement(sql)) {
+    query.setInt(1, collector.getId());
+			try (ResultSet rs = query.executeQuery()) {
+				while (rs.next()) {
+					
+					String flagValue = rs.getString("stato");
+					Flag flag = Flag.valueOf(flagValue);
+					collections.add(new Collection(rs.getInt("ID_collezione"), rs.getString("nome"), flag,
+							rs.getInt("ID_collezionista")));
+				}
+			}
+			return collections;
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Unable to find collections shared with you", e);
+		}
+		
+	}
+	
 /* ----------- *          
  *   QUERIES   *
  * ----------- *
