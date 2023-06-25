@@ -131,6 +131,140 @@ public class Query_JDBC {
 		} return type;
 	}
 	
+	public int findFormatByName(String name) throws DatabaseConnectionException {
+		int id = 0;
+		try(PreparedStatement s = connection
+				.prepareStatement("select * from tipo where nome = ?;");){
+			s.setString(1, name);
+			try(ResultSet rs = s.executeQuery()){
+				while(rs.next()) {
+					id = rs.getInt("ID");
+							
+				}
+			} 
+		} catch (SQLException e1) {
+			throw new DatabaseConnectionException("Etichetta non esistente");
+		} return id;
+	}
+	
+	public int findGenreByName(String name) throws DatabaseConnectionException {
+		int id = 0;
+		try(PreparedStatement s = connection
+				.prepareStatement("select * from genere where nome = ?;");){
+			s.setString(1, name);
+			try(ResultSet rs = s.executeQuery()){
+				while(rs.next()) {
+					id = rs.getInt("ID");
+							
+				}
+			} 
+		} catch (SQLException e1) {
+			throw new DatabaseConnectionException("Etichetta non esistente");
+		} return id;
+	}
+	
+	public int findArtistByName(String name) throws DatabaseConnectionException {
+		int id = 0;
+		try(PreparedStatement s = connection
+				.prepareStatement("select * from artista where nome_dArte = ?;");){
+			s.setString(1, name);
+			try(ResultSet rs = s.executeQuery()){
+				while(rs.next()) {
+					id = rs.getInt("ID");
+							
+				}
+			} 
+		} catch (SQLException e1) {
+			throw new DatabaseConnectionException("Etichetta non esistente");
+		} return id;
+	}
+	
+	public int findLabelByName(String name) throws DatabaseConnectionException {
+		int id = 0;
+		try(PreparedStatement s = connection
+				.prepareStatement("select * from etichetta where nome = ?;");){
+			s.setString(1, name);
+			try(ResultSet rs = s.executeQuery()){
+				while(rs.next()) {
+					id = rs.getInt("ID");
+							
+				}
+			} 
+		} catch (SQLException e1) {
+			throw new DatabaseConnectionException("Etichetta non esistente");
+		} return id;
+	}
+
+	
+	
+	
+	public List<Artist> getAllArtists() throws DatabaseConnectionException {
+
+		List<Artist> artists = new ArrayList<>();
+
+		try (PreparedStatement s = connection.prepareStatement("select * from artista;")) {
+			try (ResultSet rs = s.executeQuery()) {
+				while (rs.next()) {
+					artists.add(new Artist(rs.getInt("ID"), rs.getString("nome_dArte")));
+				}
+			}
+			return artists;
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Login fallito", e);
+		}
+	}
+	
+	public List<Etichetta> getAllLabels() throws DatabaseConnectionException {
+
+		List<Etichetta> labels = new ArrayList<>();
+
+		try (PreparedStatement s = connection.prepareStatement("select * from etichetta;")) {
+			try (ResultSet rs = s.executeQuery()) {
+				while (rs.next()) {
+					labels.add(new Etichetta(rs.getInt("ID"), rs.getString("p_iva"), rs.getString("nome")));
+				}
+			}
+			return labels;
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Login fallito", e);
+		}
+	}
+	
+	
+	public List<Format> getAllFormats() throws DatabaseConnectionException {
+
+		List<Format> formats = new ArrayList<>();
+
+		try (PreparedStatement s = connection.prepareStatement("select * from tipo;")) {
+			try (ResultSet rs = s.executeQuery()) {
+				while (rs.next()) {
+					formats.add(new Format(rs.getInt("ID"), rs.getString("nome")));
+				}
+			}
+			return formats;
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Login fallito", e);
+		}
+	}
+	
+	public List<Genre> getAllGenre() throws DatabaseConnectionException {
+
+		List<Genre> genre = new ArrayList<>();
+
+		try (PreparedStatement s = connection.prepareStatement("select * from genere;")) {
+			try (ResultSet rs = s.executeQuery()) {
+				while (rs.next()) {
+					genre.add(new Genre(rs.getInt("ID"), rs.getString("nome")));
+				}
+			}
+			return genre;
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Login fallito", e);
+		}
+	}
+
+
+
 	
 	
 	public List<Collection> collectionsOwned(Collector collector) throws DatabaseConnectionException{
@@ -196,6 +330,26 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 			throw new DatabaseConnectionException("Unable to add collection", e);
 		}
 	}
+	
+	//Query 2a
+	public void addDisk(String barcode, State state, String title, int artist, int label, Collector collector, Collection collection, int genre, int format, int year) throws DatabaseConnectionException {
+		try (CallableStatement query = connection.prepareCall("{call inserimento_disco(?,?,?, ?, ?, ?, ? , ?, ?, ?)}");) {
+			query.setString(1, barcode);
+			query.setString(2, state.toString());
+			query.setString(3, title);
+			query.setInt(4, artist);
+			query.setInt(5, label);
+			query.setInt(6, collector.getId());
+			query.setInt(7, collection.getId());
+			query.setInt(8, genre);
+			query.setInt(9, format);
+			query.setInt(10, year);;
+			query.execute();
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Unable to add collection", e);
+		}
+	}
+	
 	
 
 	//Query 6

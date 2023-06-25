@@ -107,7 +107,8 @@ public class CollectionController implements Initializable, DataInitializable<Co
 	
 	@FXML
 	public void addAction() {
-		dispatcher.renderView("addDisk", collection);
+
+		dispatcher.renderView("addDisk", new Couple<Collection, Collector>(collection, collector));
 	}
 	
 	

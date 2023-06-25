@@ -8,7 +8,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import org.controlsfx.control.SearchableComboBox?>
 
 <HBox xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.collectors.controller.AddDiskController">
    <children>
@@ -34,7 +38,26 @@
                         <ComboBox fx:id="formatComboBox" layoutX="8.0" layoutY="154.0" prefHeight="27.0" prefWidth="233.0" promptText="Format..." />
                      </children>
                   </Pane>
-                  <HBox prefHeight="226.0" prefWidth="435.0" />
+                  <VBox spacing="10" prefHeight="226.0" prefWidth="200.0" style="-fx-padding: 0 10 0 10;">
+                     <children>
+                        <SearchableComboBox fx:id="artistComboBox" promptText="Artist..." prefWidth="160.0" />
+                        <SearchableComboBox fx:id="labelComboBox" promptText="Label..." prefWidth="160.0" />
+                        <TextFlow>
+    <padding>
+        <Insets top="5" />
+    </padding>
+    <children>
+        <Text fill="RED">
+            <font>
+                <Font size="12.0" />
+            </font>
+            Please note, if you can't find the artist or label among the options, you have to create them in the appropriate section.
+        </Text>
+    </children>
+</TextFlow>
+
+                     </children>
+                  </VBox>
                </children>
             </HBox>
             <Pane prefHeight="76.0" prefWidth="683.0">
