@@ -26,13 +26,29 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS inserimento_traccia;
 DELIMITER $$
-	CREATE PROCEDURE inserimento_traccia(ISRC VARCHAR(100), durata VARCHAR(100), titolo VARCHAR(100), ID_disco INTEGER)
-    BEGIN
-    INSERT INTO brano(ISRC, durata, titolo, ID_disco)
-    VALUES(ISRC, durata, titolo, ID_disco);
-    END $$
-DELIMITER ;
+CREATE PROCEDURE inserimento_traccia(
+  ISRC VARCHAR(100),
+  durata VARCHAR(100),
+  titolo VARCHAR(100),
+  ID_disco INTEGER,
+  flag ENUM('ESECUTORE', 'COMPOSITORE', 'ENTRAMBI'),
+  ID_artista INTEGER
+)
+BEGIN
+  DECLARE ID_brano INTEGER;
 
+  -- Inserimento del brano nella tabella "brano"
+  INSERT INTO brano(ISRC, durata, titolo, ID_disco)
+  VALUES (ISRC, durata, titolo, ID_disco);
+  
+  -- Ottieni l'ID del brano appena inserito
+  SET ID_brano = LAST_INSERT_ID();
+
+  -- Inserimento nella tabella "appartiene"
+  INSERT INTO appartiene(ID_artista, ID_brano, flag)
+  VALUES (ID_artista, ID_brano, flag);
+END $$
+DELIMITER ;
 /* QUERY 3a: Modifica dello stato di pubblicazione di una collezione (da privata a pubblica e viceversa)*/
 
 DROP PROCEDURE IF EXISTS modifica_pubblicazione;
@@ -91,31 +107,16 @@ DELIMITER ;
 
 /* QUERY 7: Track list di un disco. */
 
-DROP PROCEDURE IF EXISTS inserimento_traccia;
+DROP PROCEDURE IF EXISTS tracklist;
 DELIMITER $$
-CREATE PROCEDURE inserimento_traccia(
-  ISRC VARCHAR(100),
-  durata VARCHAR(100),
-  titolo VARCHAR(100),
-  ID_disco INTEGER,
-  flag ENUM('ESECUTORE', 'COMPOSITORE', 'ENTRAMBI'),
-  ID_artista INTEGER
-)
-BEGIN
-  DECLARE ID_brano INTEGER;
-
-  -- Inserimento del brano nella tabella "brano"
-  INSERT INTO brano(ISRC, durata, titolo, ID_disco)
-  VALUES (ISRC, durata, titolo, ID_disco);
-  
-  -- Ottieni l'ID del brano appena inserito
-  SET ID_brano = LAST_INSERT_ID();
-
-  -- Inserimento nella tabella "appartiene"
-  INSERT INTO appartiene(ID_artista, ID_brano, flag)
-  VALUES (ID_artista, ID_brano, flag);
-END $$
+	CREATE PROCEDURE tracklist(ID1 INTEGER)
+    BEGIN
+    SELECT b.ID, b.titolo, b.ISRC, b.durata FROM brano b
+        JOIN disco d ON (b.ID_disco = d.ID)
+    WHERE d.ID = ID1;
+    END $$
 DELIMITER ;
+
 /* QUERY 8: Ricerca di dischi in base a nomi di autori/compositori/interpreti e/o titoli. 
 Si potrà decidere di includere nella ricerca le collezioni di un certo collezionista e/o 
 quelle condivise con lo stesso collezionista e/o quelle pubbliche. */
