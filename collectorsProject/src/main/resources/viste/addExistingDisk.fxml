@@ -38,10 +38,10 @@
       </HBox>
       <TableView fx:id="disksTableView" prefHeight="244.0" prefWidth="458.0">
          <columns>
-            <TableColumn fx:id="barcodeTableColumn" prefWidth="64.0" text="Barcode" />
+            <TableColumn fx:id="barcodeTableColumn" prefWidth="88.0" text="Barcode" />
             <TableColumn fx:id="titleTableColumn" prefWidth="150.0" text="Title" />
-            <TableColumn fx:id="artistTableColumn" prefWidth="156.0" text="Artist" />
-            <TableColumn fx:id="manageTableColumn" prefWidth="62.0" text="Choose" />
+            <TableColumn fx:id="artistTableColumn" prefWidth="145.0" text="Artist" />
+            <TableColumn fx:id="manageTableColumn" prefWidth="59.0" text="Choose" />
          </columns>
       </TableView>
    </children>

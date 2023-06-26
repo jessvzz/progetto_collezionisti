@@ -80,7 +80,7 @@ public class Query_JDBC {
 				}
 			} 
 		} catch (SQLException e1) {
-			throw new DatabaseConnectionException("Etichetta non esistente");
+			throw new DatabaseConnectionException("Label not found");
 		} return label;
 	}
 	
@@ -96,7 +96,7 @@ public class Query_JDBC {
 				}
 			} 
 		} catch (SQLException e1) {
-			throw new DatabaseConnectionException("Etichetta non esistente");
+			throw new DatabaseConnectionException("Artist not found");
 		} return artist;
 	}
 	
@@ -112,7 +112,7 @@ public class Query_JDBC {
 				}
 			} 
 		} catch (SQLException e1) {
-			throw new DatabaseConnectionException("Etichetta non esistente");
+			throw new DatabaseConnectionException("Genre not found");
 		} return genre;
 	}
 	
@@ -128,7 +128,7 @@ public class Query_JDBC {
 				}
 			} 
 		} catch (SQLException e1) {
-			throw new DatabaseConnectionException("Etichetta non esistente");
+			throw new DatabaseConnectionException("Type not found");
 		} return type;
 	}
 	
@@ -144,7 +144,7 @@ public class Query_JDBC {
 				}
 			} 
 		} catch (SQLException e1) {
-			throw new DatabaseConnectionException("Etichetta non esistente");
+			throw new DatabaseConnectionException("Type not found");
 		} return id;
 	}
 	
@@ -160,7 +160,7 @@ public class Query_JDBC {
 				}
 			} 
 		} catch (SQLException e1) {
-			throw new DatabaseConnectionException("Etichetta non esistente");
+			throw new DatabaseConnectionException("Genre not found");
 		} return id;
 	}
 	
@@ -176,7 +176,7 @@ public class Query_JDBC {
 				}
 			} 
 		} catch (SQLException e1) {
-			throw new DatabaseConnectionException("Etichetta non esistente");
+			throw new DatabaseConnectionException("Artist not found");
 		} return id;
 	}
 	
@@ -192,7 +192,7 @@ public class Query_JDBC {
 				}
 			} 
 		} catch (SQLException e1) {
-			throw new DatabaseConnectionException("Etichetta non esistente");
+			throw new DatabaseConnectionException("Label not found");
 		} return id;
 	}
 
@@ -211,7 +211,7 @@ public class Query_JDBC {
 			}
 			return artists;
 		} catch (SQLException e) {
-			throw new DatabaseConnectionException("Login fallito", e);
+			throw new DatabaseConnectionException("Artist not found", e);
 		}
 	}
 	
@@ -227,7 +227,7 @@ public class Query_JDBC {
 			}
 			return labels;
 		} catch (SQLException e) {
-			throw new DatabaseConnectionException("Login fallito", e);
+			throw new DatabaseConnectionException("Label not found", e);
 		}
 	}
 	
@@ -244,7 +244,7 @@ public class Query_JDBC {
 			}
 			return formats;
 		} catch (SQLException e) {
-			throw new DatabaseConnectionException("Login fallito", e);
+			throw new DatabaseConnectionException("Type not found", e);
 		}
 	}
 	
@@ -260,7 +260,7 @@ public class Query_JDBC {
 			}
 			return genre;
 		} catch (SQLException e) {
-			throw new DatabaseConnectionException("Login fallito", e);
+			throw new DatabaseConnectionException("Genre not found", e);
 		}
 	}
 
@@ -285,7 +285,7 @@ public class Query_JDBC {
 			}
 			return collections;
 		} catch (SQLException e) {
-			throw new DatabaseConnectionException("Login fallito", e);
+			throw new DatabaseConnectionException("Collector not found", e);
 		}
 		
 	}
@@ -310,7 +310,7 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 			}
 			return collections;
 		} catch (SQLException e) {
-			throw new DatabaseConnectionException("Unable to find collections shared with you", e);
+			throw new DatabaseConnectionException("Unable to find a collection shared with you", e);
 		}
 		
 	}
@@ -387,7 +387,17 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 			s.setBoolean(4, group);
 			s.executeUpdate();
 		} catch (SQLException e) {
-			throw new DatabaseConnectionException("Unable to find collections shared with you", e);
+			throw new DatabaseConnectionException("Unable to add this artist", e);
+		}
+	}
+	
+	public void addlabel(String name, String p_iva) throws DatabaseConnectionException {
+		try (PreparedStatement s = connection.prepareStatement("INSERT INTO etichetta VALUES (ID,?,?);")) {
+			s.setString(1, p_iva);
+			s.setString(2, name);
+			s.executeUpdate();
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Unable to add this label", e);
 		}
 	}
 	
