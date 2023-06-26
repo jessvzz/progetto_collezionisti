@@ -315,6 +315,19 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		
 	}
 	
+	public void addExistingDisk(Disk disk, Collection collection) throws DatabaseConnectionException {
+		int ID = disk.getId();
+		int ID_coll = collection.getId();
+		try (PreparedStatement s = connection.prepareStatement("SELECT * FROM disco d"
+				+ "WHERE d.ID = ?; "
+				+ "INSERT INTO disco VALUES (d.barcode, d.stato_di_conservazione, d.titolo, d.ID_artista, d.ID_collezionista, ?, d.ID_genere, d.ID_tipo, d.anno_uscita);")) {
+			s.setInt(1, ID);
+			s.setInt(2, ID_coll);
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Unable to find collections shared with you", e);
+		}
+	}
+	
 /* ----------- *          
  *   QUERIES   *
  * ----------- *
@@ -438,5 +451,32 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 					return disks;	
 		}
 		
-
+	//Query 13
+		public List<Disk> query13(String barcode,String artist, String title, Collector collector) throws DatabaseConnectionException{
+			List<Disk> disks = new ArrayList<>();
+			if (barcode.equals(null)) {
+				try (CallableStatement s = connection.prepareCall("call trova_dischi_simili_barcode_nullo(?,?,?)");){
+				s.setString(1, artist);
+				s.setString(2, title);
+				s.setInt(3, collector.getId());
+				ResultSet result = s.executeQuery();
+				while (result.next()) {
+					disks.add(new Disk(result.getInt("ID"),result.getString("titolo"), 0, result.getInt("ID_artista"),0,collector.getId(),0, result.getString("barcode"),null,0));
+				 
+			}} catch (SQLException e) {
+				throw new DatabaseConnectionException("Inserimento fallito", e);
+		}}
+			else {
+				try (CallableStatement s = connection.prepareCall("call trova_dischi_simili_barcode(?,?)");){
+					s.setString(1, barcode);
+					s.setInt(2, collector.getId());
+					ResultSet result = s.executeQuery();
+					while (result.next()) {
+						disks.add(new Disk(result.getInt("ID"),result.getString("titolo"), 0, result.getInt("ID_artista"),0,result.getInt("ID_collezionista"),0, result.getString("barcode"),null,0));
+					 
+				}} catch (SQLException e) {
+					throw new DatabaseConnectionException("Inserimento fallito", e);
+			}
+			
+		} return disks;} 
 }

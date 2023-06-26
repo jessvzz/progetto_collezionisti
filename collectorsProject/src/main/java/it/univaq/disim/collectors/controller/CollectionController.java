@@ -38,7 +38,7 @@ public class CollectionController implements Initializable, DataInitializable<Co
 	private Label nameLabel;
 
 	@FXML
-	private Button addButton;
+	private Button addButton, addExisting;
 
 
 	@FXML
@@ -109,6 +109,12 @@ public class CollectionController implements Initializable, DataInitializable<Co
 	public void addAction() {
 
 		dispatcher.renderView("addDisk", new Couple<Collection, Collector>(collection, collector));
+	}
+	
+	@FXML
+	public void addExisting() {
+
+		dispatcher.renderView("addExistingDisk", new Couple<Collection, Collector>(collection, collector));
 	}
 	
 	

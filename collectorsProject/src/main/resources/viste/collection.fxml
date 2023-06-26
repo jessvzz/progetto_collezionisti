@@ -18,10 +18,15 @@
             <Font name="Impact" size="24.0" />
          </font>
       </Label>
-      <Button fx:id="addButton" mnemonicParsing="false" onAction="#addAction" prefHeight="31.0" prefWidth="146.0" text="Add Disk" />
+      <Pane prefHeight="57.0" prefWidth="643.0">
+         <children>
+            <Button fx:id="addButton" layoutY="22.0" mnemonicParsing="false" onAction="#addAction" prefHeight="31.0" prefWidth="146.0" text="Add Disk" />
+            <Button fx:id="addExisting" layoutX="189.0" layoutY="22.0" mnemonicParsing="false" onAction="#addExisting" prefHeight="31.0" prefWidth="146.0" text="Add Existing Disk" />
+         </children>
+      </Pane>
       <Pane prefHeight="261.0" prefWidth="643.0">
          <children>
-            <TableView fx:id="disksTableView" layoutY="14.0" prefHeight="279.0" prefWidth="333.0">
+            <TableView fx:id="disksTableView" layoutY="14.0" prefHeight="244.0" prefWidth="333.0">
                <columns>
                   <TableColumn fx:id="nameTableColumn" prefWidth="205.0" text="Name" />
                   <TableColumn fx:id="editTableColumn" prefWidth="55.0" text="Edit" />
