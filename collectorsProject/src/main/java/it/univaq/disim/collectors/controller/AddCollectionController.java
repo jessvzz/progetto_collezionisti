@@ -45,7 +45,6 @@ public class AddCollectionController implements Initializable, DataInitializable
 	
 	public void initializeData(Collector collector) {
 		this.collector = collector;
-		
 	}
 	@FXML
 	private void saveAction() {
