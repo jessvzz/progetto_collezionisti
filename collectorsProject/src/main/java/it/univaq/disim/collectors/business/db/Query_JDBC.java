@@ -315,18 +315,69 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		
 	}
 	
-	public void addExistingDisk(Disk disk, Collection collection) throws DatabaseConnectionException {
-		int ID = disk.getId();
+	/*public void addExistingDisk(Disk disk, Collection collection) throws DatabaseConnectionException {
+		int ID_disk = disk.getId();
 		int ID_coll = collection.getId();
-		try (PreparedStatement s = connection.prepareStatement("SELECT * FROM disco d"
+		try (PreparedStatement s = connection.prepareStatement("SELECT * FROM disco d "
 				+ "WHERE d.ID = ?; "
-				+ "INSERT INTO disco VALUES (d.barcode, d.stato_di_conservazione, d.titolo, d.ID_artista, d.ID_collezionista, ?, d.ID_genere, d.ID_tipo, d.anno_uscita);")) {
-			s.setInt(1, ID);
+				+ "INSERT INTO disco d VALUES (ID, d.barcode, d.stato_di_conservazione, d.titolo, d.ID_artista, d.ID_collezionista, ?, d.ID_genere, d.ID_tipo, d.anno_uscita);")) {
+			s.setInt(1, ID_disk);
 			s.setInt(2, ID_coll);
+			s.executeQuery();
 		} catch (SQLException e) {
 			throw new DatabaseConnectionException("Unable to find collections shared with you", e);
 		}
+	}*/
+	
+	public void addExistingDisk(Disk disk, Collection collection) throws DatabaseConnectionException {
+	    int existingDiskID = disk.getId();
+	    int newCollectionID = collection.getId();
+	    
+	    try {
+	        // Seleziona il disco esistente dalla tabella disco
+	        String selectDiskQuery = "SELECT * FROM disco WHERE ID = ?";
+	        PreparedStatement selectDiskStatement = connection.prepareStatement(selectDiskQuery);
+	        selectDiskStatement.setInt(1, existingDiskID);
+	        ResultSet resultSet = selectDiskStatement.executeQuery();
+	        
+	        if (resultSet.next()) {
+	            // Recupera i valori del disco esistente
+	            String barcode = resultSet.getString("barcode");
+	            String statoDiConservazione = resultSet.getString("stato_di_conservazione");
+	            String titolo = resultSet.getString("titolo");
+	            int artistID = resultSet.getInt("ID_artista");
+	            int etichettaID = resultSet.getInt("ID_etichetta");
+	            int collezionistaID = resultSet.getInt("ID_collezionista");
+	            int genereID = resultSet.getInt("ID_genere");
+	            int tipoID = resultSet.getInt("ID_tipo");
+	            int annoUscita = resultSet.getInt("anno_uscita");
+	            
+	            // Inserisci un nuovo disco duplicato nella tabella disco
+	            String insertDiskQuery = "INSERT INTO disco (barcode, stato_di_conservazione, titolo, ID_artista, ID_etichetta, ID_collezionista, ID_collezione, ID_genere, ID_tipo, anno_uscita) " +
+	                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	            PreparedStatement insertDiskStatement = connection.prepareStatement(insertDiskQuery);
+	            
+	            insertDiskStatement.setString(1, barcode);
+	            insertDiskStatement.setString(2, statoDiConservazione);
+	            insertDiskStatement.setString(3, titolo);
+	            insertDiskStatement.setInt(4, artistID);
+	            insertDiskStatement.setInt(5, etichettaID);
+	            insertDiskStatement.setInt(6, collezionistaID);
+	            insertDiskStatement.setInt(7, newCollectionID);
+	            insertDiskStatement.setInt(8, genereID);
+	            insertDiskStatement.setInt(9, tipoID);
+	            insertDiskStatement.setInt(10, annoUscita);
+	            
+	            insertDiskStatement.executeUpdate();
+	        } else {
+	            throw new DatabaseConnectionException("Unable to find the existing disk with ID: " + existingDiskID);
+	        }
+	    } catch (SQLException e) {
+	        throw new DatabaseConnectionException("Unable to duplicate the existing disk", e);
+	    }
 	}
+
+
 	
 	public void addArtist(String name, boolean group) throws DatabaseConnectionException {
 		try (PreparedStatement s = connection.prepareStatement("INSERT INTO artista VALUES (ID,?,?,?,?);")) {
@@ -347,7 +398,7 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 	
 	//Query 1
 	public void addCollection(Collector collector, String name, Flag state) throws DatabaseConnectionException {
-		try (CallableStatement query = connection.prepareCall("{call insert_collezione(?,?,?)}");) {
+		try (CallableStatement query = connection.prepareCall("{call inserimento_collezione(?,?,?)}");) {
 			query.setInt(1, collector.getId());
 			query.setString(2, name);
 			query.setString(3, state.toString());;

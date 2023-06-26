@@ -72,6 +72,7 @@ public class AddExistingDiskController implements Initializable, DataInitializab
 			viewButton.setOnAction((ActionEvent event) -> {
 				try {
 					implementation.addExistingDisk(param.getValue(), this.collection);
+					dispatcher.renderView("collection", new Couple<Collection, Collector>(collection, collector));
 				} catch (DatabaseConnectionException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
