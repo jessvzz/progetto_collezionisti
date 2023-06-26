@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import it.univaq.disim.collectors.domain.Appartiene;
 import it.univaq.disim.collectors.domain.Artist;
 import it.univaq.disim.collectors.domain.Collection;
 import it.univaq.disim.collectors.domain.Collection.Flag;
@@ -331,7 +332,7 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		}
 	}
 	
-	//Query 2a
+	//Query 2.1
 	public void addDisk(String barcode, State state, String title, int artist, int label, Collector collector, Collection collection, int genre, int format, int year) throws DatabaseConnectionException {
 		try (CallableStatement query = connection.prepareCall("{call inserimento_disco(?,?,?, ?, ?, ?, ? , ?, ?, ?)}");) {
 			query.setString(1, barcode);
@@ -350,6 +351,21 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		}
 	}
 	
+	//Query 2.2
+	public void addTrack(String isrc, String time, String title, Disk disk, Appartiene flag, int artist ) throws DatabaseConnectionException {
+		try (CallableStatement query = connection.prepareCall("{call inserimento_traccia(?,?,?, ?, ?, ?)}");) {
+			query.setString(1, isrc);
+			query.setString(2, time);
+			query.setString(3, title);
+			query.setInt(4, disk.getId());
+			query.setString(5, flag.toString());
+			query.setInt(6, artist);
+			query.execute();
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Unable to add collection", e);
+		}
+		
+	}
 	
 
 	//Query 6

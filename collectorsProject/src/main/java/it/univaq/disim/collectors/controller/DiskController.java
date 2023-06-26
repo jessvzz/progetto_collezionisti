@@ -92,7 +92,11 @@ public class DiskController implements Initializable, DataInitializable<Triple<C
 	}
 	
 	public void editAction() {
-		dispatcher.renderView("addDisk", new Triple<Collection, Disk, Collector>(collection, disk, collector));
+		//dispatcher.renderView("addDisk", new Triple<Collection, Disk, Collector>(collection, disk, collector));
+	}
+	
+	public void addAction() {
+		dispatcher.renderView("addTracks", new Triple<Collection, Collector, Disk>(collection, collector, disk));
 	}
 	
 }
