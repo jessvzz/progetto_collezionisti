@@ -20,7 +20,7 @@ public class LayoutController implements Initializable, DataInitializable<Collec
 			new MenuElement("My Collection", "collections"),
 			new MenuElement("Friends' Collection", "SharedCollections"),
 			new MenuElement("Shared Collection", "shared"),
-			new MenuElement("Settings", "settings"),
+			new MenuElement("Add Artist/Label", "addArtist"),
 			new MenuElement("Search", "search"),
 		 };
 	

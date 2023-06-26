@@ -328,6 +328,18 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		}
 	}
 	
+	public void addArtist(String name, boolean group) throws DatabaseConnectionException {
+		try (PreparedStatement s = connection.prepareStatement("INSERT INTO artista VALUES (ID,?,?,?,?);")) {
+			s.setString(1, name);
+			s.setString(2, name);
+			s.setString(3, name);
+			s.setBoolean(4, group);
+			s.executeUpdate();
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Unable to find collections shared with you", e);
+		}
+	}
+	
 /* ----------- *          
  *   QUERIES   *
  * ----------- *

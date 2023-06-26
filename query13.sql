@@ -19,4 +19,4 @@ DELIMITER $$
 	END $$
     DELIMITER ; 
     
-    call trova_dischi_simili_barcode_nullo("", "Francesco Guccini", 1);
+    call trova_dischi_simili_barcode_nullo(" ", "Francesco Guccini", 1);

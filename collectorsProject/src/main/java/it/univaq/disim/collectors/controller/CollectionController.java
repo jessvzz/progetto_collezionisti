@@ -87,6 +87,7 @@ public class CollectionController implements Initializable, DataInitializable<Co
 		this.collector = couple.getSecond();
 		if(this.collection.getCollector()!= collector.getId()) {
 			addButton.setVisible(false);
+			addExisting.setVisible(false);
 			editTableColumn.setVisible(false);
 		}
 
