@@ -20,7 +20,7 @@ public class HomeController implements Initializable, DataInitializable<Collecto
 	private Label benvenutoLabel;
 	
 	@FXML
-	private ImageView collectionsImg;
+	private ImageView collectionsImg, friendsImg;
 	
 	private Collector collector;
 
@@ -33,6 +33,17 @@ public class HomeController implements Initializable, DataInitializable<Collecto
             public void handle(Event event) {
             	ViewDispatcher dispatcher = ViewDispatcher.getInstance();
         		dispatcher.renderView("collections", collector);
+               
+            }
+        });
+        
+        friendsImg.setPickOnBounds(true);
+
+        friendsImg.setOnMouseClicked(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+            	ViewDispatcher dispatcher = ViewDispatcher.getInstance();
+        		dispatcher.renderView("sharedcollections", collector);
                
             }
         });

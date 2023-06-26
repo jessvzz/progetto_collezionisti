@@ -26,7 +26,7 @@
             		<Image url="@images/welcome1.jpg" />
         	    </image>
         	</ImageView>
-           <ImageView fx:id="firendsImg" fitHeight="150.0" fitWidth="200.0" layoutX="230.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+           <ImageView fx:id="friendsImg" fitHeight="150.0" fitWidth="200.0" layoutX="230.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
            <image>
             <Image url="@images/welcome2.jpg" />
          </image>
