@@ -454,10 +454,10 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 	//Query 13
 		public List<Disk> query13(String barcode,String artist, String title, Collector collector) throws DatabaseConnectionException{
 			List<Disk> disks = new ArrayList<>();
-			if (barcode.equals(null)) {
+			if (barcode.equals("")) {
 				try (CallableStatement s = connection.prepareCall("call trova_dischi_simili_barcode_nullo(?,?,?)");){
-				s.setString(1, artist);
-				s.setString(2, title);
+				s.setString(1, title);
+				s.setString(2, artist);
 				s.setInt(3, collector.getId());
 				ResultSet result = s.executeQuery();
 				while (result.next()) {

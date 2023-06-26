@@ -82,20 +82,25 @@ public class AddExistingDiskController implements Initializable, DataInitializab
 		
 	}
 	
-	public void InitializeData(Couple<Collection, Collector> things) {
-		this.collection = things.getFirst();
-		this.collector = things.getSecond();
+	public void initializeData(Couple<Collection, Collector> couple) {
+		this.collection = couple.getFirst();
+		this.collector = couple.getSecond();
 		
-}
+		
+		
+	}
 	
 	
 	@FXML
 	public void search() {
-		System.out.println(this.collector.getId());
 		String titolo = title.getText();
-		if (!artist.getText().isEmpty()&& title.getText().isEmpty()) titolo = " "; 
+		String artista = artist.getText();
+		if (!artista.isEmpty() && titolo.isEmpty()) titolo = " ";
+		if (artista.isEmpty() && !titolo.isEmpty()) artista = " ";
+		
+
 		try {
-			List<Disk> disks = implementation.query13(barcode.getText(), artist.getText(), titolo, this.collector);
+			List<Disk> disks = implementation.query13(barcode.getText(), artista, titolo, collector);
 			disksList = FXCollections.observableArrayList(disks);
 			disksTableView.setItems((ObservableList<Disk>)disksList);
 	} catch (DatabaseConnectionException e) {
