@@ -332,3 +332,39 @@ BEGIN
     RETURN numero_copie;
 END $$
 DELIMITER ;
+
+-- Query 13
+
+DROP PROCEDURE IF EXISTS trova_dischi_simili_barcode_nullo;
+DELIMITER $$
+	CREATE PROCEDURE trova_dischi_simili_barcode_nullo(titolo VARCHAR(100), autore VARCHAR(100), coll INTEGER UNSIGNED)
+    BEGIN 
+		SELECT d.ID, d.barcode, d.stato_di_conservazione, d.titolo, a.nome_dArte, d.ID_artista , d.ID_collezionista FROM disco d
+			JOIN artista a ON (a.ID = d.ID_artista)
+		WHERE (a.nome_dArte LIKE CONCAT('%', autore, '%') OR d.titolo LIKE CONCAT('%', titolo, '%'))
+			   AND d.ID_collezionista = coll;
+	END $$
+    DELIMITER ; 
+    
+    
+DROP PROCEDURE IF EXISTS trova_dischi_simili_barcode;
+DELIMITER $$
+	CREATE PROCEDURE trova_dischi_simili_barcode(barcode VARCHAR(100), coll INTEGER UNSIGNED)
+    BEGIN 
+		SELECT d.ID, d.barcode, d.stato_di_conservazione, d.titolo, d.ID_artista, d.ID_collezionista FROM disco d
+		WHERE d.barcode = barcode AND d.ID_collezionista = coll;
+	END $$
+    DELIMITER ; 
+    
+    
+    -- PROCEDURES AGGIUNTIVE CHE CI SONO TORNATE UTILI
+    -- procedure A: ritorna una lista delle mie collezioni condivise
+    DROP PROCEDURE IF EXISTS mie_collezioni_condivise;
+DELIMITER $$
+	CREATE PROCEDURE mie_collezioni_condivise(idcoll INTEGER UNSIGNED)
+    BEGIN 
+		SELECT DISTINCT con.ID_collezione, coll.nome, coll.stato, con.ID_collezionista FROM condivisa con 
+             JOIN collezione coll ON (coll.ID = con.ID_collezione) 
+             WHERE idcoll = coll.ID_collezionista;
+	END $$
+    DELIMITER ; 

@@ -195,8 +195,54 @@ public class Query_JDBC {
 			throw new DatabaseConnectionException("Label not found");
 		} return id;
 	}
-
 	
+	public int findCollectorByName(String name) throws DatabaseConnectionException {
+		int id = 0;
+		try(PreparedStatement s = connection
+				.prepareStatement("select * from collezionista where nickname = ?;");){
+			s.setString(1, name);
+			try(ResultSet rs = s.executeQuery()){
+				while(rs.next()) {
+					id = rs.getInt("ID");
+							
+				}
+			} 
+		} catch (SQLException e1) {
+			throw new DatabaseConnectionException("Etichetta non esistente");
+		} return id;
+	}
+	
+	public int findCollectionByName(String name) throws DatabaseConnectionException {
+		int id = 0;
+		try(PreparedStatement s = connection
+				.prepareStatement("select * from collezione where nome = ?;");){
+			s.setString(1, name);
+			try(ResultSet rs = s.executeQuery()){
+				while(rs.next()) {
+					id = rs.getInt("ID");
+							
+				}
+			} 
+		} catch (SQLException e1) {
+			throw new DatabaseConnectionException("Etichetta non esistente");
+		} return id;
+	}
+
+	public List<Collector> getAllCollectors() throws DatabaseConnectionException {
+
+		List<Collector> collectors = new ArrayList<>();
+
+		try (PreparedStatement s = connection.prepareStatement("select * from collezionista;")) {
+			try (ResultSet rs = s.executeQuery()) {
+				while (rs.next()) {
+					collectors.add(new Collector(rs.getInt("ID"), rs.getString("nickname"), rs.getString("email"), rs.getString("nome")));
+				}
+			}
+			return collectors;
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Unable to find collectors", e);
+		}
+	}
 	
 	
 	public List<Artist> getAllArtists() throws DatabaseConnectionException {
@@ -290,6 +336,8 @@ public class Query_JDBC {
 		
 	}
 	
+
+	
 	public List<Collection> collectionsShared(Collector collector) throws DatabaseConnectionException{
 		List<Collection> collections = new ArrayList<>();
 		
@@ -314,6 +362,8 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		}
 		
 	}
+	
+
 	
 	/*public void addExistingDisk(Disk disk, Collection collection) throws DatabaseConnectionException {
 		int ID_disk = disk.getId();
@@ -401,6 +451,8 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		}
 	}
 	
+	
+	
 /* ----------- *          
  *   QUERIES   *
  * ----------- *
@@ -453,6 +505,18 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		
 	}
 	
+	//Query 3b
+	public void addSharing(int idcollezione, int iduser) throws DatabaseConnectionException {
+		try (CallableStatement query = connection.prepareCall("{call inserimento_condivisioni(?,?)}");) {
+			query.setInt(1, idcollezione);
+			query.setInt(2, iduser);
+			
+			query.execute();
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Unable to add collection", e);
+		}
+		
+	}
 
 	//Query 6
 	public ArrayList<Disk> getDisksInCollection(Integer idCollection) throws DatabaseConnectionException {
@@ -552,4 +616,28 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 			}
 			
 		} return disks;} 
+		
+		//procedure A
+		public List<Collection> mySharedCollections(Collector collector) throws DatabaseConnectionException {
+		    List<Collection> collections = new ArrayList<>();
+		    try (CallableStatement s = connection.prepareCall("{CALL mie_collezioni_condivise(?)}")) {
+		        s.setInt(1, collector.getId());
+		        boolean hasResults = s.execute();
+		        if (hasResults) {
+		            try (ResultSet result = s.getResultSet()) {
+		                while (result.next()) {
+		                    String flagValue = result.getString("stato");
+		                    Flag flag = Flag.valueOf(flagValue);
+		                    collections.add(new Collection(result.getInt("ID_collezione"), result.getString("nome"), flag,
+		                            result.getInt("ID_collezionista")));
+		                }
+		            }
+		        }
+		    } catch (SQLException e) {
+		        throw new DatabaseConnectionException("Unable to find collections shared with you", e);
+		    }
+		    return collections;
+		}
+
+	
 }
