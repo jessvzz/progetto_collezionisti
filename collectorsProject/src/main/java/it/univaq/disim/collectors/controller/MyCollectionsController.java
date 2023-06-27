@@ -44,6 +44,15 @@ public class MyCollectionsController implements Initializable, DataInitializable
 	@FXML
 	private TableColumn<Collection, Button> actionTableColumn;
 	
+	@FXML
+	private TableColumn<Collection, Button> editTableColumn;
+	
+	@FXML
+	private TableColumn<Collection, Button> deleteTableColumn;
+	
+	@FXML
+	private TableColumn<Collection, Button> shareTableColumn;
+	
 	
 	
 	

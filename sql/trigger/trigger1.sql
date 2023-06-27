@@ -1,22 +1,19 @@
 USE Collectors;
-DROP TRIGGER IF EXISTS check_generi;
+DROP TRIGGER IF EXISTS check_genere;
 DELIMITER $$
--- se un genere è riferito da al meno un disco impedisce la cancellazione di quel genere
+-- un genere che è presente nei dati di un disco non può essere cancellato
 
-CREATE TRIGGER check_generi BEFORE DELETE ON genere
+CREATE TRIGGER check_genere BEFORE DELETE ON genere
 FOR EACH ROW
 BEGIN
-
-	DECLARE generi_disco SMALLINT UNSIGNED;
+	DECLARE genere_disco SMALLINT UNSIGNED;
     
-    SELECT COUNT(*) INTO generi_disco
+    SELECT COUNT(*) INTO genere_disco
     FROM disco d
     WHERE d.ID_genere = OLD.ID;
 
-    IF (genri_disco > 0) THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Errore. Un disco resterenbbe senza genere';
+    IF (genere_disco > 0) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Errore! Un disco resterebbe senza genere';
     END IF;
-    
-
 END $$
 DELIMITER ;
