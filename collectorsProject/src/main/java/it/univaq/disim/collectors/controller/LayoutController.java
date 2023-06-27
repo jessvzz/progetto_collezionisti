@@ -21,6 +21,7 @@ public class LayoutController implements Initializable, DataInitializable<Collec
 			new MenuElement("Friends' Collection", "SharedCollections"),
 			new MenuElement("Add Artist/Label", "addArtist"),
 			new MenuElement("Search", "search"),
+			new MenuElement("Stats", "stats"),
 		 };
 	
 	@FXML

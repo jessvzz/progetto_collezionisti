@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -216,6 +218,22 @@ public class Query_JDBC {
 		int id = 0;
 		try(PreparedStatement s = connection
 				.prepareStatement("select * from collezione where nome = ?;");){
+			s.setString(1, name);
+			try(ResultSet rs = s.executeQuery()){
+				while(rs.next()) {
+					id = rs.getInt("ID");
+							
+				}
+			} 
+		} catch (SQLException e1) {
+			throw new DatabaseConnectionException("Etichetta non esistente");
+		} return id;
+	}
+	
+	public int findDiskByName(String name) throws DatabaseConnectionException {
+		int id = 0;
+		try(PreparedStatement s = connection
+				.prepareStatement("select * from disco where titolo = ?;");){
 			s.setString(1, name);
 			try(ResultSet rs = s.executeQuery()){
 				while(rs.next()) {
@@ -641,6 +659,44 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		    }
 		    return p;
 		}
+		
+		//Query 10
+				public int countTracks(int autore) throws DatabaseConnectionException {
+				    int brani = 0;
+				    try (CallableStatement query = connection.prepareCall("{call conta_brani_autore(?)}");) {
+				        query.setInt(1, autore);
+				        query.execute();
+				        ResultSet result = query.getResultSet();
+				        if (result.next()) {
+				            brani = result.getInt(1);
+				        }
+				        result.close();
+				    } catch (SQLException e) {
+				        throw new DatabaseConnectionException("Unable to count tracks", e);
+				    }
+				    return brani;
+				}
+		
+				//Query 11
+				public LocalTime countMinutes(int autore) throws DatabaseConnectionException {
+				    LocalTime minuti = null;
+				    try (CallableStatement query = connection.prepareCall("{call conta_minuti(?)}");) {
+				        query.setInt(1, autore);
+				        query.execute();
+				        ResultSet result = query.getResultSet();
+				        if (result.next()) {
+				            Time timeValue = result.getTime("minuti_totali");
+				            if (timeValue != null) {
+				                minuti = timeValue.toLocalTime();
+				            }
+				        }
+				        result.close();
+				    } catch (SQLException e) {
+				        throw new DatabaseConnectionException("Unable to count minutes", e);
+				    }
+				    return minuti;
+				}
+
 
 		
 	//Query 13
@@ -672,6 +728,22 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 			
 		} return disks;} 
 		
+		// Funzione per contare le copie
+		public int numberOfCopies(int disk) throws DatabaseConnectionException {
+			int copies = 0;
+				String statement = "select conta_copie(?) as 'copies';";
+			try (PreparedStatement query = connection.prepareStatement(statement)) {
+				query.setInt(1, disk);
+				ResultSet result = query.executeQuery();
+				while (result.next()) {
+					copies = result.getInt("copies");
+				}
+			} catch (SQLException e) {
+				throw new DatabaseConnectionException("Unable to count copies", e);
+			}
+			return copies;
+		}
+		
 		//procedure A
 		public List<Collection> mySharedCollections(Collector collector) throws DatabaseConnectionException {
 		    List<Collection> collections = new ArrayList<>();
@@ -693,6 +765,8 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		    }
 		    return collections;
 		}
+		
+		
 
 	
 }

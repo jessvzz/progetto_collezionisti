@@ -5,7 +5,7 @@ INSERT INTO `collezionista`
 VALUES(1, "jess_vzz", "geaviozzi@icloud.com", "Gea", "Viozzi"); 
 
 INSERT INTO `collezionista`
-VALUES(2, "user", "user@icloud.com", "User", "User");
+VALUES(2, "cicca_cicca", "francesca@icloud.com", "Francesca", "Ciccarelli");
 
 INSERT INTO `collezionista`
 VALUES(3, "fedefalco", "federico@icloud.com", "Federico", "Falcone");
@@ -17,7 +17,7 @@ INSERT INTO `collezionista`
 VALUES(5, "fabdam", "fabio@icloud.com", "Fabio", "D'Andreamatteo");
 
 INSERT INTO `collezionista`
-VALUES(6, "cicca_cicca", "francesca@icloud.com", "Francesca", "Ciccarelli");
+VALUES(6, "admin", "admin@icloud.com", "Admin", "Admin");
 
 -- collezione(ID, nome, flag, ID_collezionista)
 INSERT INTO `collezione`
@@ -40,9 +40,6 @@ VALUES(6, "collezione1","privato", 3);
 
 INSERT INTO `collezione`
 VALUES(7, "collezione2","privato", 1);
-
-INSERT INTO `collezione`
-VALUES(8, "collezione", "pubblico", 6);
 
 -- artista(ID, nomeDarte, nome, cognome, gruppo)
 INSERT INTO `artista`
@@ -130,9 +127,6 @@ VALUES(8, "123406789", "OTTIMO", "Disco7", 1, 1, 5, 4, 1, 3, 2000);
 
 INSERT INTO `disco`
 VALUES(9, "103406789", "USURATO", "Disco7", 1, 1, 5, 4, 1, 2, 2000);
-
-INSERT INTO `disco`
-VALUES(10, "103406489", "BUONO", "Disco7", 1, 1, 6, 8, 1, 2, 2000);
 
 
 -- brano(ID, ISRC, durata, titolo, ID_disco)
