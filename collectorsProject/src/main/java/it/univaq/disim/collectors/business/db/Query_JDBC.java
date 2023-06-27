@@ -420,6 +420,8 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 	            int tipoID = resultSet.getInt("ID_tipo");
 	            int annoUscita = resultSet.getInt("anno_uscita");
 	            
+	          
+	            
 	            // Inserisci un nuovo disco duplicato nella tabella disco
 	            String insertDiskQuery = "INSERT INTO disco (barcode, stato_di_conservazione, titolo, ID_artista, ID_etichetta, ID_collezionista, ID_collezione, ID_genere, ID_tipo, anno_uscita) " +
 	                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";

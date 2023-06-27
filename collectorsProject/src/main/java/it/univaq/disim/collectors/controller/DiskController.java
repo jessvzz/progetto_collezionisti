@@ -38,8 +38,7 @@ public class DiskController implements Initializable, DataInitializable<Triple<C
 	@FXML
 	private Label label, genreLabel, yearLabel, artistLabel, stateLabel, formatLabel, barcodeLabel, labelLabel;
 	
-	@FXML
-	private Button editButton;
+	
 	@FXML
 	private Button addButton;
 	@FXML 
@@ -67,7 +66,6 @@ public class DiskController implements Initializable, DataInitializable<Triple<C
 		this.collection = obj.getSecond();
 		this.disk = obj.getThird();
 		if(this.disk.getCollector()!= collector.getId()) {
-			editButton.setVisible(false);
 			addButton.setVisible(false);
 		}
 		
@@ -91,9 +89,7 @@ public class DiskController implements Initializable, DataInitializable<Triple<C
 		
 	}
 	
-	public void editAction() {
-		//dispatcher.renderView("addDisk", new Triple<Collection, Disk, Collector>(collection, disk, collector));
-	}
+	
 	
 	public void addAction() {
 		dispatcher.renderView("addTracks", new Triple<Collection, Collector, Disk>(collection, collector, disk));

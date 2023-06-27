@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="479.0" prefWidth="427.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.collectors.controller.DiskController">
+<VBox prefHeight="479.0" prefWidth="427.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.collectors.controller.DiskController">
    <children>
       <HBox prefHeight="41.0" prefWidth="634.0">
          <children>
@@ -36,18 +30,7 @@
                <children>
                   <VBox fx:id="informationsVBox" prefHeight="207.0" prefWidth="313.0">
                      <children>
-                        <HBox>
-                           <children>
-                              <Button fx:id="editButton" mnemonicParsing="false" onAction="#editAction" prefHeight="31.0" prefWidth="111.0" style="-fx-background-color: #d38bbc;" text="Edit disk" textFill="#5b5358">
-                                 <VBox.margin>
-                                    <Insets top="5.0" />
-                                 </VBox.margin>
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" right="10.0" top="5.0" />
-                                 </HBox.margin>
-                              </Button>
-                           </children>
-                        </HBox>
+                        <HBox />
                         <HBox>
                            <VBox.margin>
                               <Insets left="4.0" />

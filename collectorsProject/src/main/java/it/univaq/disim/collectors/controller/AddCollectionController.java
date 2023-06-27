@@ -54,6 +54,7 @@ public class AddCollectionController implements Initializable, DataInitializable
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		dispatcher.renderView("collections", collector);
 	}
 	
 	@FXML
