@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.collectors.controller.AddExistingDiskController">
+<VBox prefHeight="400.0" prefWidth="463.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.collectors.controller.AddExistingDiskController">
    <children>
       <Label prefHeight="40.0" prefWidth="120.0" text="SEARCH">
          <font>
@@ -28,20 +28,20 @@
          <children>
             <Pane prefHeight="46.0" prefWidth="614.0">
                <children>
-                  <TextField fx:id="artist" layoutX="236.0" prefHeight="31.0" prefWidth="218.0" promptText="search by artist" />
-                  <TextField fx:id="title" layoutY="39.0" prefHeight="31.0" prefWidth="226.0" promptText="search by title" />
-                  <TextField fx:id="barcode" prefHeight="31.0" prefWidth="226.0" promptText="search by barcode" />
-                  <Button fx:id="searchButton" layoutX="389.0" layoutY="39.0" mnemonicParsing="false" onAction="#search" text="Search" />
+                  <TextField fx:id="artist" layoutX="226.0" prefHeight="30.0" prefWidth="220.0" promptText="search by artist" />
+                  <TextField fx:id="title" layoutY="39.0" prefHeight="30.0" prefWidth="220.0" promptText="search by title" />
+                  <TextField fx:id="barcode" prefHeight="30.0" prefWidth="220.0" promptText="search by barcode" />
+                  <Button fx:id="searchButton" layoutX="381.0" layoutY="39.0" mnemonicParsing="false" onAction="#search" text="Search" />
                </children>
             </Pane>
          </children>
       </HBox>
-      <TableView fx:id="disksTableView" prefHeight="244.0" prefWidth="458.0">
+      <TableView fx:id="disksTableView" prefHeight="236.0" prefWidth="435.0">
          <columns>
             <TableColumn fx:id="barcodeTableColumn" prefWidth="88.0" text="Barcode" />
             <TableColumn fx:id="titleTableColumn" prefWidth="150.0" text="Title" />
-            <TableColumn fx:id="artistTableColumn" prefWidth="145.0" text="Artist" />
-            <TableColumn fx:id="manageTableColumn" prefWidth="59.0" text="Choose" />
+            <TableColumn fx:id="artistTableColumn" prefWidth="133.0" text="Artist" />
+            <TableColumn fx:id="manageTableColumn" prefWidth="71.0" text="Choose" />
          </columns>
       </TableView>
    </children>

@@ -34,7 +34,7 @@
                                     <Insets left="100.0" right="10.0" />
                                  </HBox.margin>
                               </TextField>
-                              <Button fx:id="search1" mnemonicParsing="false" text="Find Out">
+                              <Button fx:id="search1" mnemonicParsing="false" onAction="#searchDisk" text="Find Out">
                                  <HBox.margin>
                                     <Insets left="15.0" right="25.0" />
                                  </HBox.margin>
@@ -68,7 +68,7 @@
                                     <Insets left="100.0" right="10.0" />
                                  </HBox.margin>
                               </ComboBox>
-                              <Button fx:id="search2" mnemonicParsing="false" text="Find Out">
+                              <Button fx:id="search2" mnemonicParsing="false" onAction="#searchTracks" text="Find Out">
                                  <HBox.margin>
                                     <Insets left="15.0" right="25.0" />
                                  </HBox.margin>
@@ -102,7 +102,7 @@
                                     <Insets left="100.0" right="10.0" />
                                  </HBox.margin>
                               </ComboBox>
-                              <Button fx:id="search3" mnemonicParsing="false" text="Find Out">
+                              <Button fx:id="search3" mnemonicParsing="false" onAction="#searchMinutes" text="Find Out">
                                  <HBox.margin>
                                     <Insets left="15.0" right="25.0" />
                                  </HBox.margin>

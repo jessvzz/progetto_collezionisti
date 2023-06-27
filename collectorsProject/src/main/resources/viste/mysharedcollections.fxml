@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
@@ -7,19 +11,19 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="663.0" spacing="10.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.collectors.controller.MySharedCollectionsController">
+<VBox prefHeight="400.0" prefWidth="663.0" spacing="10.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.collectors.controller.MySharedCollectionsController">
    <children>
       <Pane prefHeight="466.0" prefWidth="643.0">
          <children>
             <TableView fx:id="collectionsTableView" layoutY="43.0" prefHeight="337.0" prefWidth="427.0">
                <columns>
-                  <TableColumn fx:id="nameTableColumn" prefWidth="204.0" text="Nome della collezione" />
-                  <TableColumn fx:id="collezionistaTableColumn" minWidth="0.0" prefWidth="151.0" text="nickname collezionista" />
-                  <TableColumn fx:id="manageTableColumn" prefWidth="71.0" text="Manage" />
+                  <TableColumn fx:id="nameTableColumn" prefWidth="172.0" text="Nome della collezione" />
+                  <TableColumn fx:id="collezionistaTableColumn" minWidth="0.0" prefWidth="172.0" text="Nickname collezionista" />
+                  <TableColumn fx:id="manageTableColumn" prefWidth="82.0" text="Manage" />
                </columns>
             </TableView>
-            <Button fx:id="shareButton" layoutX="14.0" layoutY="6.0" mnemonicParsing="false" onAction="#addAction" prefHeight="31.0" prefWidth="127.0" text="Share collection" />
-            <Button fx:id="checkButton" layoutX="164.0" layoutY="6.0" mnemonicParsing="false" onAction="#checkAction" prefHeight="31.0" prefWidth="127.0" text="Check visibility" />
+            <Button fx:id="shareButton" layoutY="6.0" mnemonicParsing="false" onAction="#addAction" prefHeight="31.0" prefWidth="127.0" text="Share collection" />
+            <Button fx:id="checkButton" layoutX="300.0" layoutY="6.0" mnemonicParsing="false" onAction="#checkAction" prefHeight="31.0" prefWidth="127.0" text="Check visibility" />
          </children>
       </Pane>
    </children>

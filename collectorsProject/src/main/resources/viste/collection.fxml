@@ -28,8 +28,8 @@
          <children>
             <TableView fx:id="disksTableView" layoutY="14.0" prefHeight="244.0" prefWidth="333.0">
                <columns>
-                  <TableColumn fx:id="nameTableColumn" prefWidth="205.0" text="Name" />
-                  <TableColumn fx:id="editTableColumn" prefWidth="55.0" text="Delete" />
+                  <TableColumn fx:id="nameTableColumn" prefWidth="185.0" text="Name" />
+                  <TableColumn fx:id="editTableColumn" prefWidth="75.0" text="Delete" />
                   <TableColumn fx:id="actionTableColumn" prefWidth="73.0" text="Manage" />
                </columns>
             </TableView>
