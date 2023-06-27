@@ -106,6 +106,8 @@ public class MyCollectionsController implements Initializable, DataInitializable
 			deleteButton.setOnAction((ActionEvent event) -> {
 				try {
 					implementation.deleteCollection(param.getValue().getId());
+					collectionsData.remove(param.getValue()); // Rimuovi la collezione dalla lista dei dati della tabella
+		            collectionsTableView.refresh();
 				} catch (DatabaseConnectionException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

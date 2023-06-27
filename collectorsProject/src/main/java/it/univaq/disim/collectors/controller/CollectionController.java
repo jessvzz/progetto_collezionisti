@@ -71,10 +71,10 @@ public class CollectionController implements Initializable, DataInitializable<Co
 		});
 		editTableColumn.setStyle("-fx-alignment: CENTER;");
 		editTableColumn.setCellValueFactory((CellDataFeatures<Disk, Button> param) -> {
-			final Button editButton = new Button("Edit");
+			final Button editButton = new Button("Delete");
 			editButton.setOnAction((ActionEvent event) -> {
-				dispatcher.renderView("addDisk",
-						new Triple<Collector, Collection, Disk>(collector, collection, param.getValue()));
+					deleteDisk(param.getValue());
+				
 			});
 			return new SimpleObjectProperty<Button>(editButton);
 		});
@@ -118,6 +118,17 @@ public class CollectionController implements Initializable, DataInitializable<Co
 		dispatcher.renderView("addExistingDisk", new Couple<Collection, Collector>(collection, collector));
 	}
 	
+	@FXML
+	private void deleteDisk(Disk disk) {
+	    try {
+	        implementation.deleteDisk(disk.getId());
+	        discosData.remove(disk); 
+	        disksTableView.refresh(); 
+	    } catch (DatabaseConnectionException e) {
+	        e.printStackTrace();
+	    }
+	}
+
 	
 
 

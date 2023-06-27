@@ -530,6 +530,17 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		}
 		
 	}
+	//Query4
+		public void deleteDisk(int idisco) throws DatabaseConnectionException {
+			try (CallableStatement query = connection.prepareCall("{call rimozione_disco(?)}");) {
+				query.setInt(1, idisco);
+				
+				query.execute();
+			} catch (SQLException e) {
+				throw new DatabaseConnectionException("Unable to remove collection", e);
+			}
+			
+		}
 	
 	//Query5
 	public void deleteCollection(int idcollezione) throws DatabaseConnectionException {
