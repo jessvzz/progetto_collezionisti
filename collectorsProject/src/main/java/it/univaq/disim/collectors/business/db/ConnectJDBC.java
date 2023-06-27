@@ -33,7 +33,7 @@ public class ConnectJDBC {
 		return connect();
 	}
 
-	// connessione al database
+// connessione al database
 	private Connection connect() throws DatabaseConnectionException {
 		System.out.println("Tentativo di connessione al DB...");
 		try {
@@ -50,6 +50,10 @@ public class ConnectJDBC {
 			throw new DatabaseConnectionException("Errore di connessione", ex);
 		}
 	}
+	
+	
+	
+
 
 	// disconnessione della connessione locale (singleton) se presente
 	public void disconnect() throws DatabaseConnectionException {

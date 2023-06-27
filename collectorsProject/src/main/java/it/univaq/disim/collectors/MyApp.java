@@ -10,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class MyApp extends Application {
-	private static DBImplementation dbImplementation;
+	//private static DBImplementation dbImplementation;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -18,18 +18,18 @@ public class MyApp extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		dbImplementation = new DBImplementation();
+		//dbImplementation = new DBImplementation();
 
         // Avvia l'applicazione
         ViewDispatcher.getInstance().login(stage);
 
         // Quando l'applicazione viene chiusa, disconnetti il database
-        stage.setOnCloseRequest(event -> {
-            try {
-                dbImplementation.getConnection().disconnect();
-            } catch (DatabaseConnectionException e) {
-                e.printStackTrace();
+       /* stage.setOnCloseRequest(event -> {
+          try {
+               dbImplementation.getConnection().disconnect();
+           } catch (DatabaseConnectionException e) {
+               e.printStackTrace();
             }
-        });
+        });*/
     }
 }

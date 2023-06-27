@@ -315,30 +315,6 @@ BEGIN
 END $$
 DELIMITER ;
 
-/* Funzione per contare le copie di un disco di un collezionista */
-DROP FUNCTION IF EXISTS conta_copie;
-
-DELIMITER $$
-CREATE FUNCTION conta_copie(ID_disco INTEGER)
-RETURNS INTEGER UNSIGNED DETERMINISTIC
-BEGIN
-    DECLARE numero_copie INTEGER UNSIGNED;
-    DECLARE disco_titolo VARCHAR(255);
-    DECLARE disco_artista INTEGER;
-    DECLARE disco_collezionista INTEGER;
-    
-    SELECT titolo, ID_artista, ID_collezionista INTO disco_titolo, disco_artista, disco_collezionista
-    FROM disco WHERE ID = ID_disco;
-    
-    SET numero_copie = (
-        SELECT COUNT(DISTINCT disc.ID) FROM disco disc  
-        WHERE disc.ID_artista = disco_artista AND disc.titolo = disco_titolo AND disc.ID_collezionista = disco_collezionista
-    );
-    
-    RETURN numero_copie;
-END $$
-DELIMITER ;
-
 -- Query 13
 
 DROP PROCEDURE IF EXISTS trova_dischi_simili_barcode_nullo;
@@ -364,6 +340,31 @@ DELIMITER $$
     
     
     -- PROCEDURES AGGIUNTIVE CHE CI SONO TORNATE UTILI
+    
+    /* Funzione per contare le copie di un disco di un collezionista */
+DROP FUNCTION IF EXISTS conta_copie;
+
+DELIMITER $$
+CREATE FUNCTION conta_copie(ID_disco INTEGER)
+RETURNS INTEGER UNSIGNED DETERMINISTIC
+BEGIN
+    DECLARE numero_copie INTEGER UNSIGNED;
+    DECLARE disco_titolo VARCHAR(255);
+    DECLARE disco_artista INTEGER;
+    DECLARE disco_collezionista INTEGER;
+    
+    SELECT titolo, ID_artista, ID_collezionista INTO disco_titolo, disco_artista, disco_collezionista
+    FROM disco WHERE ID = ID_disco;
+    
+    SET numero_copie = (
+        SELECT COUNT(DISTINCT disc.ID) FROM disco disc  
+        WHERE disc.ID_artista = disco_artista AND disc.titolo = disco_titolo AND disc.ID_collezionista = disco_collezionista
+    );
+    
+    RETURN numero_copie;
+END $$
+DELIMITER ;
+
     -- procedure A: ritorna una lista delle mie collezioni condivise
     DROP PROCEDURE IF EXISTS mie_collezioni_condivise;
 DELIMITER $$
