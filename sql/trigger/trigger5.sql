@@ -9,14 +9,15 @@ FOR EACH ROW
 BEGIN
 	DECLARE numero_dischi_totali SMALLINT UNSIGNED DEFAULT 0;
     DECLARE numero_dischi_collezione SMALLINT UNSIGNED DEFAULT 0;
-    
-    SELECT d.ID_collezionista, COUNT(*) INTO numero_dischi_totali
+-- conta i dischi posseduti dal collezionista
+    SELECT COUNT(*) INTO numero_dischi_totali
     FROM disco d
-    GROUP BY d.ID_collezionista;
+    WHERE d.ID_collezionista = NEW.d.ID_collezionista;
     
-    SELECT d.ID_collezione, COUNT(*) INTO numero_dischi_collezione
+-- conta i dischi nella collezione
+    SELECT COUNT(*) INTO numero_dischi_collezione
     FROM disco d
-    GROUP BY d.ID_collezione;
+    WHERE ID_collezione = NEW.ID;
 
     IF (numero_dischi_collezione > numero_dischi_totali) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Errore! Stai inserendo una quantità errata di dischi nella collezione';
