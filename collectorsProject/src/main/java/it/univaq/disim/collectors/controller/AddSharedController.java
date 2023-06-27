@@ -1,6 +1,7 @@
 package it.univaq.disim.collectors.controller;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -86,3 +87,4 @@ public class AddSharedController implements Initializable, DataInitializable<Col
 		dispatcher.renderView("mysharedcollections", collector);
 	}
 }
+ 

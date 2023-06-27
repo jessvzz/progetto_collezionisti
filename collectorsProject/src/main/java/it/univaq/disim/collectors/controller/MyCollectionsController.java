@@ -74,12 +74,58 @@ public class MyCollectionsController implements Initializable, DataInitializable
 		actionTableColumn.setCellValueFactory((CellDataFeatures<Collection, Button> param) -> {
 			final Button viewButton = new Button("View");
 			viewButton.setStyle(
-					"-fx-background-color:#bacad7; -fx-background-radius: 15px; -fx-text-fill: #5f6569; -fx-font-weight: bold;");
+					"-fx-background-color:#fcbdea; -fx-background-radius: 15px; -fx-text-fill: #5f6569; -fx-font-weight: bold;");
 			viewButton.setOnAction((ActionEvent event) -> {
 				dispatcher.renderView("collection", new Couple<Collection, Collector>(param.getValue(), collector));
 			});
 			return new SimpleObjectProperty<Button>(viewButton);
 		});
+		editTableColumn.setStyle("-fx-alignment: CENTER;");
+		editTableColumn.setCellValueFactory((CellDataFeatures<Collection, Button> param) -> {
+			final Button editButton = new Button("Edit");
+			editButton.setStyle(
+					"-fx-background-color:#fcbdea; -fx-background-radius: 15px; -fx-text-fill: #5f6569; -fx-font-weight: bold;");
+			editButton.setOnAction((ActionEvent event) -> {
+				try {
+					implementation.editStatus(param.getValue().getId());
+					List<Collection> collections = implementation.collectionsOwned(collector);
+		            collectionsData.setAll(collections);
+				} catch (DatabaseConnectionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+			
+			return new SimpleObjectProperty<Button>(editButton);
+		});
+		deleteTableColumn.setStyle("-fx-alignment: CENTER;");
+		deleteTableColumn.setCellValueFactory((CellDataFeatures<Collection, Button> param) -> {
+			final Button deleteButton = new Button("Delete");
+			deleteButton.setStyle(
+					"-fx-background-color:#fcbdea; -fx-background-radius: 15px; -fx-text-fill: #5f6569; -fx-font-weight: bold;");
+			deleteButton.setOnAction((ActionEvent event) -> {
+				try {
+					implementation.deleteCollection(param.getValue().getId());
+				} catch (DatabaseConnectionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+			return new SimpleObjectProperty<Button>(deleteButton);
+		});
+		shareTableColumn.setStyle("-fx-alignment: CENTER;");
+		shareTableColumn.setCellValueFactory((CellDataFeatures<Collection, Button> param) -> {
+			final Button shareButton = new Button("Share");
+			shareButton.setStyle(
+					"-fx-background-color:#fcbdea; -fx-background-radius: 15px; -fx-text-fill: #5f6569; -fx-font-weight: bold;");
+			shareButton.setOnAction((ActionEvent event) -> {
+				dispatcher.renderView("share", new Couple<Collection, Collector>(param.getValue(), collector));
+				
+			});
+			return new SimpleObjectProperty<Button>(shareButton);
+		});
+		
+		
 
 	}
 	

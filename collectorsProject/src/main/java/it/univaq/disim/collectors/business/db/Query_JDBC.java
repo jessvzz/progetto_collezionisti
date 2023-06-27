@@ -505,6 +505,19 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		
 	}
 	
+	//Query 3a
+		public void editStatus(int idcollezione) throws DatabaseConnectionException {
+			try (CallableStatement query = connection.prepareCall("{call modifica_pubblicazione(?)}");) {
+				query.setInt(1, idcollezione);
+				
+				query.execute();
+			} catch (SQLException e) {
+				throw new DatabaseConnectionException("Unable to change status", e);
+			}
+			
+		}
+
+	
 	//Query 3b
 	public void addSharing(int idcollezione, int iduser) throws DatabaseConnectionException {
 		try (CallableStatement query = connection.prepareCall("{call inserimento_condivisioni(?,?)}");) {
@@ -514,6 +527,18 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 			query.execute();
 		} catch (SQLException e) {
 			throw new DatabaseConnectionException("Unable to add collection", e);
+		}
+		
+	}
+	
+	//Query5
+	public void deleteCollection(int idcollezione) throws DatabaseConnectionException {
+		try (CallableStatement query = connection.prepareCall("{call rimozione_collezione(?)}");) {
+			query.setInt(1, idcollezione);
+			
+			query.execute();
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Unable to remove collection", e);
 		}
 		
 	}
@@ -587,6 +612,25 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 					
 					return disks;	
 		}
+		
+	//Query 9
+		public boolean isVisible(int collezione, int collezionista) throws DatabaseConnectionException {
+		    boolean p = false;
+		    try (CallableStatement query = connection.prepareCall("{call check_visibilita(?, ?)}");) {
+		        query.setInt(1, collezione);
+		        query.setInt(2, collezionista);
+		        query.execute();
+		        ResultSet result = query.getResultSet();
+		        if (result.next()) {
+		            p = result.getBoolean(1); // Ottieni il valore dalla colonna 1 (p)
+		        }
+		        result.close();
+		    } catch (SQLException e) {
+		        throw new DatabaseConnectionException("Unable to check visibility", e);
+		    }
+		    return p;
+		}
+
 		
 	//Query 13
 		public List<Disk> query13(String barcode,String artist, String title, Collector collector) throws DatabaseConnectionException{

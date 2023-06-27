@@ -53,13 +53,19 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS modifica_pubblicazione;
 DELIMITER $$
-	CREATE PROCEDURE modifica_pubblicazione(ID1 INTEGER, flag ENUM("pubblico","privato"))
+	CREATE PROCEDURE modifica_pubblicazione(ID1 INTEGER)
     BEGIN
-    SELECT ID, stato FROM collezione WHERE collezione.ID = ID1;
-    IF flag = "pubblico" THEN UPDATE collezione SET stato = "pubblico" WHERE collezione.ID = ID1;
-	ELSEIF flag = "privato" THEN UPDATE collezione SET stato = "privato" WHERE collezione.ID = ID1;
-	END IF;
-    END $$
+    DECLARE stato_corrente VARCHAR(10);
+    SELECT stato INTO stato_corrente FROM collezione WHERE ID = ID1;
+
+    IF stato_corrente = 'pubblico' THEN
+        UPDATE collezione SET stato = 'privato' WHERE ID = ID1;
+    ELSEIF stato_corrente = 'privato' THEN
+        UPDATE collezione SET stato = 'pubblico' WHERE ID = ID1;
+    END IF;
+    
+    SELECT ID, stato FROM collezione WHERE ID = ID1; 
+END $$
 DELIMITER ;
 
 /* QUERY 3b: Aggiunta di nuove condivisioni a una collezione */
