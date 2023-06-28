@@ -349,6 +349,12 @@ VALUES(8, "IT-D00-07-00118", "00:03:31", "Brano7", 11);
 INSERT INTO `brano`
 VALUES(9, "IT-D00-07-00119", "00:04:01", "Brano8", 12);
 
+INSERT INTO `brano`
+VALUES(10, "IT-D00-07-00120", "00:02:51", "Brano9", 11);
+
+INSERT INTO `brano`
+VALUES(11, "IT-D00-07-00121", "00:03:07", "Brano10", 11);
+
 -- condivisa(ID_collezionista, ID_collezione)
 INSERT INTO `condivisa`
 VALUES(2, 4);
@@ -855,4 +861,19 @@ BEGIN
     END IF;
 END $$
 
+DELIMITER ;
+
+-- Trigger 3 --
+DROP TRIGGER IF EXISTS check_anno_uscita;
+DELIMITER $$
+
+CREATE TRIGGER check_anno_uscita BEFORE INSERT ON disco
+FOR EACH ROW
+BEGIN
+
+  IF(NEW.disco.anno_uscita > YEAR(NOW())) THEN
+		SIGNAL SQLSTATE "45000" SET MESSAGE_TEXT="Errore nella data di uscita del disco.";
+  END IF;
+  
+END $$
 DELIMITER ;
