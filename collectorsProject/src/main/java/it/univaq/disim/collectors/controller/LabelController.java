@@ -10,6 +10,7 @@ import it.univaq.disim.collectors.domain.Collector;
 import it.univaq.disim.collectors.view.ViewDispatcher;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 
@@ -22,9 +23,13 @@ public class LabelController implements Initializable, DataInitializable<Collect
 	@FXML
 	private TextField nameField, pivaField;
 	
+	@FXML
+	private Button saveButton;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+		saveButton.disableProperty()
+		.bind(nameField.textProperty().isEmpty().or(pivaField.textProperty().isEmpty()));
 		
 	}
 	

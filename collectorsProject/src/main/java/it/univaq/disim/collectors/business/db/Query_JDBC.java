@@ -10,9 +10,11 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import impl.org.controlsfx.collections.MappingChange.Map;
 import it.univaq.disim.collectors.domain.Appartiene;
 import it.univaq.disim.collectors.domain.Artist;
 import it.univaq.disim.collectors.domain.Collection;
@@ -505,7 +507,7 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		}
 	}
 	
-	//Query 2.1
+	//Query 2a
 	public void addDisk(String barcode, State state, String title, int artist, int label, Collector collector, Collection collection, int genre, int format, int year) throws DatabaseConnectionException {
 		try (CallableStatement query = connection.prepareCall("{call inserimento_disco(?,?,?, ?, ?, ?, ? , ?, ?, ?)}");) {
 			query.setString(1, barcode);
@@ -524,7 +526,7 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		}
 	}
 	
-	//Query 2.2
+	//Query 2b
 	public void addTrack(String isrc, String time, String title, Disk disk, Appartiene flag, int artist ) throws DatabaseConnectionException {
 		try (CallableStatement query = connection.prepareCall("{call inserimento_traccia(?,?,?, ?, ?, ?)}");) {
 			query.setString(1, isrc);
@@ -732,7 +734,6 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 				    }
 				    return minuti;
 				}
-				
 				
 
 		

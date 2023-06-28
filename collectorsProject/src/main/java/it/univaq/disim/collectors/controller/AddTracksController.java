@@ -17,8 +17,10 @@ import it.univaq.disim.collectors.domain.Couple;
 import it.univaq.disim.collectors.domain.Disk;
 import it.univaq.disim.collectors.domain.Triple;
 import it.univaq.disim.collectors.view.ViewDispatcher;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -45,9 +47,14 @@ public class AddTracksController implements Initializable, DataInitializable<Tri
 	
 	@FXML
 	private SearchableComboBox<String> artistComboBox;
+	
+	@FXML
+	private Button saveButton;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		saveButton.disableProperty()
+		.bind(nameField.textProperty().isEmpty().or(isrcField.textProperty().isEmpty()).or(Bindings.isNull(artistComboBox.valueProperty())));
 		initializeSpinner(hoursSpinner, 0, 23, 0); 
 	    initializeSpinner(minutesSpinner, 0, 59, 0);
 	    initializeSpinner(secondsSpinner, 0, 59, 0);
