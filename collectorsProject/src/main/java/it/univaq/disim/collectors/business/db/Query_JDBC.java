@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -659,7 +660,7 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		}
 		
 	//Query 9
-		public boolean isVisible(int collezione, int collezionista) throws DatabaseConnectionException {
+	public boolean isVisible(int collezione, int collezionista) throws DatabaseConnectionException {
 		    boolean p = false;
 		    try (CallableStatement query = connection.prepareCall("{call check_visibilita(?, ?)}");) {
 		        query.setInt(1, collezione);
@@ -676,20 +677,37 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		    return p;
 		}
 		
+		/*public boolean isVisible(int collezione, int collezionista) throws DatabaseConnectionException {
+		    boolean p = false;
+		    
+			String statement = "select check_visibilita as 'p';";
+		    try (PreparedStatement query = connection.prepareStatement(statement)) {
+			query.setInt(1, collezione);
+			query.setInt(2, collezionista);
+			ResultSet result = query.executeQuery();
+			while (result.next()) {
+				p = result.getBoolean("p");
+			}
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Unable to check visibility", e);
+		}
+		    return p;
+		}*/
+		
+		
 		//Query 10
 				public int countTracks(int autore) throws DatabaseConnectionException {
 				    int brani = 0;
-				    try (CallableStatement query = connection.prepareCall("{call conta_brani_autore(?)}");) {
-				        query.setInt(1, autore);
-				        query.execute();
-				        ResultSet result = query.getResultSet();
-				        if (result.next()) {
-				            brani = result.getInt(1);
-				        }
-				        result.close();
-				    } catch (SQLException e) {
-				        throw new DatabaseConnectionException("Unable to count tracks", e);
-				    }
+				    String statement = "select conta_brani_autore as 'numero';";
+				    try (PreparedStatement query = connection.prepareStatement(statement)) {
+					query.setInt(1, autore);
+					ResultSet result = query.executeQuery();
+					while (result.next()) {
+						brani = result.getInt("numero");
+					}
+				} catch (SQLException e) {
+					throw new DatabaseConnectionException("Unable to count tracks", e);
+				}
 				    return brani;
 				}
 		
@@ -712,7 +730,8 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 				    }
 				    return minuti;
 				}
-
+				
+				
 
 		
 	//Query 13
@@ -760,8 +779,8 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 			return copies;
 		}
 		
-		//procedure A
-		public List<Collection> mySharedCollections(Collector collector) throws DatabaseConnectionException {
+		
+		/*public List<Collection> mySharedCollections(Collector collector) throws DatabaseConnectionException {
 		    List<Collection> collections = new ArrayList<>();
 		    try (CallableStatement s = connection.prepareCall("{CALL mie_collezioni_condivise(?)}")) {
 		        s.setInt(1, collector.getId());
@@ -780,9 +799,9 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		        throw new DatabaseConnectionException("Unable to find collections shared with you", e);
 		    }
 		    return collections;
-		}
+		}*/
 		
-		//procedura B
+		//procedure A
 		public void addExistingDisk(Disk disk, Collection collection) throws DatabaseConnectionException {
 			try (CallableStatement query = connection.prepareCall("{call aggiungi_disco_esistente(?, ?)}");) {
 				query.setInt(1, disk.getId());
