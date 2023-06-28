@@ -21,6 +21,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -48,15 +49,11 @@ public class AddDiskController implements Initializable, DataInitializable<Coupl
 	@FXML
 	private VBox vBox;
 	
-	/*@FXML
-	private ComboBox<String> labelComboBox;
-	
-	 @FXML
-	private TextField artistSearchTextField;
+;
 	 
 	 @FXML
-	private TextField labelSearchTextField;
-	*/
+	private Button saveButton;
+	
 	@FXML
 	private SearchableComboBox<String> artistComboBox, labelComboBox;
 
@@ -80,6 +77,10 @@ public class AddDiskController implements Initializable, DataInitializable<Coupl
 			for(Etichetta e : labels) {
 				labelComboBox.getItems().add(e.getName());
 			}
+		
+			saveButton.disableProperty()
+			.bind(titleTextField.textProperty().isEmpty().or(yearTextField.textProperty().isEmpty()).or(Bindings.isNull(genreComboBox.valueProperty())).or(Bindings.isNull(formatComboBox.valueProperty())).or(Bindings.isNull(artistComboBox.valueProperty())).or(Bindings.isNull(labelComboBox.valueProperty())));
+
 			
 		} catch (DatabaseConnectionException e) {
 		
