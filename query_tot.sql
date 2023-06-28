@@ -2,7 +2,7 @@
 
 DROP PROCEDURE IF EXISTS inserimento_collezione;
 DELIMITER $$
-	CREATE PROCEDURE inserimento_collezione(ID_collezionista INTEGER, nome VARCHAR(100), stato ENUM("PUBBLICO","PRIVATO"))
+	CREATE PROCEDURE inserimento_collezione(ID_collezionista INTEGER UNSIGNED, nome VARCHAR(100), stato ENUM("PUBBLICO","PRIVATO"))
     BEGIN
     INSERT INTO collezione(ID, ID_collezionista, nome, stato)
     VALUES(ID, ID_collezionista, nome, stato);
@@ -14,8 +14,9 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS inserimento_disco;
 DELIMITER $$
 	CREATE PROCEDURE inserimento_disco(barcode VARCHAR(100), stato_di_conservazione ENUM("OTTIMO","BUONO","USURATO"), titolo VARCHAR(100), 
-									   ID_artista INTEGER, ID_etichetta INTEGER, ID_collezionista INTEGER, ID_collezione INTEGER, 
-                                       ID_genere INTEGER, ID_tipo INTEGER, anno_uscita INTEGER)
+									   ID_artista INTEGER UNSIGNED, ID_etichetta INTEGER UNSIGNED, ID_collezionista INTEGER UNSIGNED, 
+                                       ID_collezione INTEGER UNSIGNED, ID_genere INTEGER UNSIGNED, ID_tipo INTEGER UNSIGNED,
+                                       anno_uscita INTEGER UNSIGNED)
     BEGIN
     INSERT INTO disco
     VALUES(ID, barcode, stato_di_conservazione, titolo, ID_artista, ID_etichetta, ID_collezionista, ID_collezione, ID_genere, ID_tipo, anno_uscita);
@@ -26,22 +27,16 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS inserimento_traccia;
 DELIMITER $$
-CREATE PROCEDURE inserimento_traccia(
-  ISRC VARCHAR(100),
-  durata VARCHAR(100),
-  titolo VARCHAR(100),
-  ID_disco INTEGER,
-  flag ENUM('ESECUTORE', 'COMPOSITORE', 'ENTRAMBI'),
-  ID_artista INTEGER
-)
+CREATE PROCEDURE inserimento_traccia(ISRC VARCHAR(100), durata VARCHAR(100), titolo VARCHAR(100), ID_disco INTEGER UNSIGNED, 
+									 flag ENUM('ESECUTORE', 'COMPOSITORE', 'ENTRAMBI'), ID_artista INTEGER UNSIGNED)
 BEGIN
-  DECLARE ID_brano INTEGER;
+  DECLARE ID_brano INTEGER UNSIGNED;
 
   -- Inserimento del brano nella tabella "brano"
   INSERT INTO brano(ISRC, durata, titolo, ID_disco)
   VALUES (ISRC, durata, titolo, ID_disco);
   
-  -- Ottieni l'ID del brano appena inserito
+  -- Ottiene l'ID del brano appena inserito
   SET ID_brano = LAST_INSERT_ID();
 
   -- Inserimento nella tabella "appartiene"
@@ -49,11 +44,12 @@ BEGIN
   VALUES (ID_artista, ID_brano, flag);
 END $$
 DELIMITER ;
+
 /* QUERY 3a: Modifica dello stato di pubblicazione di una collezione (da privata a pubblica e viceversa)*/
 
 DROP PROCEDURE IF EXISTS modifica_pubblicazione;
 DELIMITER $$
-	CREATE PROCEDURE modifica_pubblicazione(ID1 INTEGER)
+	CREATE PROCEDURE modifica_pubblicazione(ID1 INTEGER UNSIGNED) -- ID1 = ID_collezione
     BEGIN
     DECLARE stato_corrente VARCHAR(10);
     SELECT stato INTO stato_corrente FROM collezione WHERE ID = ID1;
@@ -68,11 +64,11 @@ DELIMITER $$
 END $$
 DELIMITER ;
 
-/* QUERY 3b: Aggiunta di nuove condivisioni a una collezione */
+/* QUERY 3b: Aggiunta di nuove condivisioni ad una collezione */
 
 DROP PROCEDURE IF EXISTS inserimento_condivisioni;
 DELIMITER $$
-	CREATE PROCEDURE inserimento_condivisioni(ID_collezione INTEGER, ID_collezionista INTEGER)
+	CREATE PROCEDURE inserimento_condivisioni(ID_collezione INTEGER UNSIGNED, ID_collezionista INTEGER UNSIGNED)
     BEGIN
     INSERT INTO condivisa(ID_collezione, ID_collezionista)
     VALUES(ID_collezione, ID_collezionista);
@@ -83,7 +79,7 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS rimozione_disco;
 DELIMITER $$
-	CREATE PROCEDURE rimozione_disco(ID1 INTEGER)
+	CREATE PROCEDURE rimozione_disco(ID1 INTEGER UNSIGNED) -- ID1 = ID_disco
     BEGIN
     DELETE FROM disco WHERE ID = ID1;
     END $$
@@ -93,7 +89,7 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS rimozione_collezione;
 DELIMITER $$
-	CREATE PROCEDURE rimozione_collezione(ID1 INTEGER)
+	CREATE PROCEDURE rimozione_collezione(ID1 INTEGER UNSIGNED) -- ID1 = ID_collezione
     BEGIN
     DELETE FROM collezione WHERE collezione.ID = ID1;
     END $$
@@ -103,7 +99,7 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS lista_dischi;
 DELIMITER $$
-	CREATE PROCEDURE lista_dischi(ID1 INTEGER)
+	CREATE PROCEDURE lista_dischi(ID1 INTEGER UNSIGNED) -- ID1 = ID_collezione
     BEGIN
     SELECT d.ID, d.titolo, d.ID_artista, d.ID_etichetta, d.ID_collezionista, d.ID_genere, 
 		   d.anno_uscita, d.stato_di_conservazione, d.ID_tipo, d.barcode FROM disco d
@@ -115,7 +111,7 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS tracklist;
 DELIMITER $$
-	CREATE PROCEDURE tracklist(ID1 INTEGER)
+	CREATE PROCEDURE tracklist(ID1 INTEGER UNSIGNED) -- ID1 = ID_disco
     BEGIN
     SELECT b.ID, b.titolo, b.ISRC, b.durata FROM brano b
         JOIN disco d ON (b.ID_disco = d.ID)
@@ -127,12 +123,15 @@ DELIMITER ;
 Si potrà decidere di includere nella ricerca le collezioni di un certo collezionista e/o 
 quelle condivise con lo stesso collezionista e/o quelle pubbliche. */
 
-/* Per la query in oggetto si è deciso di procedere nel seguente modo: passiamo in input una stringa che può essere sia il nome dell’artista sia il titolo del disco, l’ID del collezionista e tre parametri booleani che ci serviranno per effettuare la ricerca in base alle collezioni possedute dal collezionista, a quelle condivise con lui e/o alle collezioni pubbliche.
+/* Per la query in oggetto si è deciso di procedere nel seguente modo: passiamo in input una stringa che può essere 
+sia il nome dell’artista sia il titolo del disco, l’ID del collezionista e tre parametri booleani che ci serviranno per 
+effettuare la ricerca in base alle collezioni possedute dal collezionista, a quelle condivise con lui e/o alle collezioni pubbliche.
 Abbiamo creato tre procedure differenti:
 -ricerca1 inserisce in una tabella temporanea (ric1) tutte le collezioni che sono possedute dal collezionista;
 -ricerca2 inserisce in una tabella temporanea (ric2) tutte le collezioni condivise con il collezionista;
 -ricerca3 inserisce in una tabella temporanea (ric3) tutte le collezioni che sono pubbliche e quindi visibili dal collezionista.
-A questo punto, grazie alla procedura ricerca_dischi, sarà possibile fare diversi tipi di ricerca in base al valore dei parametri booleani in input (tramite la UNION DISTINCT delle temporary table); in particolare possiamo:
+A questo punto, grazie alla procedura ricerca_dischi, sarà possibile fare diversi tipi di ricerca in base al valore dei 
+parametri booleani in input (tramite la UNION DISTINCT delle temporary table); in particolare possiamo:
 -ricercare le collezioni che sono possedute da un collezionista, condivise con lui e pubbliche;
 -ricercare le collezioni solo possedute dal collezionista;
 -ricercare solo le collezioni condivise con il collezionista;
@@ -143,9 +142,8 @@ A questo punto, grazie alla procedura ricerca_dischi, sarà possibile fare diver
 
 DROP PROCEDURE IF EXISTS ricerca_dischi;
 DELIMITER $$
-CREATE PROCEDURE ricerca_dischi(
-    stringa VARCHAR(100), ID_coll INTEGER, posseduta BOOLEAN, condivisa BOOLEAN, pubblica BOOLEAN
-)
+
+CREATE PROCEDURE ricerca_dischi(stringa VARCHAR(100), ID_coll INTEGER UNSIGNED, posseduta BOOLEAN, condivisa BOOLEAN, pubblica BOOLEAN)
 BEGIN
 	IF (posseduta AND condivisa AND pubblica) THEN
 	CALL ricerca1(stringa, ID_coll) ;
@@ -186,7 +184,7 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS ricerca1;
 DELIMITER $$
-CREATE PROCEDURE ricerca1(stringa VARCHAR(100), ID_coll INTEGER)
+CREATE PROCEDURE ricerca1(stringa VARCHAR(100), ID_coll INTEGER UNSIGNED)
 BEGIN
 DROP TEMPORARY TABLE IF EXISTS ric1;
 CREATE TEMPORARY TABLE ric1 AS
@@ -201,7 +199,7 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS ricerca2;
 DELIMITER $$
-CREATE PROCEDURE ricerca2(stringa VARCHAR(100), ID_coll INTEGER)
+CREATE PROCEDURE ricerca2(stringa VARCHAR(100), ID_coll INTEGER UNSIGNED)
 BEGIN
 DROP TEMPORARY TABLE IF EXISTS ric2;
 CREATE TEMPORARY TABLE ric2 AS
@@ -216,7 +214,7 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS ricerca3;
 DELIMITER $$
-CREATE PROCEDURE ricerca3(stringa VARCHAR(100), ID_coll INTEGER)
+CREATE PROCEDURE ricerca3(stringa VARCHAR(100), ID_coll INTEGER UNSIGNED)
 BEGIN
 DROP TEMPORARY TABLE IF EXISTS ric3;
 CREATE TEMPORARY TABLE ric3 AS
@@ -235,9 +233,11 @@ DELIMITER ;
 
 /* QUERY 9: Verifica della visibilità di una collezione da parte di un collezionista. */
 
-DROP PROCEDURE IF EXISTS check_visibilita;
+DROP FUNCTION IF EXISTS check_visibilita;
 DELIMITER $$
-	CREATE PROCEDURE check_visibilita(ID1 INTEGER, ID2 INTEGER)
+	CREATE FUNCTION check_visibilita(ID1 INTEGER UNSIGNED, ID2 INTEGER UNSIGNED) -- ID1 = ID_collezione; ID2 = ID_collezionista
+    RETURNS BOOLEAN DETERMINISTIC
+    
     BEGIN
     DECLARE p BOOL;
     SET p = false;
@@ -251,25 +251,29 @@ DELIMITER $$
     WHERE c.ID_collezione = ID1 AND c.ID_collezionista = ID2;
     END IF;
     
-    SELECT p;
+    RETURN p;
     
     END $$
 DELIMITER ;
 
 /* QUERY 10: Numero dei brani (tracce di dischi) distinti di un certo autore (compositore, musicista) presenti nelle collezioni pubbliche. */
 
-DROP PROCEDURE IF EXISTS conta_brani_autore;
+DROP FUNCTION IF EXISTS conta_brani_autore;
 DELIMITER $$
-CREATE PROCEDURE conta_brani_autore(autore_id INTEGER UNSIGNED)
+CREATE FUNCTION conta_brani_autore(autore_id INTEGER UNSIGNED)
+RETURNS INTEGER UNSIGNED DETERMINISTIC 
 
 BEGIN
-    DECLARE brani_count INT;
+    DECLARE brani_count INTEGER UNSIGNED;
+    
     SELECT COUNT(b.ID) INTO brani_count FROM brano b
 		JOIN appartiene a ON (a.ID_brano = b.ID)
         JOIN disco d ON (d.ID = b.ID_disco)
         JOIN collezione c ON (c.ID = d.ID_collezione)
     WHERE a.ID_artista = autore_id AND c.stato = "pubblico";
-    SELECT brani_count;
+    
+    RETURN brani_count;
+    
 END $$
 DELIMITER ;
 
@@ -310,7 +314,7 @@ CREATE PROCEDURE conta_dischi_per_genere()
 BEGIN
     SELECT g.nome, COUNT(*) AS numero_dischi
     FROM disco d
-    JOIN genere g ON (g.ID = d.ID_genere)
+		JOIN genere g ON (g.ID = d.ID_genere)
     GROUP BY ID_genere;
 END $$
 DELIMITER ;
@@ -319,7 +323,7 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS conta_collezioniXcollezionista;
 DELIMITER $$
-CREATE PROCEDURE conta_collezioniXcollezionista(ID_coll INTEGER)
+CREATE PROCEDURE conta_collezioniXcollezionista(ID_coll INTEGER UNSIGNED)
 
 BEGIN
     DECLARE collezioni_count INT;
@@ -331,6 +335,7 @@ DELIMITER ;
 
 -- Query 13
 
+/* Abbiamo differenziato due casi: uno in cui il barcode è nullo e uno in cui il barcode non è nullo. */
 DROP PROCEDURE IF EXISTS trova_dischi_simili_barcode_nullo;
 DELIMITER $$
 	CREATE PROCEDURE trova_dischi_simili_barcode_nullo(titolo VARCHAR(100), autore VARCHAR(100), coll INTEGER UNSIGNED)
