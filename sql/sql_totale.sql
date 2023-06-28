@@ -442,6 +442,7 @@ DELIMITER $$
         UPDATE collezione SET stato = 'privato' WHERE ID = ID1;
     ELSEIF stato_corrente = 'privato' THEN
         UPDATE collezione SET stato = 'pubblico' WHERE ID = ID1;
+        -- tolgo tutti i record di condivisa che contengono quella collezione.
         DELETE FROM condivisa WHERE ID_collezione = ID1;
     END IF;
     
@@ -642,10 +643,9 @@ DELIMITER ;
 
 /* QUERY 10: Numero dei brani (tracce di dischi) distinti di un certo autore (compositore, musicista) presenti nelle collezioni pubbliche. */
 
-DROP FUNCTION IF EXISTS conta_brani_autore;
+DROP PROCEDURE IF EXISTS conta_brani_autore;
 DELIMITER $$
-CREATE FUNCTION conta_brani_autore(autore_id INTEGER UNSIGNED)
-RETURNS INTEGER UNSIGNED DETERMINISTIC 
+CREATE PROCEDURE conta_brani_autore(autore_id INTEGER UNSIGNED)
 
 BEGIN
     DECLARE brani_count INTEGER UNSIGNED;
@@ -656,7 +656,7 @@ BEGIN
         JOIN collezione c ON (c.ID = d.ID_collezione)
     WHERE a.ID_artista = autore_id AND c.stato = "pubblico";
     
-    RETURN brani_count;
+    SELECT brani_count;
     
 END $$
 DELIMITER ;
@@ -800,70 +800,6 @@ DELIMITER ;
 -- TRIGGERS --
 
 -- Trigger 1 --
-/*
-DROP TRIGGER IF EXISTS check_numero_dischi;
-DELIMITER $$
-
--- una collezione non può essere formata da un numero di dischi superiore a quelli posseduti
-
-CREATE TRIGGER check_numero_dischi BEFORE UPDATE ON collezione
-FOR EACH ROW
-BEGIN
-	DECLARE numero_dischi_totali SMALLINT UNSIGNED DEFAULT 0;
-    DECLARE numero_dischi_collezione SMALLINT UNSIGNED DEFAULT 0;
--- conta i dischi posseduti dal collezionista
-    SELECT COUNT(*) INTO numero_dischi_totali
-    FROM disco d
-    WHERE d.ID_collezionista = NEW.d.ID_collezionista;
-    
--- conta i dischi nella collezione
-    SELECT COUNT(*) INTO numero_dischi_collezione
-    FROM disco d
-    WHERE ID_collezione = NEW.ID;
-
-    IF (numero_dischi_collezione > numero_dischi_totali) THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Errore! Stai inserendo una quantità errata di dischi nella collezione';
-    END IF;
-END $$
-DELIMITER ;
-*/
--- Trigger 2 --
-/*
-DROP TRIGGER IF EXISTS check_visibilita;
-DELIMITER $$
-
-
-CREATE TRIGGER check_visibilita AFTER UPDATE ON collezione
-FOR EACH ROW
-BEGIN
-
-    IF (NEW.collezione.stato != OLD.collezione.stato) THEN -- verifica se lo stato è cambiato
-        IF  (NEW.stato = 'pubblico') THEN
-            DELETE FROM condivisa WHERE ID_collezione = NEW.ID;
-        END IF;
-    END IF;
-
-END $$
-DELIMITER ;
-
--- Trigger 3 --
--- l'anno di uscita di un album non puo'essere superiore a quello corrente
-
-DROP TRIGGER IF EXISTS check_anno_uscita;
-DELIMITER $$
-
-CREATE TRIGGER check_anno_uscita BEFORE INSERT ON disco
-FOR EACH ROW
-BEGIN
-
-  IF(NEW.disco.anno_uscita > YEAR(NOW())) THEN
-		SIGNAL SQLSTATE "45000" SET MESSAGE_TEXT="Errore nella data di uscita del disco.";
-  END IF;
-  
-END $$
-DELIMITER ;
-*/
--- Trigger 4 --
 
 -- una condivisione non puo' essere ricondivisa con lo stesso collezionista, con sè stessi oppure se è pubblica
 DROP TRIGGER IF EXISTS check_condivisione;
@@ -899,7 +835,7 @@ END$$
 
 DELIMITER ;
 
--- Trigger 5 --
+-- Trigger 2 --
 
 -- un collezionista non puo' avere più di una collezione con lo stesso nome.
 DROP TRIGGER IF EXISTS check_collezioni_nomi;

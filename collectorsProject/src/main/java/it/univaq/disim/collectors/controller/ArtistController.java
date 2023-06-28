@@ -7,9 +7,12 @@ import it.univaq.disim.collectors.business.BusinessFactory;
 import it.univaq.disim.collectors.business.db.DatabaseConnectionException;
 import it.univaq.disim.collectors.business.db.Query_JDBC;
 import it.univaq.disim.collectors.domain.Collector;
+import it.univaq.disim.collectors.domain.Collection.Flag;
 import it.univaq.disim.collectors.view.ViewDispatcher;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 
@@ -24,10 +27,14 @@ public class ArtistController implements Initializable, DataInitializable<Collec
 	
 	@FXML 
 	private CheckBox gruppoCheck;
+	
+	@FXML
+	private Button saveButton;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+		saveButton.disableProperty()
+		.bind(nameField.textProperty().isEmpty());
 		
 	}
 	

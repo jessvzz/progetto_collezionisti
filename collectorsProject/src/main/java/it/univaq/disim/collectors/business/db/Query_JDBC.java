@@ -698,16 +698,18 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		//Query 10
 				public int countTracks(int autore) throws DatabaseConnectionException {
 				    int brani = 0;
-				    String statement = "select conta_brani_autore as 'numero';";
-				    try (PreparedStatement query = connection.prepareStatement(statement)) {
-					query.setInt(1, autore);
-					ResultSet result = query.executeQuery();
-					while (result.next()) {
-						brani = result.getInt("numero");
-					}
-				} catch (SQLException e) {
-					throw new DatabaseConnectionException("Unable to count tracks", e);
-				}
+				    try (CallableStatement query = connection.prepareCall("{call conta_brani_autore(?)}");) {
+				        query.setInt(1, autore);
+				        query.execute();
+				        ResultSet result = query.getResultSet();
+				        if (result.next()) {
+				            brani = result.getInt("brani_count");
+				           
+				        }
+				        result.close();
+				    } catch (SQLException e) {
+				        throw new DatabaseConnectionException("Unable to count minutes", e);
+				    }
 				    return brani;
 				}
 		
