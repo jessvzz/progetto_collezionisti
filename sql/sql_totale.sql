@@ -193,7 +193,7 @@ VALUES(6, "cicca_cicca", "francesca@icloud.com", "Francesca", "Ciccarelli");
 
 -- collezione(ID, nome, flag, ID_collezionista)
 INSERT INTO `collezione`
-VALUES(1, "cantautori italiani", "pubblico", 1);
+VALUES(1, "cantautori italiani", "privato", 1);
 
 INSERT INTO `collezione`
 VALUES(2, "dischi rock", "pubblico", 2);
