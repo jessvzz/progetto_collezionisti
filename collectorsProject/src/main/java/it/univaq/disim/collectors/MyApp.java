@@ -20,16 +20,15 @@ public class MyApp extends Application {
 	public void start(Stage stage) throws Exception {
 		//dbImplementation = new DBImplementation();
 
-        // Avvia l'applicazione
         ViewDispatcher.getInstance().login(stage);
 
-        // Quando l'applicazione viene chiusa, disconnetti il database
-       /* stage.setOnCloseRequest(event -> {
-          try {
-               dbImplementation.getConnection().disconnect();
-           } catch (DatabaseConnectionException e) {
-               e.printStackTrace();
+        stage.setOnCloseRequest(event -> {
+            try {
+                DBImplementation dbImplementation = new DBImplementation();
+                dbImplementation.getConnection().disconnect();
+            } catch (DatabaseConnectionException e) {
+                e.printStackTrace();
             }
-        });*/
+        });
     }
 }

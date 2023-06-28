@@ -57,6 +57,9 @@ public class LoginController<T> implements Initializable, DataInitializable<T> {
 		loginButton.disableProperty().bind(
 				nicknameField.textProperty().isEmpty()
 				.or(emailField.textProperty().isEmpty()));
+		signUpButton.disableProperty().bind(
+				nicknameField.textProperty().isEmpty()
+				.or(emailField.textProperty().isEmpty()));
 		anchor.setBackground(new Background(
 				Collections.singletonList(new BackgroundFill(Color.WHITE, new CornerRadii(500), new Insets(0))),
 				Collections.singletonList(new BackgroundImage(
@@ -74,16 +77,20 @@ public class LoginController<T> implements Initializable, DataInitializable<T> {
 				throw new DatabaseConnectionException("Wrong nickname or email!");
 				dispatcher.renderHome(collector);
 		} catch (DatabaseConnectionException e) {
-			System.err.println(e.getMessage());
+			errorLabel.setText(e.getMessage());
 		}
 	}
 
 	
 	@FXML
 	public void signUpAction(ActionEvent event) {
-		ViewDispatcher dispatcher = ViewDispatcher.getInstance();
-		dispatcher.renderView("signUp", null);
-		
+		try {
+			implementation.signUp(nicknameField.getText(), emailField.getText(), nicknameField.getText(), null);
+		implementation.login(nicknameField.getText(), emailField.getText());
+		} catch (DatabaseConnectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 

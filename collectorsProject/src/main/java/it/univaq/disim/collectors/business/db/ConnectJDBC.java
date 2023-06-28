@@ -18,8 +18,6 @@ public class ConnectJDBC {
 		this.connection = null;
 	}
 
-	// creiamo e restituiamo una singola connessione locale (singleton)
-	// (che potrà essere chiusa da questo modulo)
 	public Connection getConnection() throws DatabaseConnectionException {
 		if (connection == null) {
 			connection = connect();
@@ -27,27 +25,25 @@ public class ConnectJDBC {
 		return connection;
 	}
 
-	// questo metodo restituisce una nuova connessione a ogni chiamata
-	// (che andrà chiusa dal ricevente!)
+	
 	public Connection newConnection() throws DatabaseConnectionException {
 		return connect();
 	}
 
-// connessione al database
+
 	private Connection connect() throws DatabaseConnectionException {
-		System.out.println("Tentativo di connessione al DB...");
 		try {
-			// connessione al database
+		
 			if (username != null && password != null) {
 				this.connection = DriverManager.getConnection(connection_string, username, password);
 			} else {
 				this.connection = DriverManager.getConnection(connection_string);
 			}
-			System.out.println("Connessione stabilita con successo.");
+			System.out.println("Now Connected to DB");
 			return this.connection;
 		} catch (SQLException ex) {
-			System.err.println("\nTentativo di connessione fallito!");
-			throw new DatabaseConnectionException("Errore di connessione", ex);
+			System.err.println("\n Unable to connect");
+			throw new DatabaseConnectionException("Connection error", ex);
 		}
 	}
 	
@@ -55,16 +51,15 @@ public class ConnectJDBC {
 	
 
 
-	// disconnessione della connessione locale (singleton) se presente
+	
 	public void disconnect() throws DatabaseConnectionException {
 		try {
 			if (this.connection != null && !this.connection.isClosed()) {
-				System.out.println("\nTentativo di disconnessione della connessione...");
+				System.out.println("\nDisconnecting...");
 				this.connection.close();
 			}
 		} catch (SQLException ex) {
-			System.err.println("\nTentativo di disconnessione falllito");
-			throw new DatabaseConnectionException("Errore di disconnessione", ex);
+			throw new DatabaseConnectionException("\nUnable to disconnect", ex);
 		}
 	}
 

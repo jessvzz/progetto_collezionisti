@@ -38,8 +38,7 @@ public class Query_JDBC {
 	
 	public final void connect(Connection c) throws DatabaseConnectionException {
 		this.connection = c;
-		// verifichiamo quali comandi supporta il DBMS corrente
-		supports_procedures = false;
+		/*supports_procedures = false;
 		supports_function_calls = false;
 		try {
 			supports_procedures = connection.getMetaData().supportsStoredProcedures();
@@ -47,7 +46,7 @@ public class Query_JDBC {
 					&& connection.getMetaData().supportsStoredFunctionsUsingCallSyntax();
 		} catch (SQLException ex) {
 			Logger.getLogger(Query_JDBC.class.getName()).log(Level.SEVERE, null, ex);
-		}
+		}*/
 	}
 	
 	public Connection getConnection() {
@@ -64,6 +63,21 @@ public class Query_JDBC {
 					return new Collector(rs.getInt("id"), rs.getString("nickname"), rs.getString("email"), rs.getString("nome"));
 			}
 			return null;
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException(e);
+		}
+	}
+	
+	public void signUp(String nickname, String email, String name, String last) throws DatabaseConnectionException {
+		String signUpQuery = "INSERT INTO collezionista (nickname, email, nome, cognome) " +
+                "VALUES (?, ?, ?, ?)";
+		try (PreparedStatement s = connection
+				.prepareStatement(signUpQuery);) {
+			s.setString(1, nickname);
+			s.setString(2, email);
+			s.setString(3, name);
+			s.setString(3, last);
+			s.executeUpdate();
 		} catch (SQLException e) {
 			throw new DatabaseConnectionException(e);
 		}

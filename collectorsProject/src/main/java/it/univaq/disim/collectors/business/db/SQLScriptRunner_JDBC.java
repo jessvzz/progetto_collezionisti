@@ -43,8 +43,7 @@ public class SQLScriptRunner_JDBC {
 				while ((line = lineReader.readLine()) != null) {
 					line = line.trim();
 					while (line.length() > 0) {
-						if (line.startsWith("//") || line.startsWith("--")) { // non supporta commenti a fine riga!
-							line = ""; // skip
+						if (line.startsWith("//") || line.startsWith("--")) { 
 						} else {
 							Matcher matcher = delimiter_line_pattern.matcher(line);
 							if (matcher.matches()) {

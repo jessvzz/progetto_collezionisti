@@ -33,6 +33,7 @@ public class ViewDispatcher {
 		stage.show();
 	}
 	
+	
 	public void logout() {
 		try {
 			Parent loginView = loadView("login").getView();
