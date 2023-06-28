@@ -1,19 +1,26 @@
 USE Collectors;
-DROP TRIGGER IF EXISTS check_genere;
+DROP TRIGGER IF EXISTS check_numero_dischi;
 DELIMITER $$
--- un genere che è presente nei dati di un disco non può essere cancellato
 
-CREATE TRIGGER check_genere BEFORE DELETE ON genere
+-- una collezione non può essere formata da un numero di dischi superiore a quelli posseduti
+
+CREATE TRIGGER check_numero_dischi BEFORE UPDATE ON collezione
 FOR EACH ROW
 BEGIN
-	DECLARE genere_disco SMALLINT UNSIGNED;
-    
-    SELECT COUNT(*) INTO genere_disco
+	DECLARE numero_dischi_totali SMALLINT UNSIGNED DEFAULT 0;
+    DECLARE numero_dischi_collezione SMALLINT UNSIGNED DEFAULT 0;
+-- conta i dischi posseduti dal collezionista
+    SELECT COUNT(*) INTO numero_dischi_totali
     FROM disco d
-    WHERE d.ID_genere = OLD.ID;
+    WHERE d.ID_collezionista = NEW.d.ID_collezionista;
+    
+-- conta i dischi nella collezione
+    SELECT COUNT(*) INTO numero_dischi_collezione
+    FROM disco d
+    WHERE ID_collezione = NEW.ID;
 
-    IF (genere_disco > 0) THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Errore! Un disco resterebbe senza genere';
+    IF (numero_dischi_collezione > numero_dischi_totali) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Errore! Stai inserendo una quantità errata di dischi nella collezione';
     END IF;
 END $$
 DELIMITER ;

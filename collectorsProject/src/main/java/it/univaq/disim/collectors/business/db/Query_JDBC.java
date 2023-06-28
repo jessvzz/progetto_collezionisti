@@ -76,7 +76,7 @@ public class Query_JDBC {
 			s.setString(1, nickname);
 			s.setString(2, email);
 			s.setString(3, name);
-			s.setString(3, last);
+			s.setString(4, last);
 			s.executeUpdate();
 		} catch (SQLException e) {
 			throw new DatabaseConnectionException(e);

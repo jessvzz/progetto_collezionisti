@@ -85,11 +85,11 @@ public class LoginController<T> implements Initializable, DataInitializable<T> {
 	@FXML
 	public void signUpAction(ActionEvent event) {
 		try {
-			implementation.signUp(nicknameField.getText(), emailField.getText(), nicknameField.getText(), null);
-		implementation.login(nicknameField.getText(), emailField.getText());
+			implementation.signUp(nicknameField.getText(), emailField.getText(), nicknameField.getText(), nicknameField.getText());
+			Collector collector = implementation.login(nicknameField.getText(), emailField.getText());
+		dispatcher.renderHome(collector);
 		} catch (DatabaseConnectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			errorLabel.setText("Username or password already taken");
 		}
 		
 	}
