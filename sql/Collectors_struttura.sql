@@ -21,6 +21,9 @@ DROP USER IF EXISTS 'collectorsUser'@'localhost';
 CREATE USER 'collectorsUser'@'localhost' IDENTIFIED BY 'collectorsPwd€123';
 GRANT select,insert,update,delete,execute ON Collectors.* TO 'collectorsUser'@'localhost';
 
+/* Abbiamo deciso di impostare tutti i VARCHAR ad una lunghezza di 100 caratteri per dare 
+più libertà agli utenti che utilizzeranno l'applicazione. */
+
 CREATE TABLE collezionista(
  ID INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
  nickname VARCHAR(100) NOT NULL UNIQUE,
@@ -28,6 +31,9 @@ CREATE TABLE collezionista(
  nome VARCHAR(100) NOT NULL,
  cognome VARCHAR(100) NOT NULL
 	);
+
+/*In riferimento alla chiave esterna del collezionista, vogliamo che in caso di cancellazione 
+di un collezionista la collezione venga eliminata. */
     
 CREATE TABLE collezione(
 ID INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -55,14 +61,18 @@ CREATE TABLE etichetta(
     
 CREATE TABLE genere(
 	ID INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(50)
+    nome VARCHAR(100)
 	);
     
 CREATE TABLE tipo(
 	ID INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(50)
+    nome VARCHAR(100)
 	);
-    
+ 
+/* In riferimento alle chiavi esterne di artista, etichetta, genere e tipo, vogliamo che non sia possibile cancellare dal db 
+un artista, un'etichetta, un genere o un tipo a cui sia referenziato un disco; per le chiavi esterne di collezionista e collezione
+invece vogliamo che, in caso di cancellazione di una delle due tabelle, venga eliminato anche il disco.  */ 
+ 
 CREATE TABLE disco(
  ID INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
  barcode VARCHAR(100),
@@ -95,6 +105,8 @@ CONSTRAINT disco_tipo FOREIGN KEY (ID_tipo)
         ON DELETE RESTRICT ON UPDATE CASCADE
 	);
         
+/* In riferimento alla chiave esterna disco, vogliamo che in caso venga eliminato un disco sia eliminato anche il brano. */ 
+ 
 CREATE TABLE brano( 
  ID INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
  ISRC VARCHAR(100) NOT NULL,
@@ -105,6 +117,9 @@ CONSTRAINT brano_disco FOREIGN KEY (ID_disco)
         REFERENCES disco (ID)
         ON DELETE CASCADE ON UPDATE CASCADE
 	);
+    
+/* In riferimento alla chiave esterna disco, vogliamo che in caso venga eliminato un disco sia eliminata anche l'immagine 
+ad esso riferita. */ 
  	
 CREATE TABLE immagine(
  ID INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -116,8 +131,11 @@ CREATE TABLE immagine(
  ID_disco INTEGER UNSIGNED NOT NULL,
  CONSTRAINT immagine_disco FOREIGN KEY (ID_disco)
 		REFERENCES disco (ID)
-        ON DELETE RESTRICT ON UPDATE CASCADE
+        ON DELETE CASCADE ON UPDATE CASCADE
 	);
+
+/* In caso di cancellazione di una collezione e/o di un collezionista, viene eliminata anche 
+la condivisione che vi è tra quella collezione e quel collezionista. */ 
 
 CREATE TABLE condivisa(
     ID_collezionista INTEGER UNSIGNED NOT NULL,
@@ -130,7 +148,10 @@ CREATE TABLE condivisa(
 		REFERENCES collezionista (ID)
         ON DELETE CASCADE ON UPDATE CASCADE
 	);
-     
+ 
+ /* Se l'artista è referenziato da un brano non possiamo eliminarlo mentre, se viene eliminato il brano, 
+ vogliamo che venga eliminata la relazione tra il brano e l'artista. */
+ 
  CREATE TABLE appartiene(
   ID_artista INTEGER UNSIGNED NOT NULL,
   ID_brano INTEGER UNSIGNED NOT NULL,
@@ -138,8 +159,8 @@ CREATE TABLE condivisa(
   PRIMARY KEY (ID_artista , ID_brano),
 	CONSTRAINT appartiene_artista FOREIGN KEY (ID_artista)
 		REFERENCES artista (ID)
-        ON DELETE CASCADE ON UPDATE CASCADE,
+        ON DELETE RESTRICT ON UPDATE CASCADE,
 	CONSTRAINT appartiene_brano FOREIGN KEY (ID_brano)
 		REFERENCES brano (ID)
-        ON DELETE RESTRICT ON UPDATE CASCADE
+        ON DELETE CASCADE ON UPDATE CASCADE
 	);

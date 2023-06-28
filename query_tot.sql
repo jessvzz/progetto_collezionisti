@@ -127,6 +127,20 @@ DELIMITER ;
 Si potrà decidere di includere nella ricerca le collezioni di un certo collezionista e/o 
 quelle condivise con lo stesso collezionista e/o quelle pubbliche. */
 
+/* Per la query in oggetto si è deciso di procedere nel seguente modo: passiamo in input una stringa che può essere sia il nome dell’artista sia il titolo del disco, l’ID del collezionista e tre parametri booleani che ci serviranno per effettuare la ricerca in base alle collezioni possedute dal collezionista, a quelle condivise con lui e/o alle collezioni pubbliche.
+Abbiamo creato tre procedure differenti:
+-ricerca1 inserisce in una tabella temporanea (ric1) tutte le collezioni che sono possedute dal collezionista;
+-ricerca2 inserisce in una tabella temporanea (ric2) tutte le collezioni condivise con il collezionista;
+-ricerca3 inserisce in una tabella temporanea (ric3) tutte le collezioni che sono pubbliche e quindi visibili dal collezionista.
+A questo punto, grazie alla procedura ricerca_dischi, sarà possibile fare diversi tipi di ricerca in base al valore dei parametri booleani in input (tramite la UNION DISTINCT delle temporary table); in particolare possiamo:
+-ricercare le collezioni che sono possedute da un collezionista, condivise con lui e pubbliche;
+-ricercare le collezioni solo possedute dal collezionista;
+-ricercare solo le collezioni condivise con il collezionista;
+-ricercare tutte le collezioni pubbliche;
+-ricercare le collezioni possedute dal collezionista e condivise con lui ma non pubbliche;
+-ricercare le collezioni possedute dal collezionista e pubbliche;
+-ricercare le collezioni che sono state condivise con il collezionista e che sono pubbliche. */
+
 DROP PROCEDURE IF EXISTS ricerca_dischi;
 DELIMITER $$
 CREATE PROCEDURE ricerca_dischi(
