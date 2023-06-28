@@ -59,7 +59,7 @@ public class SharedCollectionsController implements Initializable, DataInitializ
 		actionTableColumn.setCellValueFactory((CellDataFeatures<Collection, Button> param) -> {
 			final Button viewButton = new Button("View");
 			viewButton.setStyle(
-					"-fx-background-color:#bacad7; -fx-background-radius: 15px; -fx-text-fill: #5f6569; -fx-font-weight: bold;");
+					"-fx-background-color:#fcbdea; -fx-background-radius: 10px; -fx-text-fill: #5f6569;");
 			viewButton.setOnAction((ActionEvent event) -> {
 				dispatcher.renderView("collection", new Couple<Collection, Collector>(param.getValue(), collector));
 			});

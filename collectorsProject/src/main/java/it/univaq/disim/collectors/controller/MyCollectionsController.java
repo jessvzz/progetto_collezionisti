@@ -74,7 +74,7 @@ public class MyCollectionsController implements Initializable, DataInitializable
 		actionTableColumn.setCellValueFactory((CellDataFeatures<Collection, Button> param) -> {
 			final Button viewButton = new Button("View");
 			viewButton.setStyle(
-					"-fx-background-color:#fcbdea; -fx-background-radius: 15px; -fx-text-fill: #5f6569; -fx-font-weight: bold;");
+					"-fx-background-color:#fcbdea; -fx-background-radius: 10px; -fx-text-fill: #5f6569;");
 			viewButton.setOnAction((ActionEvent event) -> {
 				dispatcher.renderView("collection", new Couple<Collection, Collector>(param.getValue(), collector));
 			});
@@ -84,7 +84,7 @@ public class MyCollectionsController implements Initializable, DataInitializable
 		editTableColumn.setCellValueFactory((CellDataFeatures<Collection, Button> param) -> {
 			final Button editButton = new Button("Edit");
 			editButton.setStyle(
-					"-fx-background-color:#fcbdea; -fx-background-radius: 15px; -fx-text-fill: #5f6569; -fx-font-weight: bold;");
+					"-fx-background-color:#fcbdea; -fx-background-radius: 10px; -fx-text-fill: #5f6569;");
 			editButton.setOnAction((ActionEvent event) -> {
 				try {
 					implementation.editStatus(param.getValue().getId());
@@ -102,7 +102,7 @@ public class MyCollectionsController implements Initializable, DataInitializable
 		deleteTableColumn.setCellValueFactory((CellDataFeatures<Collection, Button> param) -> {
 			final Button deleteButton = new Button("Delete");
 			deleteButton.setStyle(
-					"-fx-background-color:#fcbdea; -fx-background-radius: 15px; -fx-text-fill: #5f6569; -fx-font-weight: bold;");
+					"-fx-background-color:#fcbdea; -fx-background-radius: 10px; -fx-text-fill: #5f6569;");
 			deleteButton.setOnAction((ActionEvent event) -> {
 				try {
 					implementation.deleteCollection(param.getValue().getId());

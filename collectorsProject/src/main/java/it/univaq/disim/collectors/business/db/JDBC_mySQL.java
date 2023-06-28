@@ -1,6 +1,6 @@
 package it.univaq.disim.collectors.business.db;
 
-public class DBImplementation {
+public class JDBC_mySQL {
 	private static final String DB_NAME = "Collectors";
 	private static final String PASSWORD = "collectorsPwd€123";
 	private static final String APP_USERNAME = "collectorsUser";
@@ -9,7 +9,7 @@ public class DBImplementation {
 	/*private ConnectJDBC connection = new ConnectJDBC(CONNECTION, APP_USERNAME, PASSWORD);
 	private Query_JDBC queryModule;
 	
-	public DBImplementation(){
+	public JDBC_mySQL(){
 		try {
 			queryModule = new Query_JDBC(connection.getConnection());
 		} catch (DatabaseConnectionException e) {
@@ -19,21 +19,21 @@ public class DBImplementation {
 	}*/
 	
 	private static ConnectJDBC connection = null;
-    private Query_JDBC queryModule;
+    private Query_JDBC query;
 
-    public DBImplementation() {
+    public JDBC_mySQL() {
         try {
             if (connection == null) {
                 connection = new ConnectJDBC(CONNECTION, APP_USERNAME, PASSWORD);
             }
-            queryModule = new Query_JDBC(connection.getConnection());
+            query = new Query_JDBC(connection.getConnection());
         } catch (DatabaseConnectionException e) {
             System.exit(0);
             e.printStackTrace();
         }
     }
 	public Query_JDBC getImplementation() {
-		return queryModule;
+		return query;
 		}
 	
 	public ConnectJDBC getConnection() {

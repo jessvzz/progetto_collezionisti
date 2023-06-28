@@ -389,3 +389,27 @@ DELIMITER $$
              WHERE idcoll = coll.ID_collezionista;
 	END $$
     DELIMITER ; 
+	
+-- procedura B: aggiunge un disco già esistente in una collezione
+DROP PROCEDURE IF EXISTS aggiungi_disco_esistente;
+DELIMITER $$
+CREATE PROCEDURE aggiungi_disco_esistente(id_disco INTEGER UNSIGNED, id_coll INTEGER UNSIGNED)
+BEGIN 
+    INSERT INTO disco (barcode, stato_di_conservazione, titolo, ID_artista, ID_etichetta, ID_collezionista, ID_collezione, ID_genere, ID_tipo, anno_uscita)
+    SELECT barcode, stato_di_conservazione, titolo, ID_artista, ID_etichetta, ID_collezionista, id_coll, ID_genere, ID_tipo, anno_uscita
+    FROM disco
+    WHERE ID = id_disco;
+   
+    SET @new_disco_id = LAST_INSERT_ID();
+    
+   -- inserisco i brani
+    INSERT INTO brano (ISRC, titolo, durata, ID_disco)
+    SELECT b.ISRC, b.titolo, b.durata, @new_disco_id
+    FROM brano b
+    INNER JOIN disco d ON b.ID_disco = d.ID
+    WHERE d.ID = id_disco;
+    
+    
+
+END $$
+DELIMITER ;

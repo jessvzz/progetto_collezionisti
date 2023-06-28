@@ -69,6 +69,8 @@ public class AddExistingDiskController implements Initializable, DataInitializab
 		manageTableColumn.setStyle("-fx-alignment: CENTER;");
 		manageTableColumn.setCellValueFactory((CellDataFeatures<Disk, Button> param) -> {
 			final Button viewButton = new Button("Choose");
+			viewButton.setStyle(
+					"-fx-background-color:#fcbdea; -fx-background-radius: 10px; -fx-text-fill: #5f6569;");
 			viewButton.setOnAction((ActionEvent event) -> {
 				try {
 					implementation.addExistingDisk(param.getValue(), this.collection);
@@ -96,8 +98,8 @@ public class AddExistingDiskController implements Initializable, DataInitializab
 	public void search() {
 		String titolo = title.getText();
 		String artista = artist.getText();
-		if (!artista.isEmpty() && titolo.isEmpty()) titolo = " ";
-		if (artista.isEmpty() && !titolo.isEmpty()) artista = " ";
+		if (!artista.isEmpty() && titolo.isEmpty()) titolo =  null;
+		if (artista.isEmpty() && !titolo.isEmpty()) artista = null;
 		
 
 		try {

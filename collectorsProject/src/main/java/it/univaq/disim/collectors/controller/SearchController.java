@@ -74,6 +74,8 @@ public class SearchController implements Initializable, DataInitializable<Collec
 		manageTableColumn.setStyle("-fx-alignment: CENTER;");
 		manageTableColumn.setCellValueFactory((CellDataFeatures<Disk, Button> param) -> {
 			final Button viewButton = new Button("View");
+			viewButton.setStyle(
+					"-fx-background-color:#fcbdea; -fx-background-radius: 10px; -fx-text-fill: #5f6569;");
 			viewButton.setOnAction((ActionEvent event) -> {
 				dispatcher.renderView("disk",new Triple<Collector, Collection, Disk>(collector, null, param.getValue()));
 			});

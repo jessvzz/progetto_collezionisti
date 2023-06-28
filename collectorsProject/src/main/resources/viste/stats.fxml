@@ -13,9 +13,9 @@
    <children>
       <Pane prefHeight="269.0" prefWidth="612.0">
          <children>
-            <Label prefHeight="40.0" prefWidth="228.0" text="Statistics" textFill="#ff95f6">
+            <Label prefHeight="40.0" prefWidth="228.0" text="Statistics" textFill="#e8b1e3">
                <font>
-                  <Font name="System Bold" size="33.0" />
+                  <Font name="Impact" size="33.0" />
                </font>
             </Label>
             <Label layoutY="40.0" prefHeight="25.0" prefWidth="585.0" text="Number of copies for a disk" />

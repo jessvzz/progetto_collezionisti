@@ -63,6 +63,8 @@ public class CollectionController implements Initializable, DataInitializable<Co
 		actionTableColumn.setStyle("-fx-alignment: CENTER;");
 		actionTableColumn.setCellValueFactory((CellDataFeatures<Disk, Button> param) -> {
 			final Button viewButton = new Button("View");
+			viewButton.setStyle(
+					"-fx-background-color:#fcbdea; -fx-background-radius: 10px; -fx-text-fill: #5f6569;");
 			viewButton.setOnAction((ActionEvent event) -> {
 				dispatcher.renderView("disk",
 						new Triple<Collector, Collection, Disk>(collector, collection, param.getValue()));
@@ -72,6 +74,8 @@ public class CollectionController implements Initializable, DataInitializable<Co
 		editTableColumn.setStyle("-fx-alignment: CENTER;");
 		editTableColumn.setCellValueFactory((CellDataFeatures<Disk, Button> param) -> {
 			final Button editButton = new Button("Delete");
+			editButton.setStyle(
+					"-fx-background-color:#fcbdea; -fx-background-radius: 10px; -fx-text-fill: #5f6569;");
 			editButton.setOnAction((ActionEvent event) -> {
 					deleteDisk(param.getValue());
 				

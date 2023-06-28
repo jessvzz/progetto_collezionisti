@@ -29,8 +29,8 @@ import it.univaq.disim.collectors.business.db.DatabaseConnectionException;
 
 public class Query_JDBC {
 	private Connection connection;
-	private boolean supports_procedures;
-	private boolean supports_function_calls;
+	//private boolean supports_procedures;
+	//private boolean supports_function_calls;
 	
 	public Query_JDBC(Connection c) throws DatabaseConnectionException {
 		connect(c);
@@ -411,7 +411,7 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		}
 	}*/
 	
-	public void addExistingDisk(Disk disk, Collection collection) throws DatabaseConnectionException {
+	/*public void addExistingDisk(Disk disk, Collection collection) throws DatabaseConnectionException {
 	    int existingDiskID = disk.getId();
 	    int newCollectionID = collection.getId();
 	    
@@ -459,7 +459,7 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 	    } catch (SQLException e) {
 	        throw new DatabaseConnectionException("Unable to duplicate the existing disk", e);
 	    }
-	}
+	}*/
 
 
 	
@@ -728,7 +728,7 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 					disks.add(new Disk(result.getInt("ID"),result.getString("titolo"), 0, result.getInt("ID_artista"),0,collector.getId(),0, result.getString("barcode"),null,0));
 				 
 			}} catch (SQLException e) {
-				throw new DatabaseConnectionException("Inserimento fallito", e);
+				throw new DatabaseConnectionException("Search faield", e);
 		}}
 			else {
 				try (CallableStatement s = connection.prepareCall("call trova_dischi_simili_barcode(?,?)");){
@@ -739,7 +739,7 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 						disks.add(new Disk(result.getInt("ID"),result.getString("titolo"), 0, result.getInt("ID_artista"),0,result.getInt("ID_collezionista"),0, result.getString("barcode"),null,0));
 					 
 				}} catch (SQLException e) {
-					throw new DatabaseConnectionException("Inserimento fallito", e);
+					throw new DatabaseConnectionException("Search failed", e);
 			}
 			
 		} return disks;} 
@@ -780,6 +780,19 @@ try (PreparedStatement query = connection.prepareStatement(sql)) {
 		        throw new DatabaseConnectionException("Unable to find collections shared with you", e);
 		    }
 		    return collections;
+		}
+		
+		//procedura B
+		public void addExistingDisk(Disk disk, Collection collection) throws DatabaseConnectionException {
+			try (CallableStatement query = connection.prepareCall("{call aggiungi_disco_esistente(?, ?)}");) {
+				query.setInt(1, disk.getId());
+				query.setInt(2, collection.getId());
+				
+				query.execute();
+		       
+		    } catch (SQLException e) {
+		        throw new DatabaseConnectionException("Unable to duplicate the existing disk", e);
+		    }
 		}
 		
 		
